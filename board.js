@@ -1,4 +1,8 @@
 
+function board() {
+
+
+syncBoard(gameKey); //gameKey is a global variable for now 
 const cells = document.querySelectorAll(".cell");
 
 cells.forEach(function (cell) {
@@ -17,8 +21,14 @@ cells.forEach(function (cell) {
 
 });
 
+}
 
 
+function syncBoard(key) {  // responsible for syncing the board 
+    setInterval(function () {
+        getBoard(key);
+    }, 1000);
+}
 
 
 

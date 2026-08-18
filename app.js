@@ -18,6 +18,7 @@ createButton.addEventListener("click", async function () {
 
     if (tile === "X") {
         console.log("Waiting for Player O...");
+        waitForGameToStart(key);
     }
     if (tile === "X" || tile === "O") {
         playerTile = tile;
@@ -39,6 +40,7 @@ joinButton.addEventListener("click", async function () {
         console.log("This room did not exist, so a new game was created");
 
     }
+    waitForGameToStart(key);
 
     if (tile === "X" || tile === "O") {
         playerTile = tile;
@@ -54,9 +56,9 @@ function waitForGameToStart(key) {
 
         const status = await checkGame(key);
 
-        if (status === "true") {
+        if (status === "true") { 
             showGameMessage("Game is starting!");
-
+            board(); // Start the game board
             clearInterval(checkInterval);
         }
 

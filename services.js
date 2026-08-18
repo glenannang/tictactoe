@@ -31,12 +31,25 @@ function move(key, tile, y, x) {
         .then(response => response.text())
         .then(data => {
             console.log("Move response:", data);
-
-            //getBoard(key);
         })
         .catch(error => {
             console.error("Move error:", error);
         });
 }
+
+function getBoard(key) {
+    fetch(`${BASE_URL}/board?key=${key}`)
+        .then(response => response.text())
+        .then(data => {
+
+            console.log("Board status:", data);
+        })
+        .catch(error => {
+            console.error("Board error:", error);
+        });
+}
+
+
+
 
 
