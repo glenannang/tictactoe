@@ -58,7 +58,7 @@ function waitForGameToStart(key) {
 
         if (status === "true") { 
             showGameMessage("Game is starting!");
-            board(); // Start the game board
+            game(); // Start the game board
             clearInterval(checkInterval);
         }
 

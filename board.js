@@ -39,6 +39,7 @@ cells.forEach(function (cell) {
         console.log("Clicked:", x, y);
 
         move(gameKey, playerTile, y, x); 
+        
 
     });
 
@@ -49,9 +50,10 @@ cells.forEach(function (cell) {
 
 function syncBoard(key) {  // responsible for syncing the board 
     setInterval(function () {
-        getBoard(key);
+        displayBoard(getBoard(key)); // Update the board every second
     }, 1000);
 }
+
 
 
 

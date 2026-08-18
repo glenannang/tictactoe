@@ -38,11 +38,11 @@ function move(key, tile, y, x) {
 }
 
 function getBoard(key) {
-    fetch(`${BASE_URL}/board?key=${key}`)
+     return fetch(`${BASE_URL}/board?key=${key}`)
         .then(response => response.text())
         .then(data => {
-            displayBoard(data);
             console.log("Board status:", data);
+            return data;
         })
         .catch(error => {
             console.error("Board error:", error);
