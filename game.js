@@ -2,6 +2,7 @@
 function game(){
     let currentPlayer = null;
     board();
+    
 
 }
 

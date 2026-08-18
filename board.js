@@ -1,6 +1,7 @@
 
 function board() {
 
+let gameOver = false;
 
 syncBoard(gameKey); //gameKey is a global variable for now 
 
@@ -30,6 +31,17 @@ cells.forEach(function (cell) {
 
     cell.addEventListener("click", async function () {
         let boardData = await getBoard(gameKey);
+        
+        //check if there is already an existing winner
+        const existingWinner = checkWinner(boardData);
+
+        if (existingWinner !== null) {
+            console.log(`${existingWinner} already won!`);
+            gameOver = true;
+            return;
+        }
+        
+        // for blocking the move if not the players turn
         const currentTurn = getCurrentTurn(boardData);
 
         if (playerTile !== currentTurn) {
@@ -40,22 +52,23 @@ cells.forEach(function (cell) {
         const x = cell.dataset.x;
         const y = cell.dataset.y;
 
-       
-
         console.log("Tile:", playerTile);
         console.log("Clicked:", x, y);
 
         await move(gameKey, playerTile, y, x); 
-        cell.textContent = playerTile;
+
         boardData = await getBoard(gameKey);
-        
+        cell.textContent = playerTile;
+
        // console.log("Board before winner check:", boardData);
-        let winner = checkWinner(boardData); //check if there is a winner already
-        console.log(`${winner} won!`);
+        const winner = checkWinner(boardData); //check if move created a winner
+        
+        if (winner !== null) {
+            console.log(`${winner} won!`);
+            gameOver = true;
+            return;
+        }
        
-
-
-
     });
 
 });
@@ -67,7 +80,7 @@ function syncBoard(key) {  // responsible for syncing the board
     setInterval(async function () {
         const data = await (getBoard(key));
         displayBoard(data);
-        // Update the board every second
+
     }, 1000);
 }
 
