@@ -27,7 +27,7 @@ function checkGame(key) {
 
 
 function move(key, tile, y, x) {
-    fetch(`${BASE_URL}/move?key=${key}&tile=${tile}&y=${y}&x=${x}`)
+    return fetch(`${BASE_URL}/move?key=${key}&tile=${tile}&y=${y}&x=${x}`)
         .then(response => response.text())
         .then(data => {
             console.log("Move response:", data);

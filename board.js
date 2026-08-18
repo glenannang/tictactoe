@@ -29,7 +29,7 @@ const cells = document.querySelectorAll(".cell");
 cells.forEach(function (cell) {
 
     cell.addEventListener("click", async function () {
-        const boardData = await getBoard(gameKey);
+        let boardData = await getBoard(gameKey);
         const currentTurn = getCurrentTurn(boardData);
 
         if (playerTile !== currentTurn) {
@@ -40,12 +40,21 @@ cells.forEach(function (cell) {
         const x = cell.dataset.x;
         const y = cell.dataset.y;
 
-        cell.textContent = playerTile;
+       
+
         console.log("Tile:", playerTile);
         console.log("Clicked:", x, y);
 
-        move(gameKey, playerTile, y, x); 
+        await move(gameKey, playerTile, y, x); 
+        cell.textContent = playerTile;
+        boardData = await getBoard(gameKey);
         
+       // console.log("Board before winner check:", boardData);
+        let winner = checkWinner(boardData); //check if there is a winner already
+        console.log(`${winner} won!`);
+       
+
+
 
     });
 
