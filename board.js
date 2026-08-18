@@ -1,7 +1,6 @@
-
-function board() {
-
 let gameOver = false;
+let boardSyncInterval;
+function board() {
 
 syncBoard(gameKey); //gameKey is a global variable for now 
 
@@ -66,6 +65,7 @@ cells.forEach(function (cell) {
         if (winner !== null) {
             console.log(`${winner} won!`);
             gameOver = true;
+            //clearBoard();
             return;
         }
        
@@ -76,14 +76,32 @@ cells.forEach(function (cell) {
 }
 
 
+
 function syncBoard(key) {  // responsible for syncing the board 
-    setInterval(async function () {
+    boardSyncInterval = setInterval(async function () {
+
+        // Add synchronous checking of winner the set gameOver = true 
         const data = await (getBoard(key));
         displayBoard(data);
+        if (gameOver){
+            //clearBoard();
+            clearInterval(boardSyncInterval);
+            return;
+        }
+        
+
+    
 
     }, 1000);
 }
 
+function clearBoard() {
+    const cells = document.querySelectorAll(".cell");
+
+    cells.forEach(function (cell) {
+        cell.textContent = "";
+    });
+}
 
 
 
