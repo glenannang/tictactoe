@@ -1,0 +1,11 @@
+.board {
+    display: grid;
+    grid-template-columns: repeat(3, 200px);
+    grid-template-rows: repeat(3, 200px);
+    gap: 5px;
+}
+
+.cell {
+    font-size: 40px;
+    cursor: pointer;
+}

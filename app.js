@@ -2,6 +2,10 @@ const createButton = document.getElementById("createButton");
 const joinButton = document.getElementById("joinButton");
 const gameKeyInput = document.getElementById("gameKey");
 
+
+let playerTile = null;
+let gameKey = null;
+
 createButton.addEventListener("click", async function () {
     const key = gameKeyInput.value.trim();
 
@@ -14,23 +18,31 @@ createButton.addEventListener("click", async function () {
 
     if (tile === "X") {
         console.log("Waiting for Player O...");
-
-        waitForGameToStart(key);
+    }
+    if (tile === "X" || tile === "O") {
+        playerTile = tile;
+        gameKey = key;
     }
 });
 
 joinButton.addEventListener("click", async function () {
     const key = gameKeyInput.value;
-     waitForGameToStart(key);
-    const tile = await createOrJoinGame(key);
-
+    
     if (key === "") {
         console.log("Please enter a game key.");
         return;
     }
+
+    const tile = await createOrJoinGame(key);
+    
     if (tile === "X") {
         console.log("This room did not exist, so a new game was created");
 
+    }
+
+    if (tile === "X" || tile === "O") {
+        playerTile = tile;
+        gameKey = key;
     }
     
 });
