@@ -41,7 +41,7 @@ function getBoard(key) {
     fetch(`${BASE_URL}/board?key=${key}`)
         .then(response => response.text())
         .then(data => {
-
+            displayBoard(data);
             console.log("Board status:", data);
         })
         .catch(error => {
@@ -49,6 +49,15 @@ function getBoard(key) {
         });
 }
 
+
+function displayBoard(data) {
+    const board = data.split(":");
+    const cells = document.querySelectorAll(".cell");
+
+    cells.forEach(function (cell, index) {
+        cell.textContent = board[index];
+    });
+}
 
 
 
