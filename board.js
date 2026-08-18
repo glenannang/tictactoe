@@ -25,11 +25,21 @@ document.body.appendChild(board);
 
 // Event Listener for each cell
 const cells = document.querySelectorAll(".cell");
+
 cells.forEach(function (cell) {
 
-    cell.addEventListener("click", function () {
+    cell.addEventListener("click", async function () {
+        const boardData = await getBoard(gameKey);
+        const currentTurn = getCurrentTurn(boardData);
+
+        if (playerTile !== currentTurn) {
+            console.log("Not your turn");
+            return;
+        }
+
         const x = cell.dataset.x;
         const y = cell.dataset.y;
+
         cell.textContent = playerTile;
         console.log("Tile:", playerTile);
         console.log("Clicked:", x, y);
@@ -46,8 +56,9 @@ cells.forEach(function (cell) {
 
 function syncBoard(key) {  // responsible for syncing the board 
     setInterval(async function () {
-        const data = await (getBoard(key))
-        displayBoard(data); // Update the board every second
+        const data = await (getBoard(key));
+        displayBoard(data);
+        // Update the board every second
     }, 1000);
 }
 

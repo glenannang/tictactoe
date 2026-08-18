@@ -3,14 +3,32 @@ function game(){
     let currentPlayer = null;
     board();
 
-
-
-
 }
 
 
 
+function getCurrentTurn(boardData) { // returns an X or O
+    const board = boardData.split(":");
 
+    let xCount = 0;
+    let oCount = 0;
+
+    board.forEach(cell => {
+        if (cell === "X") {
+            xCount++;
+        }
+
+        if (cell === "O") {
+            oCount++;
+        }
+    });
+
+    if (xCount === oCount) {
+        return "X";
+    }
+
+    return "O";
+}
 
 
 

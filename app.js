@@ -3,7 +3,7 @@ const joinButton = document.getElementById("joinButton");
 const gameKeyInput = document.getElementById("gameKey");
 
 
-let playerTile = null;
+let playerTile = null; 
 let gameKey = null;
 
 createButton.addEventListener("click", async function () {
