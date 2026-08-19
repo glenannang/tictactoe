@@ -61,7 +61,6 @@ function waitForGameToStart(key) {
     const checkInterval = setInterval(async function () {
 
         const status = await checkGame(key);
-
         if (status === "true") { 
             showGameMessage("Game is starting!");
             game(); // Start the game board
@@ -73,10 +72,6 @@ function waitForGameToStart(key) {
 
 function showGameMessage(message) {
     const gameMessage = document.getElementById("message");
-
     gameMessage.textContent = message;
 
-    // setTimeout(function () {
-    //     gameMessage.textContent = "";
-    // }, 3000);
 }

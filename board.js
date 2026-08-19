@@ -5,6 +5,7 @@ function board() {
 syncBoard(gameKey); //gameKey is a global variable for now 
 
 
+//Construction of the board
 const board = document.createElement("div");
 board.id = "board";
 board.className = "board";
@@ -21,9 +22,21 @@ for (let y = 0; y < 3; y++) {
 
 document.body.appendChild(board);
 
+//construction of the exit button 
+const exitButton = document.createElement("button");
+exitButton.id = "exitButton";
+exitButton.textContent = "Exit Game";
+
+exitButton.addEventListener("click", async function () {
+    await resetGame(gameKey); 
+
+});
+
+document.body.appendChild(exitButton);
 
 
-// Event Listener for each cell
+
+//Event Listener for each cell
 const cells = document.querySelectorAll(".cell");
 
 cells.forEach(function (cell) {
@@ -78,6 +91,15 @@ cells.forEach(function (cell) {
 
 function syncBoard(key) {  // responsible for syncing the board 
         boardSyncInterval = setInterval(async function () {
+        
+        // check game room status 
+        const gameRoomStatus = await checkGame(key);
+
+        if (gameRoomStatus === "false") {
+            clearInterval(boardSyncInterval);
+            console.log("Game room no longer exists.");
+            return;
+        }
 
         // to sync the board 
         const data = await (getBoard(key));
@@ -90,13 +112,12 @@ function syncBoard(key) {  // responsible for syncing the board
             gameOver = true;
             console.log(`${winner} won!`);
             clearInterval(boardSyncInterval);
-            //boardSyncInterval = null;
             showWinnerPopup(winner);
-            
         }
         
     }, 1000);
 }
+
 
 function displayBoard(data) {
     const board = data.split(":");
