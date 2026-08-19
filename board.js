@@ -1,5 +1,6 @@
 let gameOver = false;
 let boardSyncInterval;
+
 function board() {
 
 syncBoard(gameKey); //gameKey is a global variable for now 
@@ -29,7 +30,6 @@ exitButton.textContent = "Exit Game";
 
 exitButton.addEventListener("click", async function () {
     await resetGame(gameKey); 
-
 });
 
 document.body.appendChild(exitButton);
@@ -72,15 +72,6 @@ cells.forEach(function (cell) {
         boardData = await getBoard(gameKey);
         cell.textContent = playerTile;
 
-       // console.log("Board before winner check:", boardData);
-        // const winner = checkWinner(boardData); //check if move created a winner
-        
-        // if (winner !== null) {
-        //     console.log(`${winner} won!`);
-        //     gameOver = true;
-        //     //clearBoard();
-        //     return;
-        // }
        
     });
 
@@ -98,6 +89,7 @@ function syncBoard(key) {  // responsible for syncing the board
         if (gameRoomStatus === "false") {
             clearInterval(boardSyncInterval);
             console.log("Game room no longer exists.");
+            //insert back to lobby page here later
             return;
         }
 
@@ -110,11 +102,12 @@ function syncBoard(key) {  // responsible for syncing the board
 
         if (winner !== null) {
             gameOver = true;
+            showGameMessage(`${winner} wins!`);
             console.log(`${winner} won!`);
             clearInterval(boardSyncInterval);
             showWinnerPopup(winner);
-        }
-        
+        } 
+
     }, 1000);
 }
 
@@ -126,6 +119,8 @@ function displayBoard(data) {
     cells.forEach(function (cell, index) {
         cell.textContent = board[index];
     });
+
+    showGameMessage(`${getCurrentTurn(data)} turn`);
 }
 
 

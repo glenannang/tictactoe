@@ -7,6 +7,10 @@ const gameKeyInput = document.getElementById("gameKey");
 let playerTile = null; 
 let gameKey = null; 
 
+window.addEventListener("pagehide", async function () {
+    await resetGame(gameKey);
+});
+
 createButton.addEventListener("click", async function () {
     const key = gameKeyInput.value.trim();
 
@@ -17,16 +21,15 @@ createButton.addEventListener("click", async function () {
 
     const tile = await createOrJoinGame(key);
 
-    if (tile === "O" ) {
-        console.log("Room already exists, joining instead");
-        waitForGameToStart(key);
-    }
-
     if (tile === "X" ) {
         console.log("Waiting for Player O...");
         waitForGameToStart(key);
+        playerTile = tile;
+        gameKey = key;
     }
-    if (tile === "X" || tile === "O") {
+    if (tile === "O") {
+        console.log("Game already exists. Joined the game instead.");
+        waitForGameToStart(key);
         playerTile = tile;
         gameKey = key;
     }
@@ -43,16 +46,19 @@ joinButton.addEventListener("click", async function () {
     const tile = await createOrJoinGame(key);
     
     if (tile === "X") {
-        console.log("This room did not exist, so a new game was created");//later change to deleting the game craeated and prompt to create one instead
-
-    }
-    waitForGameToStart(key);
-
-    if (tile === "X" || tile === "O") {
-        playerTile = tile;
-        gameKey = key;
+        console.log("This room does not exist");
+        await resetGame(key); //later change to deleting the game craeated and prompt to create one instead
+        console.log("deleting game room");
+        return;
     }
     
+    if (tile === "O") {
+        playerTile = tile;
+        gameKey = key;
+        console.log("Joined game as Player O");
+        waitForGameToStart(key);
+    }
+
 });
 
 
@@ -62,9 +68,10 @@ function waitForGameToStart(key) {
 
         const status = await checkGame(key);
         if (status === "true") { 
+            clearInterval(checkInterval);
             showGameMessage("Game is starting!");
             game(); // Start the game board
-            clearInterval(checkInterval);
+            
         }
 
     }, 1000);
