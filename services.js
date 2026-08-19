@@ -49,14 +49,17 @@ function getBoard(key) {
         });
 }
 
+// to reset the game
 
-function displayBoard(data) {
-    const board = data.split(":");
-    const cells = document.querySelectorAll(".cell");
-
-    cells.forEach(function (cell, index) {
-        cell.textContent = board[index];
-    });
+function resetGame(key) {
+    return fetch(`${BASE_URL}/reset?key=${key}`)
+        .then(response => response.text())
+        .then(data => {
+            console.log("Reset response:", data);
+        })
+        .catch(error => {
+            console.error("Reset error:", error);
+        });
 }
 
 

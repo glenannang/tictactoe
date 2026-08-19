@@ -60,14 +60,14 @@ cells.forEach(function (cell) {
         cell.textContent = playerTile;
 
        // console.log("Board before winner check:", boardData);
-        const winner = checkWinner(boardData); //check if move created a winner
+        // const winner = checkWinner(boardData); //check if move created a winner
         
-        if (winner !== null) {
-            console.log(`${winner} won!`);
-            gameOver = true;
-            //clearBoard();
-            return;
-        }
+        // if (winner !== null) {
+        //     console.log(`${winner} won!`);
+        //     gameOver = true;
+        //     //clearBoard();
+        //     return;
+        // }
        
     });
 
@@ -76,24 +76,37 @@ cells.forEach(function (cell) {
 }
 
 
-
 function syncBoard(key) {  // responsible for syncing the board 
-    boardSyncInterval = setInterval(async function () {
+        boardSyncInterval = setInterval(async function () {
 
-        // Add synchronous checking of winner the set gameOver = true 
+        // to sync the board 
         const data = await (getBoard(key));
         displayBoard(data);
-        if (gameOver){
-            //clearBoard();
+
+        //checking for a winner 
+        const winner = checkWinner(data);
+
+        if (winner !== null) {
+            gameOver = true;
+            console.log(`${winner} won!`);
             clearInterval(boardSyncInterval);
-            return;
+            //boardSyncInterval = null;
+            showWinnerPopup(winner);
+            
         }
         
-
-    
-
     }, 1000);
 }
+
+function displayBoard(data) {
+    const board = data.split(":");
+    const cells = document.querySelectorAll(".cell");
+
+    cells.forEach(function (cell, index) {
+        cell.textContent = board[index];
+    });
+}
+
 
 function clearBoard() {
     const cells = document.querySelectorAll(".cell");
@@ -101,7 +114,10 @@ function clearBoard() {
     cells.forEach(function (cell) {
         cell.textContent = "";
     });
+
 }
+
+
 
 
 

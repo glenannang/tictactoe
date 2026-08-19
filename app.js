@@ -1,10 +1,11 @@
+
 const createButton = document.getElementById("createButton");
 const joinButton = document.getElementById("joinButton");
 const gameKeyInput = document.getElementById("gameKey");
 
 
 let playerTile = null; 
-let gameKey = null;
+let gameKey = null; 
 
 createButton.addEventListener("click", async function () {
     const key = gameKeyInput.value.trim();
@@ -16,7 +17,12 @@ createButton.addEventListener("click", async function () {
 
     const tile = await createOrJoinGame(key);
 
-    if (tile === "X") {
+    if (tile === "O" ) {
+        console.log("Room already exists, joining instead");
+        waitForGameToStart(key);
+    }
+
+    if (tile === "X" ) {
         console.log("Waiting for Player O...");
         waitForGameToStart(key);
     }
@@ -37,7 +43,7 @@ joinButton.addEventListener("click", async function () {
     const tile = await createOrJoinGame(key);
     
     if (tile === "X") {
-        console.log("This room did not exist, so a new game was created");
+        console.log("This room did not exist, so a new game was created");//later change to deleting the game craeated and prompt to create one instead
 
     }
     waitForGameToStart(key);

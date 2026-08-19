@@ -1,7 +1,7 @@
 
 function game(){
     let currentPlayer = null;
-    board();
+    board(); //show the board 
     
 
 }
@@ -32,7 +32,7 @@ function getCurrentTurn(boardData) { // returns an X or O
 }
 
 
-function checkWinner(data){
+function checkWinner(data){ // returns X or O
 
     const winningCombinations = [
     [0, 1, 2],
