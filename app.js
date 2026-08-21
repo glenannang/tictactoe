@@ -21,19 +21,18 @@ mainPage.createButton.onClick(function () {
     mainPage.render("app");
   });
 
-  createLobbyPage.regenerateButton.onClick(function () {
-    console.log("Regenerate clicked");
-  });
-
-  createLobbyPage.createButton.onClick(function () {
-    console.log("Create Game confirmed");
-  });
 
   createLobbyPage.render("app");
 });
 
 mainPage.joinButton.onClick(function () {
-  console.log("Join clicked");
+  const joinLobbyPage = new JoinLobbyPage();
+  
+  joinLobbyPage.cancelButton.onClick(function () {
+        mainPage.render("app");
+  });
+
+  joinLobbyPage.render("app");
 });
 
 mainPage.render("app");

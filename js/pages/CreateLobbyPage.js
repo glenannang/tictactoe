@@ -89,6 +89,11 @@ class CreateLobbyPage {
     waitingMessage.textContent =
         "Waiting for another player to join...";
 
+    copyButton.onClick(async () => {
+        await navigator.clipboard.writeText(this.gameKey);
+        console.log("Copied:", this.gameKey);
+    });
+
     this.container.replaceChildren(
         this.title,
         this.codeLabel,
