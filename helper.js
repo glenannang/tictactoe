@@ -73,14 +73,17 @@ function checkDraw(data) {
 }
 
 function waitForGameToStart(key) {
-
-    const checkInterval = setInterval(async function () {
+    waitingInterval = setInterval(async function () {
 
         const status = await checkGame(key);
-        if (status === "true") { 
-            clearInterval(checkInterval);
-            game(); // Start the game 
+
+        if (status === "true") {
+            clearInterval(waitingInterval);
+            waitingInterval = null;
+
+            game();
         }
+
     }, 1000);
 }
 
