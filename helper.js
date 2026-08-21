@@ -83,3 +83,9 @@ function waitForGameToStart(key) {
         }
     }, 1000);
 }
+
+function showGameMessage(message) {
+    const gameMessage = document.getElementById("message");
+    gameMessage.textContent = message;
+}
+

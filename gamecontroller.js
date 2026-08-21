@@ -1,7 +1,8 @@
 
 function game(){
     
-    createboard(); //show the board
+    createGamePage();
+    syncBoard(gameKey);
     
 
 }

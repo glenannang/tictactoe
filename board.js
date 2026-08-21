@@ -61,7 +61,7 @@ function addBoardEventListeners() {
     });
 }
 
-function syncBoard(key) {  // responsible for syncing the board 
+function syncBoard(key) {  // responsible for syncing the game board 
         boardSyncInterval = setInterval(async function () {
         
         // check game room status 
