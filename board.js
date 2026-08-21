@@ -27,6 +27,10 @@ function addBoardEventListeners() {
     cells.forEach(function (cell) {
 
         cell.addEventListener("click", async function () {
+            //dont allow moves if game is over
+            if (gameOver) {
+                return;
+            }
             let boardData = await getBoard(gameKey);
 
             // Check if game already has a winner
@@ -61,41 +65,45 @@ function addBoardEventListeners() {
     });
 }
 
-function syncBoard(key) {  // responsible for syncing the game board 
-        boardSyncInterval = setInterval(async function () {
-        
-        // check game room status 
+function syncBoard(key) {
+    boardSyncInterval = setInterval(async function () {
+
         const gameRoomStatus = await checkGame(key);
 
         if (gameRoomStatus === "false") {
             clearInterval(boardSyncInterval);
             console.log("Game room no longer exists.");
-            //insert back to lobby page here later
             return;
         }
 
-        // to sync the board 
-        const data = await (getBoard(key));
+        const data = await getBoard(key);
         displayBoard(data);
 
-        //checking for a winner 
         const winner = checkWinner(data);
 
-        if (winner !== null) {
+        if (winner !== null && !gameOver) {
             gameOver = true;
+
+            //clearInterval(boardSyncInterval);
+
             showGameMessage(`${winner} wins!`);
             console.log(`${winner} won!`);
-            clearInterval(boardSyncInterval);
-            showWinnerPopup(winner);
-        } 
 
-        // Check for draw
-        if (checkDraw(data)) {
+            showGameOverModal(`${winner} wins!`);
+
+            return;
+        }
+
+        if (checkDraw(data) && !gameOver) {
             gameOver = true;
+
+            //clearInterval(boardSyncInterval);
+
             showGameMessage("It's a draw!");
             console.log("Game ended in a draw.");
 
-            clearInterval(boardSyncInterval);
+            showGameOverModal("It's a draw!");
+
             return;
         }
 

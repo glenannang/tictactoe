@@ -18,4 +18,5 @@ function game() {
 
     addBoardEventListeners();
     syncBoard(gameKey);
+
 }

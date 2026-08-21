@@ -1,73 +1,110 @@
-function showWinnerPopup(winner) {
+// function showWinnerPopup(winner) {
 
-    const overlay = document.createElement("div");
-    overlay.className = "winner-overlay";
+//     const overlay = document.createElement("div");
+//     overlay.className = "winner-overlay";
 
-    const popup = document.createElement("div");
-    popup.className = "winner-popup";
+//     const popup = document.createElement("div");
+//     popup.className = "winner-popup";
 
-    const winnerMessage = document.createElement("h2");
-    winnerMessage.textContent = `${winner} wins!`;
+//     const winnerMessage = document.createElement("h2");
+//     winnerMessage.textContent = `${winner} wins!`;
 
-    const rematchButton = document.createElement("button");
-    rematchButton.className = "rematch-button";
-    rematchButton.textContent = "Rematch";
+//     const rematchButton = document.createElement("button");
+//     rematchButton.className = "rematch-button";
+//     rematchButton.textContent = "Rematch";
 
-    rematchButton.addEventListener("click", async function () {
-        const response = await createOrJoinGame(gameKey); // would at least be the third request 
+//     rematchButton.addEventListener("click", async function () {
+//         const response = await createOrJoinGame(gameKey); // would at least be the third request 
 
-        if (response ==="O"){ // meaning the game is already recreated 
-            await createOrJoinGame(gameKey)// join 
-            await waitForGameToStart(gameKey);
-        } 
-        if (response === "[GAME ALREADY STARTED]"){ 
-            await resetGame(gameKey);
-            await createOrJoinGame(gameKey); // join the game again
-            await waitForGameToStart(gameKey);
-            // hide the button and show a message saying the game is reset and waiting for the other player to join 
-        }
+//         if (response ==="O"){ // meaning the game is already recreated 
+//             await createOrJoinGame(gameKey)// join 
+//             await waitForGameToStart(gameKey);
+//         } 
+//         if (response === "[GAME ALREADY STARTED]"){ 
+//             await resetGame(gameKey);
+//             await createOrJoinGame(gameKey); // join the game again
+//             await waitForGameToStart(gameKey);
+//             // hide the button and show a message saying the game is reset and waiting for the other player to join 
+//         }
 
+//     });
+
+//     popup.append(winnerMessage,rematchButton);
+//     overlay.appendChild(popup);
+
+//     document.body.appendChild(overlay);
+// }
+
+// function showDrawPopup(winner) {
+
+//     const overlay = document.createElement("div");
+//     overlay.className = "winner-overlay";
+
+//     const popup = document.createElement("div");
+//     popup.className = "winner-popup";
+
+//     const drawMessage = document.createElement("h2");
+//     drawMessage.textContent = `It's a draw!`;
+
+//     const rematchButton = document.createElement("button");
+//     rematchButton.className = "rematch-button";
+//     rematchButton.textContent = "Rematch";
+
+//     rematchButton.addEventListener("click", async function () {
+//         const response = await createOrJoinGame(gameKey); // would at least be the third request 
+
+//         if (response ==="O"){ // meaning the game is already recreated 
+//             await createOrJoinGame(gameKey)// join 
+//             await waitForGameToStart(gameKey);
+//         } 
+//         if (response === "[GAME ALREADY STARTED]"){ 
+//             await resetGame(gameKey);
+//             await createOrJoinGame(gameKey); // join the game again
+//             await waitForGameToStart(gameKey);
+//             // hide the button and show a message saying the game is reset and waiting for the other player to join 
+//         }
+
+//     });
+
+//     popup.append(winnerMessage,rematchButton);
+//     overlay.appendChild(popup);
+
+//     document.body.appendChild(overlay);
+// }
+
+
+function showGameOverModal(message) {
+    const modal = new Modal(
+        "Game Over",
+        message
+    );
+
+    const playAgainButton = new Button(
+        "play-again",
+        "Play Again"
+    );
+
+    const exitButton = new Button(
+        "modal-exit",
+        "Exit"
+    );
+
+    modal.addButton(playAgainButton);
+    modal.addButton(exitButton);
+
+    playAgainButton.onClick(() => {
+        console.log("Play Again clicked");
     });
 
-    popup.append(winnerMessage,rematchButton);
-    overlay.appendChild(popup);
+    exitButton.onClick(async () => {
+        await resetGame(gameKey);
 
-    document.body.appendChild(overlay);
-}
+        gameKey = null;
+        playerTile = null;
+        gameOver = false;
 
-function showDrawPopup(winner) {
-
-    const overlay = document.createElement("div");
-    overlay.className = "winner-overlay";
-
-    const popup = document.createElement("div");
-    popup.className = "winner-popup";
-
-    const drawMessage = document.createElement("h2");
-    drawMessage.textContent = `It's a draw!`;
-
-    const rematchButton = document.createElement("button");
-    rematchButton.className = "rematch-button";
-    rematchButton.textContent = "Rematch";
-
-    rematchButton.addEventListener("click", async function () {
-        const response = await createOrJoinGame(gameKey); // would at least be the third request 
-
-        if (response ==="O"){ // meaning the game is already recreated 
-            await createOrJoinGame(gameKey)// join 
-            await waitForGameToStart(gameKey);
-        } 
-        if (response === "[GAME ALREADY STARTED]"){ 
-            await resetGame(gameKey);
-            await createOrJoinGame(gameKey); // join the game again
-            await waitForGameToStart(gameKey);
-            // hide the button and show a message saying the game is reset and waiting for the other player to join 
-        }
-
+        mainPage.render("app");
     });
 
-    popup.append(winnerMessage,rematchButton);
-    overlay.appendChild(popup);
-
-    document.body.appendChild(overlay);
+    modal.render("gamePage");
 }
