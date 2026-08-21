@@ -89,3 +89,6 @@ function showGameMessage(message) {
     gameMessage.textContent = message;
 }
 
+function generateGameKey() {
+    return crypto.randomUUID();
+}
