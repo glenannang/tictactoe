@@ -88,7 +88,7 @@ function waitForGameToStart(key) {
 }
 
 function showGameMessage(message) {
-    const gameMessage = document.getElementById("message");
+    const gameMessage = document.getElementById("gameMessage");
     gameMessage.textContent = message;
 }
 

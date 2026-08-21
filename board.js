@@ -110,7 +110,13 @@ function displayBoard(data) {
         cell.textContent = board[index];
     });
 
-    showGameMessage(`${getCurrentTurn(data)} turn`);
+    const currentTurn = getCurrentTurn(data);
+
+    if (currentTurn === playerTile) {
+        showGameMessage("Your Turn");
+    } else {
+        showGameMessage("Opponent's Turn");
+    }
 }
 
 function clearBoard() {
