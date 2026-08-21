@@ -108,6 +108,16 @@ function syncBoard(key) {  // responsible for syncing the board
             showWinnerPopup(winner);
         } 
 
+        // Check for draw
+        if (checkDraw(data)) {
+            gameOver = true;
+            showGameMessage("It's a draw!");
+            console.log("Game ended in a draw.");
+
+            clearInterval(boardSyncInterval);
+            return;
+        }
+
     }, 1000);
 }
 
