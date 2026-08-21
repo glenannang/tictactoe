@@ -1,10 +1,7 @@
 let gameOver = false;
 let boardSyncInterval;
 
-function board() {
-
-syncBoard(gameKey); //gameKey is a global variable for now 
-
+function createboard() {
 
 //Construction of the board
 const board = document.createElement("div");
@@ -79,7 +76,6 @@ cells.forEach(function (cell) {
 
 }
 
-
 function syncBoard(key) {  // responsible for syncing the board 
         boardSyncInterval = setInterval(async function () {
         
@@ -121,7 +117,6 @@ function syncBoard(key) {  // responsible for syncing the board
     }, 1000);
 }
 
-
 function displayBoard(data) {
     const board = data.split(":");
     const cells = document.querySelectorAll(".cell");
@@ -132,7 +127,6 @@ function displayBoard(data) {
 
     showGameMessage(`${getCurrentTurn(data)} turn`);
 }
-
 
 function clearBoard() {
     const cells = document.querySelectorAll(".cell");

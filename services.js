@@ -12,7 +12,6 @@ function createOrJoinGame(key) {
         });
 }
 
-
 function checkGame(key) {
     return fetch(`${BASE_URL}/check?key=${key}`)
         .then(response => response.text())
@@ -24,7 +23,6 @@ function checkGame(key) {
             console.error("check error:", error);
         });
 }
-
 
 function move(key, tile, y, x) {
     return fetch(`${BASE_URL}/move?key=${key}&tile=${tile}&y=${y}&x=${x}`)
@@ -48,8 +46,6 @@ function getBoard(key) {
             console.error("Board error:", error);
         });
 }
-
-// to reset the game
 
 function resetGame(key) {
     return fetch(`${BASE_URL}/reset?key=${key}`)
