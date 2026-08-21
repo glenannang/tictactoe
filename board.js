@@ -68,23 +68,29 @@ function addBoardEventListeners() {
 function syncBoard(key) {
     boardSyncInterval = setInterval(async function () {
 
+        // Check if the game room still exists
         const gameRoomStatus = await checkGame(key);
 
         if (gameRoomStatus === "false") {
             clearInterval(boardSyncInterval);
+            boardSyncInterval = null;
+
             console.log("Game room no longer exists.");
             return;
         }
 
+        // Sync the board
         const data = await getBoard(key);
         displayBoard(data);
 
+        // Check for winner
         const winner = checkWinner(data);
 
         if (winner !== null && !gameOver) {
             gameOver = true;
 
-            //clearInterval(boardSyncInterval);
+            clearInterval(boardSyncInterval);
+            boardSyncInterval = null;
 
             showGameMessage(`${winner} wins!`);
             console.log(`${winner} won!`);
@@ -94,10 +100,12 @@ function syncBoard(key) {
             return;
         }
 
+        // Check for draw
         if (checkDraw(data) && !gameOver) {
             gameOver = true;
 
-            //clearInterval(boardSyncInterval);
+            clearInterval(boardSyncInterval);
+            boardSyncInterval = null;
 
             showGameMessage("It's a draw!");
             console.log("Game ended in a draw.");
