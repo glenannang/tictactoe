@@ -1,79 +1,64 @@
 let gameOver = false;
 let boardSyncInterval;
 
-function createboard() {
+function createBoard() {
+    const board = document.createElement("div");
+    board.id = "board";
+    board.className = "board";
 
-//Construction of the board
-const board = document.createElement("div");
-board.id = "board";
-board.className = "board";
+    for (let y = 0; y < 3; y++) {
+        for (let x = 0; x < 3; x++) {
+            const cell = document.createElement("button");
 
-for (let y = 0; y < 3; y++) {
-    for (let x = 0; x < 3; x++) {
-        const cell = document.createElement("button");
-        cell.className = "cell";
-        cell.dataset.x = x;
-        cell.dataset.y = y;
-        board.appendChild(cell);
+            cell.className = "cell";
+            cell.dataset.x = x;
+            cell.dataset.y = y;
+
+            board.appendChild(cell);
+        }
     }
+
+    return board;
 }
 
-document.body.appendChild(board);
+function addBoardEventListeners() {
+    const cells = document.querySelectorAll(".cell");
 
-//construction of the exit button 
-const exitButton = document.createElement("button");
-exitButton.id = "exitButton";
-exitButton.textContent = "Exit Game";
+    cells.forEach(function (cell) {
 
-exitButton.addEventListener("click", async function () {
-    await resetGame(gameKey); 
-});
+        cell.addEventListener("click", async function () {
+            let boardData = await getBoard(gameKey);
 
-document.body.appendChild(exitButton);
+            // Check if game already has a winner
+            const existingWinner = checkWinner(boardData);
 
+            if (existingWinner !== null) {
+                console.log(`${existingWinner} already won!`);
+                gameOver = true;
+                return;
+            }
 
+            // Check whose turn it is
+            const currentTurn = getCurrentTurn(boardData);
 
-//Event Listener for each cell
-const cells = document.querySelectorAll(".cell");
+            if (playerTile !== currentTurn) {
+                console.log("Not your turn");
+                return;
+            }
 
-cells.forEach(function (cell) {
+            const x = cell.dataset.x;
+            const y = cell.dataset.y;
 
-    cell.addEventListener("click", async function () {
-        let boardData = await getBoard(gameKey);
-        
-        //check if there is already an existing winner
-        const existingWinner = checkWinner(boardData);
+            console.log("Tile:", playerTile);
+            console.log("Clicked:", x, y);
 
-        if (existingWinner !== null) {
-            console.log(`${existingWinner} already won!`);
-            gameOver = true;
-            return;
-        }
-        
-        // for blocking the move if not the players turn
-        const currentTurn = getCurrentTurn(boardData);
+            await move(gameKey, playerTile, y, x);
 
-        if (playerTile !== currentTurn) {
-            console.log("Not your turn");
-            return;
-        }
+            boardData = await getBoard(gameKey);
+            cell.textContent = playerTile;
+        });
 
-        const x = cell.dataset.x;
-        const y = cell.dataset.y;
-
-        console.log("Tile:", playerTile);
-        console.log("Clicked:", x, y);
-
-        await move(gameKey, playerTile, y, x); 
-
-        boardData = await getBoard(gameKey);
-        cell.textContent = playerTile;
-
-       
     });
-
-});
-
 }
 
 function syncBoard(key) {  // responsible for syncing the board 

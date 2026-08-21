@@ -79,8 +79,7 @@ function waitForGameToStart(key) {
         const status = await checkGame(key);
         if (status === "true") { 
             clearInterval(checkInterval);
-            game(); // Start the game board
+            game(); // Start the game 
         }
-
     }, 1000);
 }
