@@ -1,5 +1,4 @@
 let rematchInProgress = false;
-let modalCheckTimer = null;
 
 
 function game() {
@@ -25,7 +24,7 @@ function game() {
 
 }
 
-async function handlePlayAgain() {
+async function handlePlayAgain(waitingModal) {
     // Prevent double click / duplicate rematch requests
     if (rematchInProgress) {
         return;
@@ -42,26 +41,40 @@ async function handlePlayAgain() {
         // CASE 1:
         // Old game still has both players.
         // This means this player is the first one trying to rematch.
-        if (response === "[GAME ALREADY STARTED]") {
+ if (response === "[GAME ALREADY STARTED]") {
 
-            console.log("First player requesting rematch.");
+    const boardData = await getBoard(gameKey);
 
-            // Destroy/reset old game
-            await resetGame(gameKey);
+    const winner = checkWinner(boardData);
+    const draw = checkDraw(boardData);
 
-            // Create the new game using the same key
-            const newTile = await createOrJoinGame(gameKey);
+    // If the current board is already finished,
+    // this is still the old game and it is safe to reset.
+    if (winner !== null || draw) {
 
-            console.log("New tile:", newTile);
+        console.log("Old game finished. Starting rematch.");
 
-            playerTile = newTile;
-            gameOver = false;
+        await resetGame(gameKey);
 
-            // Wait for the other player to join the new game
-            waitForGameToStart(gameKey);
+        const newTile = await createOrJoinGame(gameKey);
 
-            return;
-        }
+        console.log("New tile:", newTile);
+
+        playerTile = newTile;
+        gameOver = false;
+
+        waitForGameToStart(gameKey);
+
+        return;
+    }
+
+        // If the board is not finished, a new match
+        // has already started with another player.
+        console.log("Another player already joined the game.");
+        waitingModal.close();
+        showGameAlreadyStartedModal();
+    return;
+    }
 
 
         // CASE 2:
@@ -111,22 +124,3 @@ async function handlePlayAgain() {
     }
 }
 
-function watchGameOverRoom() {
-
-    async function check() {
-        const status = await checkGame(gameKey);
-
-        if (status === "false") {
-            modalCheckTimer = null;
-
-            console.log("Opponent exited.");
-            showGameMessage("Your opponent left the game.");
-
-            return;
-        }
-
-        modalCheckTimer = setTimeout(check, 1000);
-    }
-
-    check();
-}

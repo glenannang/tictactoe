@@ -90,10 +90,6 @@ function addBoardEventListeners() {
     });
 }
 
-
-
-
-
 function syncBoard(key) {
 
     async function sync() {
@@ -105,7 +101,8 @@ function syncBoard(key) {
             clearTimeout(boardSyncInterval);
             boardSyncInterval = null;
 
-            console.log("Game room no longer exists.");
+            console.log("Opponent exited.");
+            showOpponentLeftModal();
             return;
         }
 
