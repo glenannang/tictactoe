@@ -3,7 +3,7 @@ let playerTile = null;
 let gameKey = null; 
 let waitingInterval = null;
 let moveInProgress = false;
-//createMainPage(); // Show the main page when the app loads
+
 
 const mainPage = new MainPage();
 

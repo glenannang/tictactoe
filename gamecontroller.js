@@ -24,7 +24,7 @@ function game() {
 
 }
 
-async function handlePlayAgain(waitingModal) {
+async function handlePlayAgain() {
     // Prevent double click / duplicate rematch requests
     if (rematchInProgress) {
         return;
@@ -38,76 +38,47 @@ async function handlePlayAgain(waitingModal) {
         console.log("Play Again response:", response);
 
 
-        // CASE 1:
-        // Old game still has both players.
-        // This means this player is the first one trying to rematch.
- if (response === "[GAME ALREADY STARTED]") {
+      
+        //CASE 1:
+        if (response === "[GAME ALREADY STARTED]") {
+            const currentBoard = await getBoard(gameKey);
 
-    const boardData = await getBoard(gameKey);
+            if (currentBoard === finishedBoard) { // Same old finished game
+                await resetGame(gameKey);
 
-    const winner = checkWinner(boardData);
-    const draw = checkDraw(boardData);
+                playerTile = await createOrJoinGame(gameKey);
+                gameOver = false;
+                showWaitingForOpponentModal();
+                waitForGameToStart(gameKey);
+                return;
+            }
 
-    // If the current board is already finished,
-    // this is still the old game and it is safe to reset.
-    if (winner !== null || draw) {
-
-        console.log("Old game finished. Starting rematch.");
-
-        await resetGame(gameKey);
-
-        const newTile = await createOrJoinGame(gameKey);
-
-        console.log("New tile:", newTile);
-
-        playerTile = newTile;
-        gameOver = false;
-
-        waitForGameToStart(gameKey);
-
-        return;
-    }
-
-        // If the board is not finished, a new match
-        // has already started with another player.
-        console.log("Another player already joined the game.");
-        waitingModal.close();
-        showGameAlreadyStartedModal();
-    return;
-    }
-
-
-        // CASE 2:
-        // The other player already created the new game.
-        // This player joined as Player O.
-        if (response === "O") {
-
-            console.log("Joined rematch as Player O.");
-
-            playerTile = "O";
-            gameOver = false;
-
-            game();
-
+            // Board changed 
+            showGameAlreadyStartedModal();
             return;
         }
 
 
-        // CASE 3:
-        // No existing game was found.
-        // This player created a new room as Player X.
-        // The previous opponent may have left.
+        // CASE 2: the game was reset already by the other player
+        if (response === "O") { 
+            console.log("Joined rematch as Player O.");
+            playerTile = "O";
+            gameOver = false;
+            game();
+            return;
+        }
+
+
+        // CASE 3: No existing game was found.
+        //  The other player either pressed exit on the game over modal or the waiting for another player modal
         if (response === "X") {
 
             console.log("Created new room as Player X.");
 
             playerTile = "X";
             gameOver = false;
-
-            showGameMessage(
-                "Your opponent left. Waiting for a new player..."
-            );
-
+            finishedBoard = null;
+            showOpponentLeftRematchModal();
             waitForGameToStart(gameKey);
 
             return;

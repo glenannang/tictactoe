@@ -21,19 +21,21 @@ function showGameOverModal(message) {
     playAgainButton.onClick(async () => {
         
         // Close Game Over modal
-        modal.close();
-
-        // Show waiting modal
-        const waitingModal = showWaitingForOpponentModal();
-        await handlePlayAgain(waitingModal);
+        modal.close();       
+        await handlePlayAgain();
     });
 
     exitButton.onClick(async () => {
+        const currentBoard = await getBoard(gameKey);
+         if (currentBoard === finishedBoard) {
+        // finished match is still there
         await resetGame(gameKey);
+        }
 
         gameKey = null;
         playerTile = null;
         gameOver = false;
+        finishedBoard = null;
 
         mainPage.render("app");
     });
@@ -46,6 +48,30 @@ function showOpponentLeftModal() {
     const modal = new Modal(
         "Opponent Left",
         "Your opponent left the game."
+    );
+
+    const exitButton = new Button(
+        "opponent-left-exit",
+        "Exit"
+    );
+
+    modal.addButton(exitButton);
+
+    exitButton.onClick(() => {
+        gameKey = null;
+        playerTile = null;
+        gameOver = false;
+
+        mainPage.render("app");
+    });
+
+    modal.render("gamePage");
+}
+
+function showOpponentLeftRematchModal() {
+    const modal = new Modal(
+        "Opponent Left",
+        "Your opponent left. Waiting for a new player..."
     );
 
     const exitButton = new Button(
@@ -100,8 +126,8 @@ function showWaitingForOpponentModal() {
 
 function showGameAlreadyStartedModal() {
     const modal = new Modal(
-        "Game Already Started",
-        "Another player already joined the game."
+        "Oops... Too Late!",
+        "Another explorer has already entered the chamber and begun the challenge."
     );
 
     const exitButton = new Button(

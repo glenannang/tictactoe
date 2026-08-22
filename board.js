@@ -1,6 +1,6 @@
 let gameOver = false;
 let boardSyncInterval;
-
+let finishedBoard = null;
 function createBoard() {
     const board = document.createElement("div");
     board.id = "board";
@@ -128,7 +128,7 @@ function syncBoard(key) {
 
         if (winner !== null && !gameOver) {
             gameOver = true;
-
+            finishedBoard = data;
             clearTimeout(boardSyncInterval);
             boardSyncInterval = null;
 
@@ -143,11 +143,10 @@ function syncBoard(key) {
         // Check for draw
         if (checkDraw(data) && !gameOver) {
             gameOver = true;
-
+            finishedBoard = data;
             clearTimeout(boardSyncInterval);
             boardSyncInterval = null;
 
-            showGameMessage("It's a draw!");
             console.log("Game ended in a draw.");
 
             showGameOverModal("It's a draw!");

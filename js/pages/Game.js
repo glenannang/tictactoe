@@ -23,12 +23,10 @@ class GamePage {
     setAttributes() {
         this.container.id = "gamePage";
 
-        this.greeting.textContent = "Hello!";
+        this.greeting.textContent = "Hello, Explorer!";
 
         this.playerMessage.id = "playerMessage";
-        this.playerMessage.textContent =
-            `You are playing as ${playerTile}`;
-
+        this.playerMessage.textContent = `You are playing as ${playerTile}`;
         this.turnMessage.id = "gameMessage";
 
         //this.board.id = "board";

@@ -114,5 +114,5 @@ function showGameMessage(message) {
 }
 
 function generateGameKey() {
-    return crypto.randomUUID();
+    return crypto.randomUUID().slice(0, 6).toUpperCase();
 }
