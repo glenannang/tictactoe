@@ -1,3 +1,123 @@
+html,
+body {
+    width: 100%;
+    min-height: 100%;
+    margin: 0;
+    padding: 0;
+}
+
+#app,
+#root {
+    width: 100%;
+    min-height: 100vh;
+    min-height: 100dvh;
+    margin: 0;
+    padding: 0;
+}
+
+#mainPage {
+    position: relative;
+    isolation: isolate;
+    box-sizing: border-box;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    width: 100%;
+    max-width: none;
+    gap: clamp(12px, 2vh, 18px);
+    min-height: 100vh;
+    min-height: 100dvh;
+    margin: 0;
+    padding: clamp(24px, 7vh, 72px) 24px 32px;
+    overflow-x: hidden;
+    background: #24150e;
+    color: #24150e;
+    font-family: Georgia, "Times New Roman", serif;
+}
+
+#mainPage * {
+    box-sizing: border-box;
+}
+
+#mainPage .main-background-video {
+    position: absolute;
+    inset: 0;
+    z-index: -2;
+    display: block;
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    object-position: center;
+}
+
+#mainPage::after {
+    position: absolute;
+    inset: 0;
+    z-index: -1;
+    background: rgba(26, 13, 7, 0.28);
+    content: "";
+}
+
+#mainPage .main-title-image {
+    display: block;
+    width: min(900px, 90vw);
+    height: auto;
+    object-fit: contain;
+}
+
+#mainPage .main-menu-actions {
+    display: flex;
+    flex-direction: column;
+    gap: 18px;
+    width: min(390px, 88vw);
+    min-height: calc((64px * 3) + (18px * 2));
+}
+
+#mainPage .game-button {
+    width: min(390px, 88vw);
+    min-height: 64px;
+    padding: 14px 28px;
+    border: 3px solid #3f2414;
+    border-radius: 12px;
+    box-shadow: 0 6px 0 #2a160e, 0 10px 18px rgba(0, 0, 0, 0.45), inset 0 2px 0 rgba(255, 255, 255, 0.4);
+    color: #25160e;
+    cursor: pointer;
+    font: 700 1.35rem Georgia, "Times New Roman", serif;
+    letter-spacing: 0.03em;
+    text-align: center;
+    text-shadow: 0 1px 0 rgba(255, 255, 255, 0.35);
+    transition: transform 120ms ease, filter 120ms ease, box-shadow 120ms ease;
+}
+
+#mainPage .create-button {
+    background: linear-gradient(#f6cf72, #c8872e);
+}
+
+#mainPage .join-button {
+    background: linear-gradient(#82ded1, #258f8c);
+}
+
+#mainPage .game-button:hover {
+    filter: brightness(1.1);
+    transform: translateY(-2px);
+}
+
+#mainPage .game-button:active {
+    box-shadow: 0 2px 0 #2a160e, 0 5px 10px rgba(0, 0, 0, 0.4), inset 0 2px 5px rgba(0, 0, 0, 0.2);
+    transform: translateY(4px);
+}
+
+#mainPage .game-button:focus-visible {
+    outline: 4px solid #fff0b5;
+    outline-offset: 4px;
+}
+
+#mainPage .game-button:disabled {
+    cursor: not-allowed;
+    filter: grayscale(0.75);
+    opacity: 0.6;
+}
+
 .board {
     display: grid;
     grid-template-columns: repeat(3, 200px);
@@ -14,4 +134,79 @@
     display: block;
     margin-top: 12px;
     cursor: pointer;
+}
+
+/* Tablets and smaller screens */
+@media (max-width: 768px) {
+    #mainPage {
+        gap: 14px;
+        padding: 5vh 18px 24px;
+    }
+
+    #mainPage .main-title-image {
+        width: min(600px, 94vw);
+    }
+
+    #mainPage .main-menu-actions {
+        gap: 14px;
+        width: min(360px, 90vw);
+        min-height: calc((60px * 3) + (14px * 2));
+    }
+
+    #mainPage .game-button {
+        width: 100%;
+        min-height: 60px;
+        padding: 13px 22px;
+        font-size: 1.2rem;
+    }
+}
+
+/* Smartphones */
+@media (max-width: 480px) {
+    #mainPage {
+        gap: 12px;
+        padding: 4vh 12px 20px;
+    }
+
+    #mainPage .main-title-image {
+        width: min(440px, 98vw);
+    }
+
+    #mainPage .main-menu-actions {
+        gap: 12px;
+        width: min(330px, 92vw);
+        min-height: calc((56px * 3) + (12px * 2));
+    }
+
+    #mainPage .game-button {
+        width: 100%;
+        min-height: 58px;
+        padding: 12px 18px;
+        font-size: 1.05rem;
+    }
+}
+
+/* Very small portrait screens */
+@media (max-width: 360px) {
+    #mainPage {
+        gap: 9px;
+        padding: 3vh 8px 14px;
+    }
+
+    #mainPage .main-title-image {
+        width: 100%;
+    }
+
+    #mainPage .main-menu-actions {
+        gap: 9px;
+        width: 94vw;
+        min-height: calc((52px * 3) + (9px * 2));
+    }
+
+    #mainPage .game-button {
+        width: 100%;
+        min-height: 54px;
+        padding: 10px 14px;
+        font-size: 0.95rem;
+    }
 }
