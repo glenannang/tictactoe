@@ -27,52 +27,82 @@ function addBoardEventListeners() {
     cells.forEach(function (cell) {
 
         cell.addEventListener("click", async function () {
-            //dont allow moves if game is over
-            if (gameOver) {
-                return;
-            }
-            let boardData = await getBoard(gameKey);
 
-            // Check if game already has a winner
-            const existingWinner = checkWinner(boardData);
-
-            if (existingWinner !== null) {
-                console.log(`${existingWinner} already won!`);
-                gameOver = true;
+            // Block clicks if game is over
+            // or another move is still being processed
+            if (gameOver || moveInProgress) {
                 return;
             }
 
-            // Check whose turn it is
-            const currentTurn = getCurrentTurn(boardData);
+            moveInProgress = true;
 
-            if (playerTile !== currentTurn) {
-                console.log("Not your turn");
-                return;
+            try {
+                let boardData = await getBoard(gameKey);
+
+                // Check if game already has a winner
+                const existingWinner = checkWinner(boardData);
+
+                if (existingWinner !== null) {
+                    gameOver = true;
+                    return;
+                }
+
+                // Check if it is this player's turn
+                const currentTurn = getCurrentTurn(boardData);
+
+                if (playerTile !== currentTurn) {
+                    console.log("Not your turn");
+                    return;
+                }
+
+                // Get clicked cell coordinates
+                const x = cell.dataset.x;
+                const y = cell.dataset.y;
+
+                // Check if the cell is already occupied
+                const board = boardData.split(":");
+                const index = Number(y) * 3 + Number(x);
+
+                if (board[index] !== "") {
+                    console.log("Cell is already occupied");
+                    return;
+                }
+
+                // Show the move immediately
+                // so the UI doesn't feel slow
+                //cell.textContent = playerTile;
+
+                // Send move to server
+                await move(gameKey, playerTile, y, x);
+
+                // Get the actual board from the server
+                boardData = await getBoard(gameKey);
+
+                // Make sure UI matches the server
+                displayBoard(boardData);
+
+            } finally {
+                // Unlock after request finishes,
+                // even if something goes wrong
+                moveInProgress = false;
             }
-
-            const x = cell.dataset.x;
-            const y = cell.dataset.y;
-
-            console.log("Tile:", playerTile);
-            console.log("Clicked:", x, y);
-
-            await move(gameKey, playerTile, y, x);
-
-            boardData = await getBoard(gameKey);
-            cell.textContent = playerTile;
         });
-
     });
 }
 
+
+
+
+
 function syncBoard(key) {
-    boardSyncInterval = setInterval(async function () {
+
+    async function sync() {
 
         // Check if the game room still exists
         const gameRoomStatus = await checkGame(key);
 
         if (gameRoomStatus === "false") {
-            clearInterval(boardSyncInterval);
+            clearTimeout(boardSyncInterval);
             boardSyncInterval = null;
 
             console.log("Game room no longer exists.");
@@ -81,15 +111,28 @@ function syncBoard(key) {
 
         // Sync the board
         const data = await getBoard(key);
+
+        if (data === "[GAME NOT YET STARTED]") {
+            boardSyncInterval = setTimeout(sync, 1000);
+            return;
+        }
+
+        console.log("Board received:", data);
+        console.log("Current turn:", getCurrentTurn(data));
+        console.log("My tile:", playerTile);
+
         displayBoard(data);
 
         // Check for winner
         const winner = checkWinner(data);
 
+        console.log("winner:", winner);
+        console.log("gameOver:", gameOver);
+
         if (winner !== null && !gameOver) {
             gameOver = true;
 
-            clearInterval(boardSyncInterval);
+            clearTimeout(boardSyncInterval);
             boardSyncInterval = null;
 
             showGameMessage(`${winner} wins!`);
@@ -104,7 +147,7 @@ function syncBoard(key) {
         if (checkDraw(data) && !gameOver) {
             gameOver = true;
 
-            clearInterval(boardSyncInterval);
+            clearTimeout(boardSyncInterval);
             boardSyncInterval = null;
 
             showGameMessage("It's a draw!");
@@ -115,7 +158,12 @@ function syncBoard(key) {
             return;
         }
 
-    }, 1000);
+        // Schedule the NEXT sync only after this one is finished
+        boardSyncInterval = setTimeout(sync, 1000);
+    }
+
+    // Start the first sync
+    sync();
 }
 
 function displayBoard(data) {

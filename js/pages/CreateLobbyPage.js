@@ -39,9 +39,6 @@ class CreateLobbyPage {
 
     this.codeLabel.textContent = "Game Code";
     this.codeText.textContent = this.gameKey;
-
-    // placeholder muna
-    this.codeText.textContent = "ABC123";
     this.codeText.id = "gameCode";
   }
 

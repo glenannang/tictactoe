@@ -92,8 +92,8 @@ function showGameOverModal(message) {
     modal.addButton(playAgainButton);
     modal.addButton(exitButton);
 
-    playAgainButton.onClick(() => {
-        console.log("Play Again clicked");
+    playAgainButton.onClick(async () => {
+    await handlePlayAgain();
     });
 
     exitButton.onClick(async () => {
