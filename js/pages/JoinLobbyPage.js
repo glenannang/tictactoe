@@ -1,106 +1,123 @@
 class JoinLobbyPage {
-    constructor() {
-        this.initializeElements();
-        this.setAttributes();
-        this.appendElements();
-        this.addEventListeners();
-    }
+  constructor() {
+    this.initializeElements();
+    this.setAttributes();
+    this.appendElements();
+    this.addEventListeners();
+  }
 
-    initializeElements() {
-        this.container = document.createElement("main");
+  initializeElements() {
+    this.container = document.createElement("main");
 
-        this.title = document.createElement("h1");
+    // Real brown panel container
+    this.content = document.createElement("div");
 
-        this.gameKeyLabel = document.createElement("p");
+    this.title = document.createElement("h1");
 
-        this.gameKeyInput = document.createElement("input");
+    this.gameKeyLabel = document.createElement("p");
 
-        this.joinButton = new Button(
-            "confirm-join-game",
-            "Join Game"
-        );
+    this.gameKeyInput = document.createElement("input");
 
-        this.cancelButton = new Button(
-            "cancel-join-game",
-            "Cancel"
-        );
+    this.joinButton = new Button(
+      "confirm-join-game",
+      "Join Game"
+    );
 
-        this.message = document.createElement("p");
-    }
+    this.cancelButton = new Button(
+      "cancel-join-game",
+      "Cancel"
+    );
 
-    setAttributes() {
-        this.container.id = "joinLobbyPage";
+    this.message = document.createElement("p");
+  }
 
-        this.title.textContent = "Join Game";
+  setAttributes() {
+    this.container.id = "joinLobbyPage";
 
-        this.gameKeyLabel.textContent = "Enter Game Code";
+    this.content.className = "join-lobby-content";
 
-        this.gameKeyInput.type = "text";
-        this.gameKeyInput.id = "gameKeyInput";
-        this.gameKeyInput.placeholder = "Paste game code here";
+    this.title.textContent = "Join Game";
 
-        this.message.id = "joinMessage";
-    }
+    this.gameKeyLabel.textContent = "Enter Game Code";
 
-    appendElements() {
-        this.container.append(
-            this.title,
-            this.gameKeyLabel,
-            this.gameKeyInput,
-            this.joinButton.getElement(),
-            this.cancelButton.getElement(),
-            this.message
-        );
-    }
+    this.gameKeyInput.type = "text";
+    this.gameKeyInput.id = "gameKeyInput";
+    this.gameKeyInput.placeholder = "Paste game code here";
 
-    getGameKey() {
-        return this.gameKeyInput.value.trim();
-    }
+    this.message.id = "joinMessage";
+  }
 
-    showMessage(message) {
-        this.message.textContent = message;
-    }
+  appendElements() {
+    this.content.append(
+      this.title,
+      this.gameKeyInput,
+      this.gameKeyLabel,
+      this.joinButton.getElement(),
+      this.cancelButton.getElement(),
+      this.message
+    );
 
-    addEventListeners() {
+    this.container.append(this.content);
+  }
+
+  getGameKey() {
+    return this.gameKeyInput.value.trim();
+  }
+
+  showMessage(message) {
+    this.message.textContent = message;
+  }
+
+  addEventListeners() {
     this.joinButton.onClick(async () => {
-        const key = this.getGameKey();
+      const key = this.getGameKey();
 
-        if (key === "") {
-            this.showMessage("Please enter a game code.");
-            return;
-        }
+      if (key === "") {
+        this.showMessage("Please enter a game code.");
+        return;
+      }
 
-        const tile = await createOrJoinGame(key);
+      const tile = await createOrJoinGame(key);
 
-        console.log("Server returned:", tile);
+      console.log("Server returned:", tile);
 
-        //room did not exist previously 
-        if (tile === "X") {
-            await resetGame(key);
+      // Room did not exist previously
+      if (tile === "X") {
+        await resetGame(key);
 
-            this.showMessage("Game does not exist.");
-            return;
-        }
-        
-        // existing room successfully joined
-         if (tile === "O") {
-            gameKey = key;
-            playerTile = tile;
+        this.showMessage("Game does not exist.");
+        return;
+      }
 
-            console.log("Joined game successfully");
-            this.showMessage("Joined game successfully. Waiting for the game to start...");
-            waitForGameToStart(key);
-        }
+      // Game already has two players
+      if (tile === "[GAME ALREADY STARTED]") {
+        this.showMessage( "This game is already in progress. Please enter a different game code.");
+        return;
+      }
+
+      // Existing room successfully joined
+      if (tile === "O") {
+        gameKey = key;
+        playerTile = tile;
+
+        console.log("Joined game successfully");
+
+        this.showMessage(
+          "Joined game successfully. Waiting for the game to start..."
+        );
+
+        waitForGameToStart(key);
+      }
     });
-}
+  }
 
-    render(target) {
-        const parent = document.getElementById(target);
+  render(target) {
+    const parent = document.getElementById(target);
 
-        if (parent) {
-            parent.replaceChildren(this.container);
-        } else {
-            console.error("Target element not found");
-        }
+    if (parent) {
+      parent.replaceChildren(this.container);
+    } else {
+      console.error("Target element not found");
     }
+  }
 }

@@ -4,6 +4,11 @@ let gameKey = null;
 let waitingInterval = null;
 let moveInProgress = false;
 
+//window listener
+// app.js
+window.addEventListener("pagehide", function () {
+    resetGame(gameKey, true);
+});
 
 const mainPage = new MainPage();
 

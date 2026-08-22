@@ -47,8 +47,10 @@ function getBoard(key) {
         });
 }
 
-function resetGame(key) {
-    return fetch(`${BASE_URL}/reset?key=${key}`)
+function resetGame(key, keepalive = false) {
+    return fetch(`${BASE_URL}/reset?key=${key}`, {
+        keepalive: keepalive
+    })
         .then(response => response.text())
         .then(data => {
             console.log("Reset response:", data);

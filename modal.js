@@ -27,7 +27,7 @@ function showGameOverModal(message) {
 
     exitButton.onClick(async () => {
         const currentBoard = await getBoard(gameKey);
-         if (currentBoard === finishedBoard) {
+        if (currentBoard === finishedBoard) {
         // finished match is still there
         await resetGame(gameKey);
         }

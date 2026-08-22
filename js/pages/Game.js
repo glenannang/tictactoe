@@ -37,8 +37,8 @@ class GamePage {
         this.container.append(
             this.greeting,
             this.playerMessage,
-            this.turnMessage,
             this.board,
+            this.turnMessage,
             this.exitButton.getElement()
         );
     }
