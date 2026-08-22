@@ -1,0 +1,408 @@
+/* ========================================
+   GAME PAGE
+======================================== */
+
+#gamePage {
+    position: relative;
+
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+
+    gap: 10px;
+
+    width: 100%;
+    min-height: 100vh;
+    min-height: 100dvh;
+
+    margin: 0;
+    padding: 30px 20px;
+
+    overflow: auto;
+
+    background:
+        #3a2114
+        url("assets/images/board.png")
+        center / cover no-repeat;
+
+    color: #f6d58d;
+
+    font-family: Georgia, "Times New Roman", serif;
+
+    text-align: center;
+}
+
+#gamePage,
+#gamePage * {
+    box-sizing: border-box;
+}
+
+
+/* ========================================
+   GREETING
+======================================== */
+
+#gamePage > h1 {
+    margin: 0 0 4px;
+
+    color: #ffe0a0;
+
+    font-size: clamp(2rem, 3.5vw, 3.4rem);
+    line-height: 1.1;
+
+    text-shadow:
+        0 3px 0 #4d260f,
+        0 5px 12px rgba(0, 0, 0, 0.65);
+}
+
+
+/* ========================================
+   PLAYER MESSAGE
+======================================== */
+
+#playerMessage {
+    margin: 0;
+
+    color: #f3ce82;
+
+    font-size: clamp(1rem, 1.6vw, 1.3rem);
+    font-weight: 700;
+
+    text-shadow:
+        0 2px 0 #4b250f;
+}
+
+
+/* ========================================
+   TURN MESSAGE
+======================================== */
+
+#gameMessage {
+    margin: 4px 0 8px;
+
+    color: #ffe09a;
+
+    font-size: clamp(1.2rem, 2vw, 1.6rem);
+    font-weight: 700;
+
+    letter-spacing: 0.06em;
+
+    text-transform: uppercase;
+
+    text-shadow:
+        0 2px 0 #4b250f,
+        0 3px 8px rgba(0, 0, 0, 0.45);
+}
+
+
+/* ========================================
+   BOARD
+======================================== */
+
+#board {
+    display: grid;
+
+    grid-template-columns: repeat(3, 110px);
+    grid-template-rows: repeat(3, 110px);
+
+    gap: 7px;
+
+    margin: 4px 0 12px;
+    padding: 14px;
+
+    border: 4px solid #a86a28;
+    border-radius: 12px;
+
+    background:
+        linear-gradient(
+            rgba(67, 37, 19, 0.92),
+            rgba(40, 22, 12, 0.94)
+        );
+
+    box-shadow:
+        0 12px 25px rgba(0, 0, 0, 0.55),
+        inset 0 0 24px rgba(255, 204, 105, 0.12);
+}
+
+
+/* ========================================
+   BOARD CELLS
+======================================== */
+
+#board > .cell {
+    display: flex;
+
+    align-items: center;
+    justify-content: center;
+
+    width: 110px;
+    height: 110px;
+
+    margin: 0;
+    padding: 0;
+
+    border: 3px solid #875122;
+    border-radius: 5px;
+
+    background:
+        linear-gradient(
+            #79502d,
+            #50301c
+        );
+
+    box-shadow:
+        inset 0 3px 4px rgba(255, 211, 128, 0.12),
+        inset 0 -4px 7px rgba(0, 0, 0, 0.35);
+
+    color: #ffdb89;
+
+    font-family: Georgia, "Times New Roman", serif;
+
+    font-size: 4rem;
+    font-weight: 700;
+
+    line-height: 1;
+
+    cursor: pointer;
+
+    text-shadow:
+        0 3px 0 #573016,
+        0 5px 8px rgba(0, 0, 0, 0.5);
+
+    transition:
+        transform 120ms ease,
+        filter 120ms ease,
+        border-color 120ms ease,
+        box-shadow 120ms ease;
+}
+
+
+/* ========================================
+   CELL HOVER
+======================================== */
+
+#board > .cell:hover {
+    filter: brightness(1.15);
+
+    border-color: #c98532;
+
+    box-shadow:
+        inset 0 3px 4px rgba(255, 211, 128, 0.16),
+        inset 0 -4px 7px rgba(0, 0, 0, 0.3),
+        0 0 10px rgba(222, 156, 58, 0.28);
+}
+
+#board > .cell:active {
+    transform: scale(0.96);
+}
+
+#board > .cell:focus-visible {
+    outline: 3px solid #ffe09a;
+    outline-offset: 2px;
+}
+
+
+/* ========================================
+   EXIT BUTTON
+======================================== */
+
+#exit-game {
+    width: 180px;
+    min-height: 50px;
+
+    margin: 0;
+    padding: 11px 20px;
+
+    border: 3px solid #3f2414;
+    border-radius: 10px;
+
+    background:
+        linear-gradient(
+            #71331d,
+            #3f1d14
+        );
+
+    box-shadow:
+        0 5px 0 #24130b,
+        0 9px 16px rgba(0, 0, 0, 0.42),
+        inset 0 2px 0 rgba(255, 244, 194, 0.18);
+
+    color: #f2d5a0;
+
+    cursor: pointer;
+
+    font-family: Georgia, "Times New Roman", serif;
+
+    font-size: 1.05rem;
+    font-weight: 700;
+
+    text-align: center;
+
+    transition:
+        transform 120ms ease,
+        filter 120ms ease,
+        box-shadow 120ms ease;
+}
+
+#exit-game:hover {
+    filter: brightness(1.12);
+
+    transform: translateY(-2px);
+}
+
+#exit-game:active {
+    box-shadow:
+        0 2px 0 #24130b,
+        0 5px 9px rgba(0, 0, 0, 0.4);
+
+    transform: translateY(3px);
+}
+
+#exit-game:focus-visible {
+    outline: 4px solid #ffe8a7;
+    outline-offset: 4px;
+}
+
+
+/* ========================================
+   TABLET
+======================================== */
+
+@media (max-width: 768px) {
+
+    #gamePage {
+        gap: 9px;
+
+        padding: 26px 18px;
+    }
+
+    #gamePage > h1 {
+        font-size: clamp(2rem, 6vw, 2.8rem);
+    }
+
+    #board {
+        grid-template-columns: repeat(3, 95px);
+        grid-template-rows: repeat(3, 95px);
+
+        gap: 6px;
+
+        padding: 12px;
+    }
+
+    #board > .cell {
+        width: 95px;
+        height: 95px;
+
+        font-size: 3.5rem;
+    }
+}
+
+
+/* ========================================
+   MOBILE
+======================================== */
+
+@media (max-width: 480px) {
+
+    #gamePage {
+        justify-content: center;
+
+        gap: 8px;
+
+        padding: 22px 14px;
+    }
+
+    #gamePage > h1 {
+        margin-bottom: 2px;
+
+        font-size: clamp(1.8rem, 8vw, 2.4rem);
+    }
+
+    #playerMessage {
+        font-size: 1rem;
+    }
+
+    #gameMessage {
+        margin: 2px 0 6px;
+
+        font-size: 1.15rem;
+    }
+
+    #board {
+        grid-template-columns:
+            repeat(3, min(25vw, 82px));
+
+        grid-template-rows:
+            repeat(3, min(25vw, 82px));
+
+        gap: 5px;
+
+        padding: 10px;
+    }
+
+    #board > .cell {
+        width: min(25vw, 82px);
+        height: min(25vw, 82px);
+
+        font-size: clamp(2.5rem, 13vw, 3.2rem);
+    }
+
+    #exit-game {
+        width: 160px;
+        min-height: 46px;
+
+        margin-top: 2px;
+
+        font-size: 1rem;
+    }
+}
+
+
+/* ========================================
+   VERY SMALL MOBILE
+======================================== */
+
+@media (max-width: 360px) {
+
+    #gamePage {
+        gap: 6px;
+
+        padding: 18px 10px;
+    }
+
+    #gamePage > h1 {
+        font-size: 1.7rem;
+    }
+
+    #playerMessage {
+        font-size: 0.9rem;
+    }
+
+    #gameMessage {
+        font-size: 1rem;
+    }
+
+    #board {
+        grid-template-columns: repeat(3, 76px);
+        grid-template-rows: repeat(3, 76px);
+
+        gap: 4px;
+
+        padding: 9px;
+    }
+
+    #board > .cell {
+        width: 76px;
+        height: 76px;
+
+        font-size: 2.7rem;
+    }
+
+    #exit-game {
+        width: 145px;
+        min-height: 44px;
+
+        font-size: 0.95rem;
+    }
+}

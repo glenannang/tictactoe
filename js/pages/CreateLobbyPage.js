@@ -1,6 +1,7 @@
 class CreateLobbyPage {
   constructor() {
     this.gameCreated = false;
+
     this.initializeElements();
     this.setAttributes();
     this.appendElements();
@@ -10,8 +11,11 @@ class CreateLobbyPage {
   initializeElements() {
     this.container = document.createElement("main");
 
+    // Real inner container for the brown panel
+    this.content = document.createElement("div");
+
     this.title = document.createElement("h1");
-    
+
     this.gameKey = generateGameKey();
 
     this.codeLabel = document.createElement("p");
@@ -38,81 +42,100 @@ class CreateLobbyPage {
 
   setAttributes() {
     this.container.id = "createLobbyPage";
+
+    // Brown panel container
+    this.content.className = "create-lobby-content";
+
     this.title.className = "create-lobby-title";
     this.title.textContent = "Create Your Game";
 
     this.codeLabel.className = "game-code-label";
     this.codeLabel.textContent = "Game Code";
+
     this.codeText.className = "game-code-display";
     this.codeText.textContent = this.gameKey;
     this.codeText.id = "gameCode";
   }
 
   appendElements() {
-    this.container.append(
+    // Put all lobby elements inside the real brown panel
+    this.content.append(
       this.title,
-      this.codeLabel,
       this.codeText,
       this.regenerateButton.getElement(),
+      this.codeLabel,
       this.createButton.getElement(),
       this.cancelButton.getElement()
     );
+
+    this.container.append(this.content);
   }
 
   addEventListeners() {
-        this.regenerateButton.onClick(() => {
-            this.gameKey = generateGameKey();
-            this.codeText.textContent = this.gameKey;
-        });
+    this.regenerateButton.onClick(() => {
+      this.gameKey = generateGameKey();
+      this.codeText.textContent = this.gameKey;
+    });
 
-        this.createButton.onClick(async () => {
-          console.log("Creating game with:", this.gameKey);
-          const tile = await createOrJoinGame(this.gameKey);
-          console.log("Server returned:", tile);
-          if (tile === "X") {
-            gameKey = this.gameKey;
-            playerTile = tile;
-            console.log("Game created successfully");
-            this.gameCreated = true;
-            this.showWaitingState();
-            waitForGameToStart(gameKey);
-          }
-      });
+    this.createButton.onClick(async () => {
+      console.log("Creating game with:", this.gameKey);
+
+      const tile = await createOrJoinGame(this.gameKey);
+
+      console.log("Server returned:", tile);
+
+      if (tile === "X") {
+        gameKey = this.gameKey;
+        playerTile = tile;
+
+        console.log("Game created successfully");
+
+        this.gameCreated = true;
+
+        this.showWaitingState();
+
+        waitForGameToStart(gameKey);
+      }
+    });
   }
 
   showWaitingState() {
     this.container.classList.add("waiting-state");
+
     this.title.textContent = "Game Created";
 
     const copyButton = new Button(
-        "copy-code",
-        "Copy Code"
+      "copy-code",
+      "Copy Code"
     );
-
-    const waitingMessage = document.createElement("p");
-    waitingMessage.className = "waiting-message";
-    waitingMessage.textContent =
-        "Waiting for another player to join...";
-
-    copyButton.onClick(async () => {
-        await navigator.clipboard.writeText(this.gameKey);
-        console.log("Copied:", this.gameKey);
-    });
 
     copyButton.getElement().classList.add(
       "lobby-button",
       "copy-code-button"
     );
 
-    this.container.replaceChildren(
-        this.title,
-        this.codeLabel,
-        this.codeText,
+    const waitingMessage = document.createElement("p");
+
+    waitingMessage.className = "waiting-message";
+    waitingMessage.textContent =
+      "Waiting for another player to join...";
+
+    copyButton.onClick(async () => {
+      await navigator.clipboard.writeText(this.gameKey);
+
+      console.log("Copied:", this.gameKey);
+    });
+
+    
+    this.content.replaceChildren(
+      this.title,
+      this.codeText,
       copyButton.getElement(),
-        waitingMessage,
-        this.cancelButton.getElement()
+      this.codeLabel,
+      waitingMessage,
+      this.cancelButton.getElement()
     );
-}
+  }
 
   render(target) {
     const parent = document.getElementById(target);

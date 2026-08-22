@@ -1,0 +1,267 @@
+/* ========================================
+   MODAL OVERLAY
+======================================== */
+
+.modal-overlay {
+    position: fixed;
+    z-index: 1000;
+
+    inset: 0;
+
+    display: flex;
+    align-items: center;
+    justify-content: center;
+
+    padding: 20px;
+
+    background: rgba(20, 10, 5, 0.68);
+
+    backdrop-filter: blur(2px);
+}
+
+
+/* ========================================
+   MODAL CONTAINER
+======================================== */
+
+.modal {
+    width: min(430px, 90vw);
+
+    padding: 30px 28px 28px;
+
+    border: 4px solid #b97927;
+    border-radius: 14px;
+
+    background:
+        linear-gradient(
+            180deg,
+            #57301c 0%,
+            #351c11 100%
+        );
+
+    box-shadow:
+        0 16px 0 rgba(31, 14, 7, 0.45),
+        0 24px 45px rgba(0, 0, 0, 0.65),
+        inset 0 2px 0 rgba(255, 220, 145, 0.2),
+        inset 0 0 30px rgba(255, 190, 80, 0.08);
+
+    color: #f7d58d;
+
+    font-family: Georgia, "Times New Roman", serif;
+
+    text-align: center;
+}
+
+
+/* ========================================
+   MODAL TITLE
+======================================== */
+
+.modal > h2 {
+    margin: 0 0 14px;
+
+    color: #ffe09a;
+
+    font-size: clamp(1.8rem, 4vw, 2.6rem);
+    font-weight: 700;
+
+    line-height: 1.1;
+
+    text-shadow:
+        0 3px 0 #4d260f,
+        0 5px 10px rgba(0, 0, 0, 0.55);
+}
+
+
+/* ========================================
+   MODAL MESSAGE
+======================================== */
+
+.modal > p {
+    margin: 0 0 24px;
+
+    color: #f2d5a0;
+
+    font-size: clamp(1rem, 2vw, 1.2rem);
+    font-weight: 600;
+
+    line-height: 1.45;
+
+    text-shadow:
+        0 2px 0 rgba(54, 27, 12, 0.8);
+}
+
+
+/* ========================================
+   BUTTON CONTAINER
+======================================== */
+
+.modal > div {
+    display: flex;
+    flex-direction: column;
+
+    align-items: center;
+
+    gap: 12px;
+
+    width: 100%;
+}
+
+
+/* ========================================
+   MODAL BUTTONS
+======================================== */
+
+.modal button {
+    width: min(280px, 100%);
+    min-height: 52px;
+
+    padding: 11px 20px;
+
+    border: 3px solid #3f2414;
+    border-radius: 10px;
+
+    box-shadow:
+        0 5px 0 #24130b,
+        0 9px 15px rgba(0, 0, 0, 0.4),
+        inset 0 2px 0 rgba(255, 244, 194, 0.35);
+
+    cursor: pointer;
+
+    font-family: Georgia, "Times New Roman", serif;
+
+    font-size: 1.05rem;
+    font-weight: 700;
+
+    transition:
+        transform 120ms ease,
+        filter 120ms ease,
+        box-shadow 120ms ease;
+}
+
+
+/* ========================================
+   PLAY AGAIN
+======================================== */
+
+.modal #play-again {
+    background:
+        linear-gradient(
+            #f6cf72,
+            #c8872e
+        );
+
+    color: #29170d;
+
+    text-shadow:
+        0 1px 0 rgba(255, 255, 255, 0.35);
+}
+
+
+/* ========================================
+   EXIT BUTTONS
+======================================== */
+
+.modal #modal-exit,
+.modal #opponent-left-exit,
+.modal #waiting-exit,
+.modal #game-started-exit {
+    background:
+        linear-gradient(
+            #71331d,
+            #3f1d14
+        );
+
+    color: #f2d5a0;
+}
+
+
+/* ========================================
+   BUTTON INTERACTIONS
+======================================== */
+
+.modal button:hover {
+    filter: brightness(1.1);
+
+    transform: translateY(-2px);
+}
+
+.modal button:active {
+    box-shadow:
+        0 2px 0 #24130b,
+        0 5px 9px rgba(0, 0, 0, 0.4);
+
+    transform: translateY(3px);
+}
+
+.modal button:focus-visible {
+    outline: 4px solid #ffe8a7;
+    outline-offset: 3px;
+}
+
+
+/* ========================================
+   MOBILE
+======================================== */
+
+@media (max-width: 480px) {
+
+    .modal-overlay {
+        padding: 18px;
+    }
+
+    .modal {
+        width: min(360px, 92vw);
+
+        padding: 26px 20px 24px;
+
+        border-width: 3px;
+    }
+
+    .modal > h2 {
+        margin-bottom: 12px;
+
+        font-size: 1.8rem;
+    }
+
+    .modal > p {
+        margin-bottom: 20px;
+
+        font-size: 1rem;
+    }
+
+    .modal button {
+        width: min(250px, 100%);
+        min-height: 48px;
+
+        font-size: 1rem;
+    }
+}
+
+
+/* ========================================
+   VERY SMALL MOBILE
+======================================== */
+
+@media (max-width: 360px) {
+
+    .modal {
+        width: 94vw;
+
+        padding: 22px 16px 20px;
+    }
+
+    .modal > h2 {
+        font-size: 1.6rem;
+    }
+
+    .modal > p {
+        font-size: 0.95rem;
+    }
+
+    .modal button {
+        min-height: 46px;
+
+        font-size: 0.95rem;
+    }
+}
