@@ -1,4 +1,5 @@
 let rematchInProgress = false;
+let modalCheckTimer = null;
 
 
 function game() {
@@ -108,4 +109,24 @@ async function handlePlayAgain() {
     } finally {
         rematchInProgress = false;
     }
+}
+
+function watchGameOverRoom() {
+
+    async function check() {
+        const status = await checkGame(gameKey);
+
+        if (status === "false") {
+            modalCheckTimer = null;
+
+            console.log("Opponent exited.");
+            showGameMessage("Your opponent left the game.");
+
+            return;
+        }
+
+        modalCheckTimer = setTimeout(check, 1000);
+    }
+
+    check();
 }

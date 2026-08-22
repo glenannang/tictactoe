@@ -93,10 +93,14 @@ function showGameOverModal(message) {
     modal.addButton(exitButton);
 
     playAgainButton.onClick(async () => {
-    await handlePlayAgain();
+        clearTimeout(modalCheckTimer);
+        modalCheckTimer = null;
+        await handlePlayAgain();
     });
 
     exitButton.onClick(async () => {
+        clearTimeout(modalCheckTimer);
+        modalCheckTimer = null;
         await resetGame(gameKey);
 
         gameKey = null;
@@ -107,4 +111,5 @@ function showGameOverModal(message) {
     });
 
     modal.render("gamePage");
+    watchGameOverRoom();
 }
