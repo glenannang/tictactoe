@@ -14,6 +14,7 @@ class MainPage {
         this.createButton = new Button("create-game","Create Game","game-button create-button");
 
         this.joinButton = new Button("join-game","Join Game","game-button join-button");
+        this.howToPlayButton = new Button("how-to-play", "How to Play","game-button how-to-play-button");
     }
 
     setAttributes() {
@@ -33,7 +34,8 @@ class MainPage {
     appendElements() {
         this.menuActions.append(
             this.createButton.getElement(),
-            this.joinButton.getElement()
+            this.joinButton.getElement(),
+            this.howToPlayButton.getElement()
         );
 
         this.container.append(

@@ -97,6 +97,11 @@ body {
     background: linear-gradient(#82ded1, #258f8c);
 }
 
+#mainPage .how-to-play-button {
+    background: linear-gradient(#f6dfad, #d7b678);
+    color: #3a2114;
+}
+
 #mainPage .game-button:hover {
     filter: brightness(1.1);
     transform: translateY(-2px);
