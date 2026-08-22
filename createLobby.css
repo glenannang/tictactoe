@@ -1,0 +1,606 @@
+#createLobbyPage {
+    position: relative;
+    isolation: isolate;
+
+    display: grid;
+    grid-template-columns: repeat(12, minmax(0, 1fr));
+    align-items: center;
+    align-content: center;
+
+    gap: 18px 14px;
+
+    width: 100%;
+    min-height: 100vh;
+    min-height: 100dvh;
+
+    margin: 0;
+    padding: clamp(36px, 8vh, 88px) clamp(20px, 8vw, 120px);
+
+    overflow-x: hidden;
+    overflow-y: auto;
+
+    background:
+        #3a2114
+        url("assets/images/lobby.png")
+        center / cover no-repeat;
+
+    color: #f2d18a;
+
+    font-family: Georgia, "Times New Roman", serif;
+    text-align: center;
+}
+
+#createLobbyPage,
+#createLobbyPage * {
+    box-sizing: border-box;
+}
+
+
+/* BACKGROUND PANEL */
+
+#createLobbyPage::before {
+    position: absolute;
+    z-index: -1;
+
+    top: 50%;
+    left: 50%;
+
+    width: min(900px, 88vw);
+    height: min(620px, 82vh);
+
+    border: 3px solid rgba(199, 139, 48, 0.72);
+    border-radius: 18px;
+
+    background: rgba(74, 42, 21, 0.72);
+
+    box-shadow:
+        0 18px 40px rgba(18, 9, 4, 0.56),
+        inset 0 0 28px rgba(255, 214, 119, 0.12);
+
+    content: "";
+
+    transform: translate(-50%, -50%);
+}
+
+
+/* TITLE*/
+
+#createLobbyPage > .create-lobby-title {
+    grid-column: 1 / -1;
+
+    margin: 0 0 8px;
+
+    color: #ffe0a0;
+
+    font-size: clamp(2rem, 4vw, 4rem);
+    line-height: 1.1;
+
+    text-shadow:
+        0 3px 0 #4d260f,
+        0 5px 12px rgba(0, 0, 0, 0.65);
+}
+
+
+/* GAME CODE BOX*/
+
+#createLobbyPage > .game-code-display {
+    grid-column: 2 / 9;
+    grid-row: 2;
+
+    width: 100%;
+    min-width: 0;
+
+    margin: 0;
+    padding: 18px 20px;
+
+    border: 3px solid #b97927;
+    border-radius: 10px;
+
+    background: #24140d;
+
+    box-shadow:
+        inset 0 3px 10px rgba(0, 0, 0, 0.78),
+        0 3px 0 #4a260f;
+
+    color: #ffd88a;
+
+    font-size: clamp(2rem, 3vw, 3rem);
+    font-weight: 700;
+
+    letter-spacing: 0.08em;
+    line-height: 1.3;
+
+    overflow-wrap: anywhere;
+}
+
+
+/* GAME CODE LABEL*/
+
+/* Centered relative to the entire panel */
+
+#createLobbyPage > .game-code-label {
+    grid-column: 1 / -1;
+    grid-row: 3;
+
+    margin: 0;
+
+    color: #f7d58d;
+
+    font-size: clamp(1.2rem, 2vw, 1.7rem);
+    font-weight: 700;
+
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+
+    text-align: center;
+
+    text-shadow:
+        0 2px 0 #4b250f;
+}
+
+
+/* BUTTON BASE */
+
+#createLobbyPage > .lobby-button {
+    margin: 0;
+
+    min-height: 58px;
+
+    padding: 13px 22px;
+
+    border: 3px solid #3f2414;
+    border-radius: 10px;
+
+    box-shadow:
+        0 5px 0 #24130b,
+        0 9px 16px rgba(0, 0, 0, 0.42),
+        inset 0 2px 0 rgba(255, 244, 194, 0.42);
+
+    color: #29170d;
+
+    cursor: pointer;
+
+    font-family: Georgia, "Times New Roman", serif;
+    font-size: clamp(1rem, 1.7vw, 1.25rem);
+    font-weight: 700;
+
+    letter-spacing: 0.03em;
+    line-height: 1.1;
+
+    text-align: center;
+
+    text-shadow:
+        0 1px 0 rgba(255, 255, 255, 0.35);
+
+    transition:
+        transform 120ms ease,
+        filter 120ms ease,
+        box-shadow 120ms ease;
+}
+
+
+/* REGENERATE */
+
+#createLobbyPage > .regenerate-button {
+    grid-column: 9 / 12;
+    grid-row: 2;
+
+    width: 100%;
+    min-width: 0;
+    height: 100%;
+
+    padding-left: 14px;
+    padding-right: 14px;
+
+    white-space: nowrap;
+
+    font-size: clamp(0.9rem, 1.4vw, 1.15rem);
+
+    background:
+        linear-gradient(#82ded1, #258f8c);
+}
+
+
+/* CREATE BUTTON */
+
+#createLobbyPage > .confirm-create-button {
+    grid-column: 2 / 7;
+    grid-row: 4;
+
+    width: 100%;
+
+    background:
+        linear-gradient(#f6cf72, #c8872e);
+}
+
+
+/* CANCEL BUTTON */
+
+#createLobbyPage > .cancel-create-button {
+    grid-column: 7 / 12;
+    grid-row: 4;
+
+    width: 100%;
+
+    background:
+        linear-gradient(#71331d, #3f1d14);
+
+    color: #f2d5a0;
+}
+
+
+/* BUTTON INTERACTIONS */
+
+#createLobbyPage > .lobby-button:hover {
+    filter: brightness(1.1);
+
+    transform: translateY(-2px);
+}
+
+#createLobbyPage > .lobby-button:active {
+    box-shadow:
+        0 2px 0 #24130b,
+        0 5px 9px rgba(0, 0, 0, 0.4),
+        inset 0 2px 5px rgba(0, 0, 0, 0.24);
+
+    transform: translateY(3px);
+}
+
+#createLobbyPage > .lobby-button:focus-visible {
+    outline: 4px solid #ffe8a7;
+    outline-offset: 4px;
+}
+
+#createLobbyPage > .lobby-button:disabled {
+    cursor: not-allowed;
+
+    filter: grayscale(0.75);
+
+    opacity: 0.6;
+}
+
+
+/* WAITING MESSAGE */
+
+#createLobbyPage > .waiting-message {
+    grid-column: 2 / 12;
+
+    margin: 4px 0 0;
+
+    color: #f8d99a;
+
+    font-size: clamp(1rem, 2vw, 1.4rem);
+    font-weight: 700;
+
+    text-align: center;
+
+    text-shadow:
+        0 2px 0 #4a250f;
+}
+
+
+/* WAITING STATE */
+
+#createLobbyPage.waiting-state > .copy-code-button {
+    grid-column: 9 / 12;
+    grid-row: 2;
+
+    width: 100%;
+    min-width: 0;
+    height: 100%;
+
+    padding-left: 14px;
+    padding-right: 14px;
+
+    white-space: nowrap;
+
+    color: #29170d;
+
+    font-size: clamp(0.9rem, 1.4vw, 1.15rem);
+
+    background:
+        linear-gradient(#82ded1, #258f8c);
+
+    border-color: #3f2414;
+
+    text-shadow:
+        0 1px 0 rgba(255, 255, 255, 0.35);
+}
+
+#createLobbyPage.waiting-state > .waiting-message {
+    grid-column: 2 / 12;
+    grid-row: 4;
+
+    margin-top: 8px;
+}
+
+#createLobbyPage.waiting-state > .cancel-create-button {
+    grid-column: 5 / 9;
+    grid-row: 5;
+
+    width: 100%;
+
+    justify-self: center;
+}
+
+
+/* Responsive */
+
+@media (max-width: 768px) {
+
+    #createLobbyPage {
+        gap: 14px 12px;
+
+        padding: 32px 24px;
+    }
+
+    #createLobbyPage::before {
+        width: min(720px, 92vw);
+        height: min(600px, 88vh);
+    }
+
+    #createLobbyPage > .create-lobby-title {
+        font-size: clamp(2rem, 6vw, 3rem);
+    }
+
+    #createLobbyPage > .game-code-display {
+        grid-column: 2 / 9;
+
+        padding: 16px 14px;
+
+        font-size: clamp(1.8rem, 4vw, 2.4rem);
+    }
+
+    #createLobbyPage > .game-code-label {
+        grid-column: 1 / -1;
+
+        font-size: 1.25rem;
+    }
+
+    #createLobbyPage > .regenerate-button {
+        grid-column: 9 / 12;
+
+        font-size: 0.95rem;
+    }
+
+    #createLobbyPage > .confirm-create-button {
+        grid-column: 2 / 7;
+    }
+
+    #createLobbyPage > .cancel-create-button {
+        grid-column: 7 / 12;
+    }
+
+    #createLobbyPage > .lobby-button {
+        min-height: 56px;
+
+        padding: 12px 16px;
+
+        font-size: 1.05rem;
+    }
+
+
+    /* Waiting state */
+
+    #createLobbyPage.waiting-state > .copy-code-button {
+        grid-column: 9 / 12;
+
+        font-size: 0.95rem;
+    }
+
+    #createLobbyPage.waiting-state > .waiting-message {
+        grid-column: 2 / 12;
+    }
+
+    #createLobbyPage.waiting-state > .cancel-create-button {
+        grid-column: 4 / 10;
+    }
+}
+
+@media (max-width: 480px) {
+
+    #createLobbyPage {
+        display: flex;
+        flex-direction: column;
+
+        justify-content: center;
+        align-items: center;
+
+        gap: 10px;
+
+        padding: 28px 20px;
+    }
+
+    #createLobbyPage::before {
+        width: 92vw;
+        height: 88vh;
+    }
+
+
+
+    #createLobbyPage > .create-lobby-title {
+        order: 1;
+
+        margin: 0 0 12px;
+
+        font-size:
+            clamp(1.9rem, 9vw, 2.7rem);
+    }
+
+
+    /* GAME CODE */
+
+    #createLobbyPage > .game-code-display {
+        order: 2;
+
+        width: 90%;
+        max-width: 360px;
+
+        padding: 14px 12px;
+
+        font-size:
+            clamp(1.8rem, 8vw, 2.3rem);
+
+        letter-spacing: 0.08em;
+    }
+
+
+    /* GAME CODE LABEL */
+
+    #createLobbyPage > .game-code-label {
+        order: 3;
+
+        width: 100%;
+
+        margin: 0 0 4px;
+
+        font-size: 1.15rem;
+
+        text-align: center;
+    }
+
+
+    /* REGENERATE */
+
+    #createLobbyPage > .regenerate-button {
+        order: 4;
+
+        width: min(240px, 75%);
+
+        height: auto;
+        min-height: 50px;
+
+        margin: 0 0 4px;
+
+        font-size: 1rem;
+    }
+
+
+    /* CREATE */
+
+    #createLobbyPage > .confirm-create-button {
+        order: 5;
+
+        width: min(280px, 85%);
+
+        margin: 0;
+    }
+
+
+    /* CANCEL */
+
+    #createLobbyPage > .cancel-create-button {
+        order: 6;
+
+        width: min(280px, 85%);
+
+        margin: 0;
+    }
+
+
+    /* BUTTON SIZE */
+
+    #createLobbyPage > .lobby-button {
+        min-height: 52px;
+
+        padding: 10px 14px;
+
+        font-size: 1rem;
+    }
+
+
+    /* MOBILE WAITING STATE */
+
+    #createLobbyPage.waiting-state >
+    .copy-code-button {
+        order: 4;
+
+        width: min(240px, 75%);
+
+        height: auto;
+        min-height: 50px;
+
+        margin: 0;
+
+        font-size: 1rem;
+
+        background:
+            linear-gradient(#82ded1, #258f8c);
+
+        color: #29170d;
+    }
+
+    #createLobbyPage.waiting-state >
+    .waiting-message {
+        order: 5;
+
+        width: 90%;
+
+        margin: 8px 0 2px;
+
+        font-size: 1rem;
+
+        text-align: center;
+    }
+
+    #createLobbyPage.waiting-state >
+    .cancel-create-button {
+        order: 6;
+
+        width: min(280px, 85%);
+
+        margin: 0;
+    }
+}
+
+
+@media (max-width: 360px) {
+
+    #createLobbyPage {
+        gap: 8px;
+
+        padding: 22px 14px;
+    }
+
+    #createLobbyPage::before {
+        width: 94vw;
+        height: 92vh;
+    }
+
+    #createLobbyPage >
+    .create-lobby-title {
+        font-size: 1.8rem;
+    }
+
+    #createLobbyPage >
+    .game-code-display {
+        width: 90%;
+
+        padding: 12px 8px;
+
+        font-size: 1.65rem;
+    }
+
+    #createLobbyPage >
+    .game-code-label {
+        font-size: 1rem;
+    }
+
+    #createLobbyPage >
+    .regenerate-button,
+    #createLobbyPage.waiting-state >
+    .copy-code-button {
+        width: min(220px, 78%);
+
+        font-size: 0.95rem;
+    }
+
+    #createLobbyPage >
+    .lobby-button {
+        min-height: 48px;
+
+        padding: 10px 12px;
+
+        font-size: 0.95rem;
+    }
+}

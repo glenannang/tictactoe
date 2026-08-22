@@ -19,25 +19,31 @@ class CreateLobbyPage {
 
     this.regenerateButton = new Button(
       "regenerate-code",
-      "Regenerate Code"
+      "Regenerate",
+      "lobby-button regenerate-button"
     );
 
     this.createButton = new Button(
       "confirm-create-game",
-      "Create Game"
+      "Create",
+      "lobby-button confirm-create-button"
     );
 
     this.cancelButton = new Button(
       "cancel-create-game",
-      "Cancel"
+      "Cancel",
+      "lobby-button cancel-create-button"
     );
   }
 
   setAttributes() {
     this.container.id = "createLobbyPage";
-    this.title.textContent = "Create Game";
+    this.title.className = "create-lobby-title";
+    this.title.textContent = "Create Your Game";
 
+    this.codeLabel.className = "game-code-label";
     this.codeLabel.textContent = "Game Code";
+    this.codeText.className = "game-code-display";
     this.codeText.textContent = this.gameKey;
     this.codeText.id = "gameCode";
   }
@@ -75,6 +81,7 @@ class CreateLobbyPage {
   }
 
   showWaitingState() {
+    this.container.classList.add("waiting-state");
     this.title.textContent = "Game Created";
 
     const copyButton = new Button(
@@ -83,6 +90,7 @@ class CreateLobbyPage {
     );
 
     const waitingMessage = document.createElement("p");
+    waitingMessage.className = "waiting-message";
     waitingMessage.textContent =
         "Waiting for another player to join...";
 
@@ -91,11 +99,16 @@ class CreateLobbyPage {
         console.log("Copied:", this.gameKey);
     });
 
+    copyButton.getElement().classList.add(
+      "lobby-button",
+      "copy-code-button"
+    );
+
     this.container.replaceChildren(
         this.title,
         this.codeLabel,
         this.codeText,
-        copyButton.getElement(),
+      copyButton.getElement(),
         waitingMessage,
         this.cancelButton.getElement()
     );
