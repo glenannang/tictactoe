@@ -19,7 +19,6 @@ function showGameOverModal(message) {
     modal.addButton(exitButton);
 
     playAgainButton.onClick(async () => {
-        
         // Close Game Over modal
         modal.close();       
         await handlePlayAgain();
