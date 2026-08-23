@@ -1,13 +1,12 @@
 import { Button } from "../components/button.js";
 import { gameState } from "../state/gameState.js";
 import { resetGame } from "../services/gameService.js";
-import { createBoard } from "../game/board.js";
-
 
 export class GamePage {
 
-    constructor(onExit) {
+    constructor(onExit,onCellClick) {
         this.onExit = onExit;
+        this.onCellClick = onCellClick;
 
         this.initializeElements();
         this.setAttributes();
@@ -24,13 +23,34 @@ export class GamePage {
         this.gameKeyText = document.createElement("p");
         this.turnMessage = document.createElement("p");
 
-        this.board = createBoard();
+        this.board = this.createBoard();
 
         this.exitButton = new Button(
             "exit-game",
             "Exit"
         );
     }
+
+    createBoard() {
+    const board = document.createElement("div");
+
+    board.id = "board";
+    board.className = "board";
+
+    for (let y = 0; y < 3; y++) {
+        for (let x = 0; x < 3; x++) {
+            const cell = document.createElement("button");
+
+            cell.className = "cell";
+            cell.dataset.x = x;
+            cell.dataset.y = y;
+
+            board.appendChild(cell);
+        }
+    }
+
+    return board;
+}
 
 
     setAttributes() {
@@ -62,9 +82,9 @@ export class GamePage {
     }
 
 
-    addEventListeners() {
+    addEventListeners() { 
+        // exit button
         this.exitButton.onClick(async () => {
-
             await resetGame(gameState.gameKey);
 
             clearTimeout(gameState.boardSyncInterval);
@@ -78,6 +98,15 @@ export class GamePage {
             if (this.onExit) {
                 this.onExit();
             }
+        });
+
+        //cells 
+        const cells = this.board.querySelectorAll(".cell");
+
+        cells.forEach((cell) => {
+            cell.addEventListener("click", () => {
+                this.onCellClick(cell);
+            });
         });
     }
 

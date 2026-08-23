@@ -4,7 +4,8 @@ import {
     checkGame,
     getBoard,
     createOrJoinGame,
-    resetGame
+    resetGame,
+    move
 } from "../services/gameService.js";
 
 import {
@@ -14,11 +15,9 @@ import {
 } from "./gameRules.js";
 
 import {
-    addBoardEventListeners,
     displayBoard
 } from "./board.js";
 
-import { showGameMessage } from "../utils/gameUtils.js";
 import { GamePage } from "../pages/GamePage.js";
 
 import {
@@ -31,16 +30,9 @@ import {
 
 
 function game(onExit) {
-    const gamePage = new GamePage(onExit);
-
+    const gamePage = new GamePage(onExit, handleCellClick);
     gamePage.render("app");
-
-    addBoardEventListeners();
-
-    gameMonitor(
-        gameState.gameKey,
-        onExit
-    );
+    gameMonitor( gameState.gameKey, onExit );
 }
 
 
@@ -110,10 +102,6 @@ function gameMonitor(key, onExit) {
 
             gameState.boardSyncInterval = null;
 
-            showGameMessage(
-                `${winner} wins!`
-            );
-
             console.log(`${winner} won!`);
 
             showGameOverModal(
@@ -164,6 +152,8 @@ function gameMonitor(key, onExit) {
     // Start first sync
     sync();
 }
+
+
 
 
 export async function handlePlayAgain(onExit) {
@@ -329,3 +319,67 @@ export function waitForGameToStart(
 
     check();
 }
+
+
+async function handleCellClick(cell) {
+    if (
+        gameState.gameOver ||
+        gameState.moveInProgress
+    ) {
+        return;
+    }
+
+    gameState.moveInProgress = true;
+
+    try {
+        let boardData = await getBoard(gameState.gameKey);
+
+        // Check if game already ended
+        const existingWinner = checkWinner(boardData);
+
+        if (existingWinner !== null) {
+            gameState.gameOver = true;
+            return;
+        }
+
+        // Check if it is this player's turn
+        const currentTurn = getCurrentTurn(boardData);
+
+        if (gameState.playerTile !== currentTurn) {
+            console.log("Not your turn");
+            return;
+        }
+
+        // Get clicked cell coordinates
+        const x = cell.dataset.x;
+        const y = cell.dataset.y;
+
+        // Check if cell is already occupied
+        const board = boardData.split(":");
+        const index = Number(y) * 3 + Number(x);
+
+        if (board[index] !== "") {
+            console.log("Cell is already occupied");
+            return;
+        }
+
+        // Send move to server
+        await move(
+            gameState.gameKey,
+            gameState.playerTile,
+            y,
+            x
+        );
+
+        // Get latest board after the move
+        boardData = await getBoard(gameState.gameKey);
+
+        // Update board UI
+        displayBoard(boardData);
+
+    } finally {
+        gameState.moveInProgress = false;
+    }
+}
+
+
