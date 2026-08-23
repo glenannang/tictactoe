@@ -23,7 +23,7 @@
 
     background:
         #3a2114
-        url("assets/images/board.png")
+        url("../assets/images/board.png")
         center / cover no-repeat;
 
     color: #f6d58d;

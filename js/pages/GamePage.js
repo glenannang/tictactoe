@@ -10,6 +10,7 @@ class GamePage {
 
         this.greeting = document.createElement("h1");
         this.playerMessage = document.createElement("p");
+        this.gameKeyText = document.createElement("p");
         this.turnMessage = document.createElement("p");
 
         this.board = createBoard();
@@ -29,14 +30,16 @@ class GamePage {
         this.playerMessage.textContent = `You are playing as ${playerTile}`;
         this.turnMessage.id = "gameMessage";
 
-        //this.board.id = "board";
-        //this.board.className = "board";
+        this.gameKeyText.id = "gameKeyDisplay";
+        this.gameKeyText.textContent = `Game Code: ${gameKey}`;
+
     }
 
     appendElements() {
         this.container.append(
             this.greeting,
             this.playerMessage,
+            this.gameKeyText,
             this.board,
             this.turnMessage,
             this.exitButton.getElement()

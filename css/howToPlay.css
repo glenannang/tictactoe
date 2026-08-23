@@ -19,7 +19,7 @@
 
     background:
         #3a2114
-        url("assets/images/howtoplaybackground.png")
+        url("../assets/images/howtoplaybackground.png")
         center / cover no-repeat;
 
     color: #3f2414;
@@ -47,7 +47,7 @@
     flex-shrink: 0;
 
     background:
-        url("assets/images/bigscroll.png")
+        url("../assets/images/bigscroll.png")
         center / contain no-repeat;
 }
 
@@ -477,7 +477,7 @@
         aspect-ratio: 9 / 16;
 
         background-image:
-            url("assets/images/smallscroll.png");
+            url("../assets/images/smallscroll.png");
 
         background-size: contain;
         background-position: center;
