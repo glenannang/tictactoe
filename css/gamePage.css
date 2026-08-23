@@ -69,6 +69,29 @@
         0 2px 0 #4b250f;
 }
 
+/* GAME CODE */
+
+#gameKeyDisplay {
+    position: absolute;
+
+    top: 32px;
+    left: 36px;
+
+    margin: 0;
+
+    color: #ffe0a0;
+
+    font-size: clamp(1.15rem, 1.5vw, 1.4rem);
+    font-weight: 700;
+
+    line-height: 1.2;
+    text-align: left;
+
+    text-shadow:
+        0 2px 0 #4b250f,
+        0 3px 8px rgba(0, 0, 0, 0.45);
+}
+
 
 /* TURN / GAME MESSAGE*/
 
@@ -277,6 +300,15 @@
         font-size: clamp(0.95rem, 2.5vw, 1.15rem);
     }
 
+    /* GAME CODE */
+
+    #gameKeyDisplay {
+        top: 40px;
+        left: 25px;
+
+        font-size: 1.5rem;
+    }
+
 
     /* TURN MESSAGE */
 
@@ -338,6 +370,13 @@
         font-size: 0.95rem;
     }
 
+    /* GAME CODE*/
+    #gameKeyDisplay {
+        top: 30px;
+        left: 16px;
+        font-size: 1.2rem;
+    }
+
 
     /* TURN MESSAGE */
 
@@ -352,26 +391,25 @@
 
     #board {
         grid-template-columns:
-            repeat(3, min(25vw, 82px));
+            repeat(3, min(27vw, 90px));
 
         grid-template-rows:
-            repeat(3, min(25vw, 82px));
+            repeat(3, min(27vw, 90px));
 
-        gap: 5px;
+        gap: 6px;
 
         margin: 3px 0 10px;
 
-        padding: 10px;
+        padding: 11px;
     }
-
 
     /* CELLS */
 
     #board > .cell {
-        width: min(25vw, 82px);
-        height: min(25vw, 82px);
+        width: min(27vw, 90px);
+        height: min(27vw, 90px);
 
-        font-size: clamp(2.5rem, 13vw, 3.2rem);
+        font-size: clamp(2.7rem, 13vw, 3.5rem);
     }
 
 
@@ -410,6 +448,13 @@
 
     #playerMessage {
         font-size: 0.88rem;
+    }
+
+    #gameKeyDisplay {
+        top: 12px;
+        left: 12px;
+
+        font-size: 1.05rem;
     }
 
 
