@@ -41,5 +41,15 @@ mainPage.joinButton.onClick(function () {
   joinLobbyPage.render("app");
 });
 
+mainPage.howToPlayButton.onClick(function () {
+    const howToPlayPage = new HowToPlayPage();
+
+    howToPlayPage.backButton.addEventListener("click", function () {
+        mainPage.render("app");
+    });
+
+    howToPlayPage.render("app");
+});
+
 mainPage.render("app");
 

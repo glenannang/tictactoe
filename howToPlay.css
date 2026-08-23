@@ -1,0 +1,715 @@
+/* ========================================
+   HOW TO PLAY PAGE
+======================================== */
+
+#howToPlayPage {
+    width: 100%;
+    min-height: 100vh;
+    min-height: 100dvh;
+
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+
+    margin: 0;
+    padding: 30px;
+
+    overflow: hidden;
+
+    background:
+        #3a2114
+        url("assets/images/howtoplaybackground.png")
+        center / cover no-repeat;
+
+    color: #3f2414;
+
+    font-family: Georgia, "Times New Roman", serif;
+    text-align: center;
+}
+
+#howToPlayPage,
+#howToPlayPage * {
+    box-sizing: border-box;
+}
+
+
+/* ========================================
+   DESKTOP PARCHMENT
+======================================== */
+
+#howToPlayPage .how-to-play-scroll {
+    position: relative;
+
+    width: min(920px, 88vw);
+    aspect-ratio: 16 / 9;
+
+    flex-shrink: 0;
+
+    background:
+        url("assets/images/bigscroll.png")
+        center / contain no-repeat;
+}
+
+
+/* ========================================
+   CONTENT INSIDE PARCHMENT
+======================================== */
+
+#howToPlayPage .how-to-play-content {
+    position: absolute;
+
+    top: 15%;
+    left: 17%;
+
+    width: 66%;
+    height: 70%;
+
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+
+    padding: clamp(10px, 2vw, 24px);
+
+    overflow: hidden;
+}
+
+
+/* ========================================
+   TITLE
+======================================== */
+
+#howToPlayPage .how-to-play-title {
+    margin: 0 0 clamp(8px, 1.5vw, 16px);
+
+    color: #5a2f16;
+
+    font-size: clamp(2rem, 4vw, 3.5rem);
+    font-weight: 700;
+
+    line-height: 1;
+
+    text-align: center;
+
+    text-shadow:
+        0 2px 0 rgba(255, 235, 180, 0.45);
+}
+
+
+/* ========================================
+   DESCRIPTION / LORE
+======================================== */
+
+#howToPlayPage .how-to-play-description {
+    width: 100%;
+
+    margin: 0 0 clamp(8px, 1.2vw, 14px);
+
+    color: #4a2a17;
+
+    font-size: clamp(0.9rem, 1.4vw, 1.1rem);
+    font-weight: 600;
+
+    line-height: 1.35;
+
+    text-align: center;
+}
+
+
+/* ========================================
+   RULES
+======================================== */
+
+#howToPlayPage .how-to-play-rule {
+    width: 100%;
+
+    margin: clamp(2px, 0.4vw, 5px) 0;
+
+    color: #3f2414;
+
+    font-size: clamp(0.82rem, 1.25vw, 1rem);
+
+    line-height: 1.3;
+
+    text-align: left;
+}
+
+
+/* ========================================
+   BACK BUTTON
+======================================== */
+
+#howToPlayPage .back-button {
+    width: min(300px, 70vw);
+    min-height: 56px;
+
+    margin-top: 12px;
+    padding: 12px 18px;
+
+    border: 3px solid #3f2414;
+    border-radius: 10px;
+
+    background:
+        linear-gradient(#71331d, #3f1d14);
+
+    box-shadow:
+        0 5px 0 #24130b,
+        0 9px 16px rgba(0, 0, 0, 0.42),
+        inset 0 2px 0 rgba(255, 244, 194, 0.22);
+
+    color: #f2d5a0;
+
+    cursor: pointer;
+
+    font-family: Georgia, "Times New Roman", serif;
+    font-size: clamp(0.95rem, 1.4vw, 1.1rem);
+    font-weight: 700;
+
+    letter-spacing: 0.02em;
+    line-height: 1.1;
+
+    text-align: center;
+
+    text-shadow:
+        0 1px 0 rgba(255, 255, 255, 0.08);
+
+    transition:
+        transform 120ms ease,
+        filter 120ms ease,
+        box-shadow 120ms ease;
+}
+
+
+/* ========================================
+   BUTTON INTERACTIONS
+======================================== */
+
+#howToPlayPage .back-button:hover {
+    filter: brightness(1.1);
+
+    transform: translateY(-2px);
+}
+
+#howToPlayPage .back-button:active {
+    box-shadow:
+        0 2px 0 #24130b,
+        0 5px 9px rgba(0, 0, 0, 0.4),
+        inset 0 2px 5px rgba(0, 0, 0, 0.24);
+
+    transform: translateY(3px);
+}
+
+#howToPlayPage .back-button:focus-visible {
+    outline: 4px solid #ffe8a7;
+    outline-offset: 4px;
+}
+
+
+/* ========================================
+   SHORT DESKTOP / LAPTOP
+
+   Still desktop layout.
+   Only the browser height is smaller.
+======================================== */
+
+@media (min-width: 701px) and (max-height: 750px) {
+
+    #howToPlayPage {
+        padding: 12px;
+    }
+
+
+    /* PARCHMENT */
+
+    #howToPlayPage .how-to-play-scroll {
+        width: min(760px, 84vw);
+    }
+
+
+    /* CONTENT */
+
+    #howToPlayPage .how-to-play-content {
+        top: 16%;
+        left: 18%;
+
+        width: 64%;
+        height: 66%;
+
+        padding: 6px 12px;
+
+        overflow: hidden;
+    }
+
+
+    /* TITLE */
+
+    #howToPlayPage .how-to-play-title {
+        margin-bottom: 6px;
+
+        font-size: clamp(1.5rem, 3vw, 2.4rem);
+
+        line-height: 1;
+    }
+
+
+    /* DESCRIPTION */
+
+    #howToPlayPage .how-to-play-description {
+        margin-bottom: 6px;
+
+        font-size: clamp(0.72rem, 1.2vw, 0.9rem);
+
+        line-height: 1.2;
+    }
+
+
+    /* RULES */
+
+    #howToPlayPage .how-to-play-rule {
+        margin: 2px 0;
+
+        font-size: clamp(0.66rem, 1.05vw, 0.82rem);
+
+        line-height: 1.16;
+    }
+
+
+    /* BUTTON */
+
+    #howToPlayPage .back-button {
+        width: min(270px, 68vw);
+        min-height: 46px;
+
+        margin-top: 6px;
+        padding: 9px 14px;
+
+        font-size: 0.9rem;
+    }
+}
+
+
+/* ========================================
+   VERY SHORT DESKTOP / LAPTOP
+======================================== */
+
+@media (min-width: 701px) and (max-height: 620px) {
+
+    #howToPlayPage {
+        padding: 6px;
+        gap: 4px;
+    }
+
+
+    /* PARCHMENT */
+    #howToPlayPage .how-to-play-scroll {
+        width: min(
+            620px,
+            76vw,
+            112dvh
+        );
+
+        flex-shrink: 1;
+    }
+
+
+    /* CONTENT */
+    #howToPlayPage .how-to-play-content {
+        top: 17%;
+        left: 18%;
+
+        width: 64%;
+        height: 64%;
+
+        padding: 2px 8px;
+
+        /*
+           Start from the top of the safe area
+           instead of vertically centering a
+           block that may be too tall.
+        */
+        justify-content: flex-start;
+
+        overflow: hidden;
+    }
+
+
+    /* TITLE */
+    #howToPlayPage .how-to-play-title {
+        margin: 0 0 4px;
+
+        font-size: clamp(1.15rem, 2.5vw, 1.8rem);
+
+        line-height: 1;
+    }
+
+
+    /* DESCRIPTION */
+    #howToPlayPage .how-to-play-description {
+        margin: 0 0 4px;
+
+        font-size: clamp(0.58rem, 0.95vw, 0.76rem);
+
+        line-height: 1.12;
+    }
+
+
+    /* RULES */
+    #howToPlayPage .how-to-play-rule {
+        margin: 1px 0;
+
+        font-size: clamp(0.55rem, 0.9vw, 0.7rem);
+
+        line-height: 1.1;
+    }
+
+
+    /* BUTTON */
+    #howToPlayPage .back-button {
+        width: min(240px, 60vw);
+        min-height: 38px;
+
+        margin-top: 3px;
+        padding: 6px 10px;
+
+        font-size: 0.82rem;
+    }
+}
+
+
+/* ========================================
+   TABLET / NARROW WINDOW
+======================================== */
+
+@media (max-width: 700px) {
+
+    #howToPlayPage {
+        padding: 18px;
+    }
+
+
+    /* PARCHMENT */
+
+    #howToPlayPage .how-to-play-scroll {
+        width: min(600px, 94vw);
+    }
+
+
+    /* CONTENT */
+
+    #howToPlayPage .how-to-play-content {
+        top: 15%;
+        left: 17%;
+
+        width: 66%;
+        height: 70%;
+
+        padding: clamp(8px, 2vw, 16px);
+    }
+
+
+    /* TITLE */
+
+    #howToPlayPage .how-to-play-title {
+        margin-bottom: clamp(7px, 1.4vw, 11px);
+
+        font-size: clamp(1.6rem, 5vw, 2.6rem);
+    }
+
+
+    /* DESCRIPTION */
+
+    #howToPlayPage .how-to-play-description {
+        margin-bottom: clamp(6px, 1.1vw, 10px);
+
+        font-size: clamp(0.76rem, 2vw, 0.96rem);
+
+        line-height: 1.28;
+    }
+
+
+    /* RULES */
+
+    #howToPlayPage .how-to-play-rule {
+        margin: clamp(2px, 0.35vw, 4px) 0;
+
+        font-size: clamp(0.7rem, 1.8vw, 0.88rem);
+
+        line-height: 1.24;
+    }
+
+
+    /* BUTTON */
+
+    #howToPlayPage .back-button {
+        width: min(280px, 78vw);
+        min-height: 50px;
+
+        margin-top: 10px;
+    }
+}
+
+
+/* ========================================
+   MOBILE
+======================================== */
+
+@media (max-width: 480px) {
+
+    #howToPlayPage {
+        padding: 12px;
+
+        gap: 6px;
+    }
+
+
+    /* ====================================
+       SWITCH TO MOBILE PARCHMENT
+    ==================================== */
+
+    #howToPlayPage .how-to-play-scroll {
+        width: min(430px, 95vw);
+
+        /*
+           Mobile uses a different portrait
+           parchment image.
+        */
+        aspect-ratio: 9 / 16;
+
+        background-image:
+            url("assets/images/smallscroll.png");
+
+        background-size: contain;
+        background-position: center;
+        background-repeat: no-repeat;
+    }
+
+
+    /* ====================================
+       CONTENT INSIDE MOBILE PARCHMENT
+    ==================================== */
+
+    #howToPlayPage .how-to-play-content {
+        top: 13%;
+        left: 15%;
+
+        width: 70%;
+        height: 74%;
+
+        padding: clamp(6px, 2vw, 10px);
+
+        justify-content: center;
+
+        overflow: hidden;
+    }
+
+
+    /* TITLE */
+
+    #howToPlayPage .how-to-play-title {
+        margin: 0 0 clamp(5px, 1.5vw, 8px);
+
+        font-size: clamp(1.1rem, 5.5vw, 1.75rem);
+
+        line-height: 1;
+
+        white-space: nowrap;
+    }
+
+
+    /* DESCRIPTION */
+
+    #howToPlayPage .how-to-play-description {
+        margin: 0 0 clamp(5px, 1.4vw, 8px);
+
+        font-size: clamp(0.6rem, 2.55vw, 0.86rem);
+
+        line-height: 1.18;
+    }
+
+
+    /* RULES */
+
+    #howToPlayPage .how-to-play-rule {
+        margin: clamp(1px, 0.8vw, 3px) 0;
+
+        font-size: clamp(0.56rem, 2.3vw, 0.78rem);
+
+        line-height: 1.15;
+    }
+
+
+    /* BUTTON */
+
+    #howToPlayPage .back-button {
+        width: min(280px, 78vw);
+        min-height: 46px;
+
+        margin-top: 6px;
+
+        font-size: 0.92rem;
+    }
+}
+
+
+/* ========================================
+   SHORT MOBILE SCREEN
+
+   Same mobile width, but less height.
+======================================== */
+
+@media (max-width: 480px) and (max-height: 750px) {
+
+    #howToPlayPage {
+        padding: 8px;
+
+        gap: 3px;
+    }
+
+
+    /* PARCHMENT */
+
+    #howToPlayPage .how-to-play-scroll {
+        /*
+           Since this image has a 9:16 ratio,
+           limiting its width also limits its
+           total height.
+        */
+        width: min(
+            92vw,
+            360px,
+            42dvh
+        );
+    }
+
+
+    /* CONTENT */
+
+    #howToPlayPage .how-to-play-content {
+        top: 12%;
+        left: 14%;
+
+        width: 72%;
+        height: 76%;
+
+        padding: 4px;
+    }
+
+
+    /* TITLE */
+
+    #howToPlayPage .how-to-play-title {
+        margin-bottom: 4px;
+
+        font-size: clamp(0.95rem, 4.8vw, 1.4rem);
+    }
+
+
+    /* DESCRIPTION */
+
+    #howToPlayPage .how-to-play-description {
+        margin-bottom: 4px;
+
+        font-size: clamp(0.52rem, 2.25vw, 0.72rem);
+
+        line-height: 1.12;
+    }
+
+
+    /* RULES */
+
+    #howToPlayPage .how-to-play-rule {
+        margin: 1px 0;
+
+        font-size: clamp(0.49rem, 2vw, 0.67rem);
+
+        line-height: 1.1;
+    }
+
+
+    /* BUTTON */
+
+    #howToPlayPage .back-button {
+        min-height: 42px;
+
+        margin-top: 4px;
+        padding: 8px 12px;
+
+        font-size: 0.85rem;
+    }
+}
+
+
+/* ========================================
+   VERY SMALL MOBILE
+======================================== */
+
+@media (max-width: 360px) {
+
+    #howToPlayPage {
+        padding: 8px;
+    }
+
+
+    /* PARCHMENT */
+
+    #howToPlayPage .how-to-play-scroll {
+        width: min(94vw, 340px);
+    }
+
+
+    /* CONTENT */
+
+    #howToPlayPage .how-to-play-content {
+        top: 12%;
+        left: 14%;
+
+        width: 72%;
+        height: 76%;
+
+        padding: 4px;
+    }
+
+
+    /* TITLE */
+
+    #howToPlayPage .how-to-play-title {
+        margin-bottom: 4px;
+
+        font-size: clamp(0.95rem, 5vw, 1.25rem);
+    }
+
+
+    /* DESCRIPTION */
+
+    #howToPlayPage .how-to-play-description {
+        margin-bottom: 4px;
+
+        font-size: clamp(0.52rem, 2.4vw, 0.68rem);
+
+        line-height: 1.12;
+    }
+
+
+    /* RULES */
+
+    #howToPlayPage .how-to-play-rule {
+        margin: 1px 0;
+
+        font-size: clamp(0.49rem, 2.2vw, 0.63rem);
+
+        line-height: 1.1;
+    }
+
+
+    /* BUTTON */
+
+    #howToPlayPage .back-button {
+        width: min(240px, 78vw);
+        min-height: 42px;
+
+        margin-top: 4px;
+
+        font-size: 0.84rem;
+    }
+}
