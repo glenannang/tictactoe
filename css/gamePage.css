@@ -404,7 +404,6 @@
     }
 
     /* CELLS */
-
     #board > .cell {
         width: min(27vw, 90px);
         height: min(27vw, 90px);
@@ -414,7 +413,6 @@
 
 
     /* EXIT */
-
     #exit-game {
         width: 160px;
         min-height: 46px;

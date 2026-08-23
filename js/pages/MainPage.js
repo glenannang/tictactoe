@@ -1,5 +1,4 @@
 import { Button } from "../components/Button.js";
-
 import { CreateLobbyPage } from "./CreateLobbyPage.js";
 import { JoinLobbyPage } from "./JoinLobbyPage.js";
 import { HowToPlayPage } from "./HowToPlayPage.js";
@@ -74,6 +73,8 @@ export class MainPage {
     }
 
     addEventListeners() {
+
+        //CREATE BUTTON
         this.createButton.onClick(() => {
             const createLobbyPage = new CreateLobbyPage(() => {
                 const mainPage = new MainPage();
@@ -83,6 +84,7 @@ export class MainPage {
             createLobbyPage.render("app");
         });
 
+        //JOIN BUTTON
         this.joinButton.onClick(() => {
             const joinLobbyPage = new JoinLobbyPage(() => {
                 const mainPage = new MainPage();
@@ -92,6 +94,7 @@ export class MainPage {
             joinLobbyPage.render("app");
         });
 
+        // HOW TO PLAY 
         this.howToPlayButton.onClick(() => {
             const howToPlayPage = new HowToPlayPage(() => {
                 const mainPage = new MainPage();

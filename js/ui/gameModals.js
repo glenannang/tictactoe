@@ -97,8 +97,7 @@ export function showOpponentLeftRematchModal(onExit) {
         clearTimeout(gameState.waitingInterval);
         gameState.waitingInterval = null;
 
-        // Player no longer wants to continue,
-        // so destroy the newly-created room
+        // remove the newly-created room
         await resetGame(gameState.gameKey);
 
         gameState.gameKey = null;

@@ -8,9 +8,8 @@ import { waitForGameToStart } from "../game/gameController.js";
 export class CreateLobbyPage {
 
     constructor(onCancel) {
-        this.onCancel = onCancel;
+        this.onCancel = onCancel; //callback used to return to main page
         this.gameCreated = false;
-
         this.initializeElements();
         this.setAttributes();
         this.appendElements();
@@ -90,7 +89,9 @@ export class CreateLobbyPage {
 
         // Create a game room
         this.createButton.onClick(async () => {
-            // Prevents double click while request is still running
+
+            // prevents double click while request is still running
+
             if (this.createInProgress || this.gameCreated) {
                 return;
             }
@@ -98,26 +99,18 @@ export class CreateLobbyPage {
             this.createInProgress = true;
 
             try {
-                console.log("Creating game with:", this.gameKey);
-
+                
                 const tile = await createOrJoinGame(this.gameKey);
-
-                console.log("Server returned:", tile);
 
                 if (tile === "X") {
                     gameState.gameKey = this.gameKey;
                     gameState.playerTile = tile;
 
-                    console.log("Game created successfully");
-
                     this.gameCreated = true;
 
                     this.showWaitingState();
 
-                    waitForGameToStart(
-                        gameState.gameKey,
-                        this.onCancel
-                    );
+                    waitForGameToStart(gameState.gameKey,this.onCancel);
                 }
 
             } finally {
@@ -126,12 +119,15 @@ export class CreateLobbyPage {
         });
 
 
-        // Cancel / return to Main Page
+        // Cancel 
         this.cancelButton.onClick(async () => {
 
-            // CASE 1:
-            // A room has already been created.
-            // Delete the room and stop waiting.
+            // prevent cancel while game creation request is still running
+            if (this.createInProgress) {
+                return;
+            }
+
+            // A game has already been created.
             if (this.gameCreated) {
                 await resetGame(gameState.gameKey);
 
@@ -142,9 +138,8 @@ export class CreateLobbyPage {
                 gameState.playerTile = null;
             }
 
-            // CASE 2:
+            
             // If no room has been created yet,
-            // there is nothing to delete.
             if (this.onCancel) {
                 this.onCancel();
             }
@@ -157,26 +152,17 @@ export class CreateLobbyPage {
 
         this.title.textContent = "Game Created";
 
-        const copyButton = new Button(
-            "copy-code",
-            "Copy Code"
-        );
+        const copyButton = new Button("copy-code","Copy Code");
 
-        copyButton.getElement().classList.add(
-            "lobby-button",
-            "copy-code-button"
-        );
+        copyButton.getElement().classList.add("lobby-button","copy-code-button");
 
         const waitingMessage = document.createElement("p");
 
         waitingMessage.className = "waiting-message";
-        waitingMessage.textContent =
-            "Waiting for another player to join...";
+        waitingMessage.textContent = "Waiting for another player to join...";
 
         copyButton.onClick(async () => {
             await navigator.clipboard.writeText(this.gameKey);
-
-            console.log("Copied:", this.gameKey);
         });
 
         this.content.replaceChildren(
