@@ -14,9 +14,7 @@ import {
     getCurrentTurn
 } from "./gameRules.js";
 
-import {
-    displayBoard
-} from "./board.js";
+import { updateGameDisplay } from "../utils/gameUtils.js";
 
 import { GamePage } from "../pages/GamePage.js";
 
@@ -76,7 +74,7 @@ function gameMonitor(key, onExit) {
             gameState.playerTile
         );
 
-        displayBoard(data);
+        updateGameDisplay(data);
 
 
         // Check for winner
@@ -89,26 +87,18 @@ function gameMonitor(key, onExit) {
         );
 
 
-        if (
-            winner !== null &&
-            !gameState.gameOver
-        ) {
+        if (winner !== null &&!gameState.gameOver) {
             gameState.gameOver = true;
             gameState.finishedBoard = data;
 
-            clearTimeout(
-                gameState.boardSyncInterval
-            );
+            clearTimeout(gameState.boardSyncInterval);
 
             gameState.boardSyncInterval = null;
 
             console.log(`${winner} won!`);
 
-            showGameOverModal(
-                `${winner} wins!`,
-                () => handlePlayAgain(onExit),
-                onExit
-            );
+            setTimeout(() => {
+            showGameOverModal( `${winner} wins!`, () => handlePlayAgain(onExit), onExit);}, 300);
 
             return;
         }
@@ -375,7 +365,7 @@ async function handleCellClick(cell) {
         boardData = await getBoard(gameState.gameKey);
 
         // Update board UI
-        displayBoard(boardData);
+        updateGameDisplay(boardData);
 
     } finally {
         gameState.moveInProgress = false;
