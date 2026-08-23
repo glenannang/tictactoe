@@ -1,114 +1,227 @@
+/* ========================================
+   PAGE / APP BASE
+======================================== */
+
 html,
 body {
     width: 100%;
-    min-height: 100%;
+    height: 100%;
+
     margin: 0;
     padding: 0;
+
+    overflow: hidden;
 }
 
-#app,
-#root {
+#app {
     width: 100%;
-    min-height: 100vh;
-    min-height: 100dvh;
+    height: 100vh;
+    height: 100dvh;
+
     margin: 0;
     padding: 0;
+
+    overflow: hidden;
 }
+
+
+/* ========================================
+   MAIN MENU PAGE
+======================================== */
 
 #mainPage {
     position: relative;
     isolation: isolate;
-    box-sizing: border-box;
+
+    width: 100%;
+    height: 100vh;
+    height: 100dvh;
+
     display: flex;
     flex-direction: column;
     align-items: center;
-    width: 100%;
-    max-width: none;
-    gap: clamp(12px, 2vh, 18px);
-    min-height: 100vh;
-    min-height: 100dvh;
+    justify-content: flex-start;
+
+    gap: 10px;
+
     margin: 0;
-    padding: clamp(24px, 7vh, 72px) 24px 32px;
-    overflow-x: hidden;
+    padding: 0 24px 20px;
+
+    overflow: hidden;
+
     background: #24150e;
     color: #24150e;
+
     font-family: Georgia, "Times New Roman", serif;
 }
 
+
+#mainPage,
 #mainPage * {
     box-sizing: border-box;
 }
 
+
+/* ========================================
+   VIDEO BACKGROUND
+======================================== */
+
 #mainPage .main-background-video {
     position: absolute;
     inset: 0;
+
     z-index: -2;
+
     display: block;
+
     width: 100%;
     height: 100%;
+
     object-fit: cover;
     object-position: center;
 }
 
+
+/* ========================================
+   BACKGROUND OVERLAY
+======================================== */
+
 #mainPage::after {
     position: absolute;
     inset: 0;
+
     z-index: -1;
+
     background: rgba(26, 13, 7, 0.28);
+
     content: "";
 }
 
+
+/* ========================================
+   TITLE IMAGE
+======================================== */
+
 #mainPage .main-title-image {
     display: block;
+
     width: min(900px, 90vw);
     height: auto;
+
     object-fit: contain;
+
+    flex-shrink: 0;
+
+    margin-top: -55px;
+    margin-bottom: -20px;
 }
+
+
+/* ========================================
+   MENU ACTIONS
+======================================== */
 
 #mainPage .main-menu-actions {
     display: flex;
     flex-direction: column;
-    gap: 18px;
+
     width: min(390px, 88vw);
-    min-height: calc((64px * 3) + (18px * 2));
+
+    gap: clamp(10px, 1.4vh, 14px);
+
+    flex-shrink: 0;
 }
+
+
+/* ========================================
+   BUTTON BASE
+======================================== */
 
 #mainPage .game-button {
-    width: min(390px, 88vw);
+    width: 100%;
     min-height: 64px;
+
     padding: 14px 28px;
+
     border: 3px solid #3f2414;
     border-radius: 12px;
-    box-shadow: 0 6px 0 #2a160e, 0 10px 18px rgba(0, 0, 0, 0.45), inset 0 2px 0 rgba(255, 255, 255, 0.4);
+
+    box-shadow:
+        0 6px 0 #2a160e,
+        0 10px 18px rgba(0, 0, 0, 0.45),
+        inset 0 2px 0 rgba(255, 255, 255, 0.4);
+
     color: #25160e;
+
     cursor: pointer;
-    font: 700 1.35rem Georgia, "Times New Roman", serif;
+
+    font-family: Georgia, "Times New Roman", serif;
+    font-size: 1.35rem;
+    font-weight: 700;
+
     letter-spacing: 0.03em;
+    line-height: 1.1;
+
     text-align: center;
-    text-shadow: 0 1px 0 rgba(255, 255, 255, 0.35);
-    transition: transform 120ms ease, filter 120ms ease, box-shadow 120ms ease;
+
+    text-shadow:
+        0 1px 0 rgba(255, 255, 255, 0.35);
+
+    transition:
+        transform 120ms ease,
+        filter 120ms ease,
+        box-shadow 120ms ease;
 }
+
+
+/* ========================================
+   CREATE GAME BUTTON
+======================================== */
 
 #mainPage .create-button {
-    background: linear-gradient(#f6cf72, #c8872e);
+    background:
+        linear-gradient(#f6cf72, #c8872e);
 }
+
+
+/* ========================================
+   JOIN GAME BUTTON
+======================================== */
 
 #mainPage .join-button {
-    background: linear-gradient(#82ded1, #258f8c);
+    background:
+        linear-gradient(#82ded1, #258f8c);
 }
 
+
+/* ========================================
+   HOW TO PLAY BUTTON
+======================================== */
+
 #mainPage .how-to-play-button {
-    background: linear-gradient(#f6dfad, #d7b678);
+    background:
+        linear-gradient(#f6dfad, #d7b678);
+
     color: #3a2114;
 }
 
+
+/* ========================================
+   BUTTON INTERACTIONS
+======================================== */
+
 #mainPage .game-button:hover {
     filter: brightness(1.1);
+
     transform: translateY(-2px);
 }
 
 #mainPage .game-button:active {
-    box-shadow: 0 2px 0 #2a160e, 0 5px 10px rgba(0, 0, 0, 0.4), inset 0 2px 5px rgba(0, 0, 0, 0.2);
+    box-shadow:
+        0 2px 0 #2a160e,
+        0 5px 10px rgba(0, 0, 0, 0.4),
+        inset 0 2px 5px rgba(0, 0, 0, 0.2);
+
     transform: translateY(4px);
 }
 
@@ -119,99 +232,214 @@ body {
 
 #mainPage .game-button:disabled {
     cursor: not-allowed;
+
     filter: grayscale(0.75);
+
     opacity: 0.6;
 }
 
-.board {
-    display: grid;
-    grid-template-columns: repeat(3, 200px);
-    grid-template-rows: repeat(3, 200px);
-    gap: 5px;
-}
 
-.cell {
-    font-size: 40px;
-    cursor: pointer;
-}
+/* ========================================
+   TABLET
+======================================== */
 
-#exitButton {
-    display: block;
-    margin-top: 12px;
-    cursor: pointer;
-}
+@media (min-width: 481px) and (max-width: 768px) {
 
-/* Tablets and smaller screens */
-@media (max-width: 768px) {
     #mainPage {
+        width: 100%;
+        height: 100vh;
+        height: 100dvh;
+
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        justify-content: flex-start;
+
         gap: 14px;
-        padding: 5vh 18px 24px;
+
+        padding: 0 18px 20px;
+
+        overflow: hidden;
     }
+
+
+    /* ====================================
+       TITLE
+    ==================================== */
 
     #mainPage .main-title-image {
-        width: min(600px, 94vw);
+        display: block;
+
+        width: min(650px, 94vw);
+        height: auto;
+
+        object-fit: contain;
+
+        flex-shrink: 0;
+
+        /* Controls vertical position */
+        margin-top: 90px;
+        margin-bottom: 0;
+
+        transform: none;
     }
 
+
+    /* ====================================
+       MENU
+    ==================================== */
+
     #mainPage .main-menu-actions {
-        gap: 14px;
+        display: flex;
+        flex-direction: column;
+
         width: min(360px, 90vw);
-        min-height: calc((60px * 3) + (14px * 2));
+
+        gap: 14px;
+
+        margin-top: 50px;
+
+        flex-shrink: 0;
     }
+
+
+    /* ====================================
+       BUTTONS
+    ==================================== */
 
     #mainPage .game-button {
         width: 100%;
+
         min-height: 60px;
+
         padding: 13px 22px;
+
         font-size: 1.2rem;
     }
 }
 
-/* Smartphones */
+/* ========================================
+   MOBILE
+======================================== */
+
 @media (max-width: 480px) {
+
     #mainPage {
+        width: 100%;
+        height: 100vh;
+        height: 100dvh;
+
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        justify-content: flex-start;
+
         gap: 12px;
-        padding: 4vh 12px 20px;
+
+        padding: 0 12px 16px;
+
+        overflow: hidden;
     }
+
+
+    /* ====================================
+       TITLE
+    ==================================== */
 
     #mainPage .main-title-image {
-        width: min(440px, 98vw);
+        display: block;
+
+        width: min(420px, 94vw);
+        height: auto;
+
+        object-fit: contain;
+
+        flex-shrink: 0;
+
+        /*
+           Controls how far down the whole
+           menu composition starts.
+        */
+        margin-top: 140px;
+        margin-bottom: 0;
+
+        transform: none;
     }
 
+
+    /* ====================================
+       MENU
+    ==================================== */
+
     #mainPage .main-menu-actions {
+        display: flex;
+        flex-direction: column;
+
+        width: min(320px, 88vw);
+
         gap: 12px;
-        width: min(330px, 92vw);
-        min-height: calc((56px * 3) + (12px * 2));
+
+        margin-top: 50px;
+
+        flex-shrink: 0;
     }
+
+
+    /* ====================================
+       BUTTONS
+    ==================================== */
 
     #mainPage .game-button {
         width: 100%;
-        min-height: 58px;
-        padding: 12px 18px;
+
+        min-height: 54px;
+
+        padding: 11px 18px;
+
         font-size: 1.05rem;
     }
 }
 
-/* Very small portrait screens */
+
+/* ========================================
+   VERY SMALL MOBILE
+======================================== */
+
 @media (max-width: 360px) {
+
     #mainPage {
         gap: 9px;
-        padding: 3vh 8px 14px;
+
+        padding:
+            3vh
+            8px
+            14px;
     }
+
+
+    /* TITLE */
 
     #mainPage .main-title-image {
-        width: 100%;
+        width: 96vw;
     }
+
+
+    /* MENU */
 
     #mainPage .main-menu-actions {
+        width: 92vw;
+
         gap: 9px;
-        width: 94vw;
-        min-height: calc((52px * 3) + (9px * 2));
     }
 
+
+    /* BUTTONS */
+
     #mainPage .game-button {
-        width: 100%;
-        min-height: 54px;
+        min-height: 52px;
+
         padding: 10px 14px;
+
         font-size: 0.95rem;
     }
 }
