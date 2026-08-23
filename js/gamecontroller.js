@@ -95,3 +95,19 @@ async function handlePlayAgain() {
     }
 }
 
+function waitForGameToStart(key) {
+
+    async function check() {
+        const status = await checkGame(key);
+
+        if (status === "true") {
+            waitingInterval = null;
+            game();
+            return;
+        }
+
+        waitingInterval = setTimeout(check, 1000);
+    }
+
+    check();
+}
