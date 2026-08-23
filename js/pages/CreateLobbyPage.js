@@ -1,4 +1,4 @@
-import { Button } from "../components/button.js";
+import { Button } from "../components/Button.js";
 import { gameState } from "../state/gameState.js";
 import { createOrJoinGame, resetGame } from "../services/gameService.js";
 import { generateGameKey } from "../utils/gameUtils.js";
@@ -88,25 +88,40 @@ export class CreateLobbyPage {
         });
 
 
-        // Create game room
+        // Create a game room
         this.createButton.onClick(async () => {
-            console.log("Creating game with:", this.gameKey);
+            // Prevents double click while request is still running
+            if (this.createInProgress || this.gameCreated) {
+                return;
+            }
 
-            const tile = await createOrJoinGame(this.gameKey);
+            this.createInProgress = true;
 
-            console.log("Server returned:", tile);
+            try {
+                console.log("Creating game with:", this.gameKey);
 
-            if (tile === "X") {
-                gameState.gameKey = this.gameKey;
-                gameState.playerTile = tile;
+                const tile = await createOrJoinGame(this.gameKey);
 
-                console.log("Game created successfully");
+                console.log("Server returned:", tile);
 
-                this.gameCreated = true;
+                if (tile === "X") {
+                    gameState.gameKey = this.gameKey;
+                    gameState.playerTile = tile;
 
-                this.showWaitingState();
+                    console.log("Game created successfully");
 
-                waitForGameToStart(gameState.gameKey,this.onCancel);
+                    this.gameCreated = true;
+
+                    this.showWaitingState();
+
+                    waitForGameToStart(
+                        gameState.gameKey,
+                        this.onCancel
+                    );
+                }
+
+            } finally {
+                this.createInProgress = false;
             }
         });
 

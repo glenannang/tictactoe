@@ -1,4 +1,4 @@
-import { Button } from "../components/button.js";
+import { Button } from "../components/Button.js";
 import { Modal } from "../components/Modal.js";
 import { gameState } from "../state/gameState.js";
 import { getBoard, resetGame } from "../services/gameService.js";

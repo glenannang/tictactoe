@@ -1,30 +1,9 @@
 import { gameState } from "../state/gameState.js";
-
-import {
-    checkGame,
-    getBoard,
-    createOrJoinGame,
-    resetGame,
-    move
-} from "../services/gameService.js";
-
-import {
-    checkWinner,
-    checkDraw,
-    getCurrentTurn
-} from "./gameRules.js";
-
+import { checkGame,getBoard,createOrJoinGame,resetGame,move} from "../services/gameService.js";
+import {checkWinner,checkDraw,getCurrentTurn} from "./gameRules.js";
 import { updateGameDisplay } from "../utils/gameUtils.js";
-
 import { GamePage } from "../pages/GamePage.js";
-
-import {
-    showGameOverModal,
-    showOpponentLeftModal,
-    showOpponentLeftRematchModal,
-    showWaitingForOpponentModal,
-    showGameAlreadyStartedModal
-} from "../ui/gameModals.js";
+import {showGameOverModal,showOpponentLeftModal,showOpponentLeftRematchModal,showWaitingForOpponentModal,showGameAlreadyStartedModal} from "../ui/gameModals.js";
 
 
 function game(onExit) {

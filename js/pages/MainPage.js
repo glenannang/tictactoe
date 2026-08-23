@@ -1,4 +1,4 @@
-import { Button } from "../components/button.js";
+import { Button } from "../components/Button.js";
 
 import { CreateLobbyPage } from "./CreateLobbyPage.js";
 import { JoinLobbyPage } from "./JoinLobbyPage.js";

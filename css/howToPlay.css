@@ -1,6 +1,4 @@
-/* ========================================
-   HOW TO PLAY PAGE
-======================================== */
+/* HOW TO PLAY PAGE*/
 
 #howToPlayPage {
     width: 100%;
@@ -34,9 +32,7 @@
 }
 
 
-/* ========================================
-   DESKTOP PARCHMENT
-======================================== */
+/* SCROLL*/
 
 #howToPlayPage .how-to-play-scroll {
     position: relative;
@@ -52,9 +48,7 @@
 }
 
 
-/* ========================================
-   CONTENT INSIDE PARCHMENT
-======================================== */
+/* CONTENT INSIDE PARCHMENT*/
 
 #howToPlayPage .how-to-play-content {
     position: absolute;
@@ -76,9 +70,7 @@
 }
 
 
-/* ========================================
-   TITLE
-======================================== */
+/* TITLE */
 
 #howToPlayPage .how-to-play-title {
     margin: 0 0 clamp(8px, 1.5vw, 16px);
@@ -97,9 +89,7 @@
 }
 
 
-/* ========================================
-   DESCRIPTION / LORE
-======================================== */
+/* LORE*/
 
 #howToPlayPage .how-to-play-description {
     width: 100%;
@@ -117,9 +107,7 @@
 }
 
 
-/* ========================================
-   RULES
-======================================== */
+/* RULES*/
 
 #howToPlayPage .how-to-play-rule {
     width: 100%;
@@ -136,9 +124,7 @@
 }
 
 
-/* ========================================
-   BACK BUTTON
-======================================== */
+/* BACK BUTTON*/
 
 #howToPlayPage .back-button {
     width: min(300px, 70vw);
@@ -181,9 +167,7 @@
 }
 
 
-/* ========================================
-   BUTTON INTERACTIONS
-======================================== */
+/* BACK BUTTON */
 
 #howToPlayPage .back-button:hover {
     filter: brightness(1.1);
@@ -206,12 +190,7 @@
 }
 
 
-/* ========================================
-   SHORT DESKTOP / LAPTOP
-
-   Still desktop layout.
-   Only the browser height is smaller.
-======================================== */
+/* SHORT DESKTOP / LAPTOP*/
 
 @media (min-width: 701px) and (max-height: 750px) {
 
@@ -289,97 +268,7 @@
 }
 
 
-/* ========================================
-   VERY SHORT DESKTOP / LAPTOP
-======================================== */
-
-@media (min-width: 701px) and (max-height: 620px) {
-
-    #howToPlayPage {
-        padding: 6px;
-        gap: 4px;
-    }
-
-
-    /* PARCHMENT */
-    #howToPlayPage .how-to-play-scroll {
-        width: min(
-            620px,
-            76vw,
-            112dvh
-        );
-
-        flex-shrink: 1;
-    }
-
-
-    /* CONTENT */
-    #howToPlayPage .how-to-play-content {
-        top: 17%;
-        left: 18%;
-
-        width: 64%;
-        height: 64%;
-
-        padding: 2px 8px;
-
-        /*
-           Start from the top of the safe area
-           instead of vertically centering a
-           block that may be too tall.
-        */
-        justify-content: flex-start;
-
-        overflow: hidden;
-    }
-
-
-    /* TITLE */
-    #howToPlayPage .how-to-play-title {
-        margin: 0 0 4px;
-
-        font-size: clamp(1.15rem, 2.5vw, 1.8rem);
-
-        line-height: 1;
-    }
-
-
-    /* DESCRIPTION */
-    #howToPlayPage .how-to-play-description {
-        margin: 0 0 4px;
-
-        font-size: clamp(0.58rem, 0.95vw, 0.76rem);
-
-        line-height: 1.12;
-    }
-
-
-    /* RULES */
-    #howToPlayPage .how-to-play-rule {
-        margin: 1px 0;
-
-        font-size: clamp(0.55rem, 0.9vw, 0.7rem);
-
-        line-height: 1.1;
-    }
-
-
-    /* BUTTON */
-    #howToPlayPage .back-button {
-        width: min(240px, 60vw);
-        min-height: 38px;
-
-        margin-top: 3px;
-        padding: 6px 10px;
-
-        font-size: 0.82rem;
-    }
-}
-
-
-/* ========================================
-   TABLET / NARROW WINDOW
-======================================== */
+/* TABLET / NARROW WINDOW */
 
 @media (max-width: 700px) {
 
@@ -450,9 +339,7 @@
 }
 
 
-/* ========================================
-   MOBILE
-======================================== */
+/* MOBILE*/
 
 @media (max-width: 480px) {
 
@@ -463,9 +350,7 @@
     }
 
 
-    /* ====================================
-       SWITCH TO MOBILE PARCHMENT
-    ==================================== */
+    /* SWITCH TO MOBILE PARCHMENT*/
 
     #howToPlayPage .how-to-play-scroll {
         width: min(430px, 95vw);
@@ -485,9 +370,7 @@
     }
 
 
-    /* ====================================
-       CONTENT INSIDE MOBILE PARCHMENT
-    ==================================== */
+    /* CONTENT INSIDE MOBILE PARCHMENT*/
 
     #howToPlayPage .how-to-play-content {
         top: 13%;
@@ -552,11 +435,7 @@
 }
 
 
-/* ========================================
-   SHORT MOBILE SCREEN
-
-   Same mobile width, but less height.
-======================================== */
+/* SHORT MOBILE SCREEN */
 
 @media (max-width: 480px) and (max-height: 750px) {
 

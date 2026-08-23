@@ -1,4 +1,4 @@
-import { Button } from "../components/button.js";
+import { Button } from "../components/Button.js";
 import { gameState } from "../state/gameState.js";
 import { resetGame } from "../services/gameService.js";
 

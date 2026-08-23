@@ -1,6 +1,4 @@
-/* ========================================
-   CREATE LOBBY PAGE
-======================================== */
+/* CREATE LOBBY PAGE*/
 
 #createLobbyPage {
     width: 100%;
@@ -34,9 +32,7 @@
 }
 
 
-/* ========================================
-   REAL BROWN CONTAINER
-======================================== */
+/* REAL BROWN CONTAINER*/
 
 #createLobbyPage > .create-lobby-content {
     width: min(920px, 88vw);
@@ -64,9 +60,7 @@
 }
 
 
-/* ========================================
-   TITLE
-======================================== */
+/* TITLE*/
 
 #createLobbyPage .create-lobby-title {
     grid-column: 1 / -1;
@@ -86,9 +80,7 @@
 }
 
 
-/* ========================================
-   GAME CODE DISPLAY
-======================================== */
+/* GAME CODE DISPLAY*/
 
 #createLobbyPage .game-code-display {
     grid-column: 1;
@@ -125,9 +117,7 @@
 }
 
 
-/* ========================================
-   GAME CODE LABEL
-======================================== */
+/* GAME CODE LABEL*/
 
 #createLobbyPage .game-code-label {
     grid-column: 1 / -1;
@@ -150,9 +140,7 @@
 }
 
 
-/* ========================================
-   BUTTON BASE
-======================================== */
+/* BUTTON BASE*/
 
 #createLobbyPage .lobby-button {
     width: 100%;
@@ -188,9 +176,7 @@
 }
 
 
-/* ========================================
-   REGENERATE
-======================================== */
+/* REGENERATE*/
 
 #createLobbyPage .regenerate-button {
     grid-column: 2;
@@ -211,9 +197,7 @@
 }
 
 
-/* ========================================
-   CREATE
-======================================== */
+/* CREATE */
 
 #createLobbyPage .confirm-create-button {
     grid-column: 1;
@@ -228,9 +212,7 @@
 }
 
 
-/* ========================================
-   CANCEL
-======================================== */
+/* CANCEL*/
 
 #createLobbyPage .cancel-create-button {
     grid-column: 2;
@@ -245,9 +227,7 @@
 }
 
 
-/* ========================================
-   WAITING MESSAGE
-======================================== */
+/* WAITING MESSAGE*/
 
 #createLobbyPage .waiting-message {
     grid-column: 1 / -1;
@@ -270,21 +250,7 @@
 }
 
 
-/* ========================================
-   WAITING STATE
-======================================== */
-
-/*
-    Game Created
-
-            GAME CODE
-
-    [      89967E      ] [ Copy Code ]
-
-    Waiting for another player...
-
-              [ Cancel ]
-*/
+/* WAITING STATE*/
 
 #createLobbyPage.waiting-state
 .create-lobby-content {
@@ -372,9 +338,7 @@
 }
 
 
-/* ========================================
-   BUTTON INTERACTIONS
-======================================== */
+/* BUTTON INTERACTIONS */
 
 #createLobbyPage .lobby-button:hover {
     filter: brightness(1.1);
@@ -405,9 +369,7 @@
 }
 
 
-/* ========================================
-   TABLET / NARROW WINDOW
-======================================== */
+/* TABLET */
 
 @media (max-width: 700px) {
 
@@ -493,9 +455,7 @@
     }
 
 
-    /* ====================================
-       TABLET WAITING
-    ==================================== */
+    /* TABLET WAITING*/
 
     #createLobbyPage.waiting-state
     .create-lobby-content {
@@ -546,9 +506,7 @@
 }
 
 
-/* ========================================
-   MOBILE
-======================================== */
+/* MOBILE */
 
 @media (max-width: 480px) {
 
@@ -626,9 +584,7 @@
 }
 
 
-/* ========================================
-   VERY SMALL MOBILE
-======================================== */
+/* VERY SMALL MOBILE */
 
 @media (max-width: 360px) {
 
