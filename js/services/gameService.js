@@ -1,6 +1,6 @@
 const BASE_URL = "http://localhost:8080/tictactoe/tictactoeserver";
 
-function createOrJoinGame(key) {
+export function createOrJoinGame(key) {
     return fetch(`${BASE_URL}/createGame?key=${key}`)
         .then(response => response.text())
         .then(data => {
@@ -12,7 +12,7 @@ function createOrJoinGame(key) {
         });
 }
 
-function checkGame(key) {
+export function checkGame(key) {
     return fetch(`${BASE_URL}/check?key=${key}`)
         .then(response => response.text())
         .then(data => {
@@ -24,7 +24,7 @@ function checkGame(key) {
         });
 }
 
-function move(key, tile, y, x) {
+export function move(key, tile, y, x) {
     return fetch(`${BASE_URL}/move?key=${key}&tile=${tile}&y=${y}&x=${x}`)
         .then(response => response.text())
         .then(data => {
@@ -35,7 +35,7 @@ function move(key, tile, y, x) {
         });
 }
 
-function getBoard(key) {
+export function getBoard(key) {
      return fetch(`${BASE_URL}/board?key=${key}`)
         .then(response => response.text())
         .then(data => {
@@ -47,7 +47,7 @@ function getBoard(key) {
         });
 }
 
-function resetGame(key, keepalive = false) {
+export function resetGame(key, keepalive = false) {
     return fetch(`${BASE_URL}/reset?key=${key}`, {
         keepalive: keepalive
     })

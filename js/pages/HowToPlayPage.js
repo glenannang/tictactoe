@@ -1,4 +1,4 @@
-class HowToPlayPage {
+export class HowToPlayPage {
 
     constructor() {
         this.initializeElements();
@@ -99,4 +99,3 @@ class HowToPlayPage {
     }
 }
 
-//export default HowToPlayPage;

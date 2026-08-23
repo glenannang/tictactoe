@@ -1,9 +1,12 @@
+import { Button } from "../components/button.js";
+import { Modal } from "../components/Modal.js";
+import { gameState } from "../state/gameState.js";
+import { getBoard, resetGame } from "../services/gameService.js";
+import { showMainPage } from "../navigation.js";
 
-function showGameOverModal(message) {
-    const modal = new Modal(
-        "Game Over",
-        message
-    );
+
+export function showGameOverModal(message, onPlayAgain) {
+    const modal = new Modal("Game Over", message);
 
     const playAgainButton = new Button(
         "play-again",
@@ -19,31 +22,31 @@ function showGameOverModal(message) {
     modal.addButton(exitButton);
 
     playAgainButton.onClick(async () => {
-        // Close Game Over modal
-        modal.close();       
-        await handlePlayAgain();
+        modal.close();
+        await onPlayAgain();
     });
 
     exitButton.onClick(async () => {
-        const currentBoard = await getBoard(gameKey);
-        if (currentBoard === finishedBoard) {
-        // finished match is still there
-        await resetGame(gameKey);
+        const currentBoard = await getBoard(gameState.gameKey);
+
+        if (currentBoard === gameState.finishedBoard) {
+            // Finished match is still on the server
+            await resetGame(gameState.gameKey);
         }
 
-        gameKey = null;
-        playerTile = null;
-        gameOver = false;
-        finishedBoard = null;
+        gameState.gameKey = null;
+        gameState.playerTile = null;
+        gameState.gameOver = false;
+        gameState.finishedBoard = null;
 
-        mainPage.render("app");
+        showMainPage();
     });
 
     modal.render("gamePage");
-   
 }
 
-function showOpponentLeftModal() {
+
+export function showOpponentLeftModal() {
     const modal = new Modal(
         "Opponent Left",
         "Your opponent left the game."
@@ -57,17 +60,18 @@ function showOpponentLeftModal() {
     modal.addButton(exitButton);
 
     exitButton.onClick(() => {
-        gameKey = null;
-        playerTile = null;
-        gameOver = false;
+        gameState.gameKey = null;
+        gameState.playerTile = null;
+        gameState.gameOver = false;
 
-        mainPage.render("app");
+        showMainPage();
     });
 
     modal.render("gamePage");
 }
 
-function showOpponentLeftRematchModal() {
+
+export function showOpponentLeftRematchModal() {
     const modal = new Modal(
         "Opponent Left",
         "Your opponent left. Waiting for a new player..."
@@ -81,17 +85,18 @@ function showOpponentLeftRematchModal() {
     modal.addButton(exitButton);
 
     exitButton.onClick(() => {
-        gameKey = null;
-        playerTile = null;
-        gameOver = false;
+        gameState.gameKey = null;
+        gameState.playerTile = null;
+        gameState.gameOver = false;
 
-        mainPage.render("app");
+        showMainPage();
     });
 
     modal.render("gamePage");
 }
 
-function showWaitingForOpponentModal() {
+
+export function showWaitingForOpponentModal() {
     const modal = new Modal(
         "Waiting for Opponent",
         "Waiting for another player to join..."
@@ -105,16 +110,16 @@ function showWaitingForOpponentModal() {
     modal.addButton(exitButton);
 
     exitButton.onClick(async () => {
-        clearTimeout(waitingInterval);
-        waitingInterval = null;
+        clearTimeout(gameState.waitingInterval);
+        gameState.waitingInterval = null;
 
-        await resetGame(gameKey);
+        await resetGame(gameState.gameKey);
 
-        gameKey = null;
-        playerTile = null;
-        gameOver = false;
+        gameState.gameKey = null;
+        gameState.playerTile = null;
+        gameState.gameOver = false;
 
-        mainPage.render("app");
+        showMainPage();
     });
 
     modal.render("gamePage");
@@ -123,7 +128,7 @@ function showWaitingForOpponentModal() {
 }
 
 
-function showGameAlreadyStartedModal() {
+export function showGameAlreadyStartedModal() {
     const modal = new Modal(
         "Oops... Too Late!",
         "Another explorer has already entered the chamber and begun the challenge."
@@ -137,13 +142,12 @@ function showGameAlreadyStartedModal() {
     modal.addButton(exitButton);
 
     exitButton.onClick(() => {
-        gameKey = null;
-        playerTile = null;
-        gameOver = false;
+        gameState.gameKey = null;
+        gameState.playerTile = null;
+        gameState.gameOver = false;
 
-        mainPage.render("app");
+        showMainPage();
     });
 
     modal.render("gamePage");
 }
-

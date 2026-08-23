@@ -1,18 +1,24 @@
-let rematchInProgress = false;
 
+import { gameState } from "../state/gameState.js";
+import { checkGame, getBoard, createOrJoinGame, resetGame} from "../services/gameService.js";
+import { checkWinner, checkDraw,getCurrentTurn} from "./gameRules.js";
+import { addBoardEventListeners, displayBoard} from "./board.js";
+import { showGameMessage } from "../utils/gameUtils.js";
+import { GamePage } from "../pages/GamePage.js";
 
 function game() {
     const gamePage = new GamePage();
 
-    //event listener for exit button
+    //exit button in gamepage
     gamePage.exitButton.onClick(async function () {
-        await resetGame(gameKey);
+        await resetGame(gameState.gameKey);
 
-        clearInterval(boardSyncInterval);
+        clearTimeout(gameState.boardSyncInterval);
+        gameState.boardSyncInterval = null;
 
-        gameKey = null;
-        playerTile = null;
-        gameOver = false;
+        gameState.gameKey = null;
+        gameState.playerTile = null;
+        gameState.gameOver = false;
 
         mainPage.render("app");
     });
@@ -20,20 +26,91 @@ function game() {
     gamePage.render("app");
 
     addBoardEventListeners();
-    syncBoard(gameKey);
+    gameMonitor(gameState.gameKey);
 
 }
 
-async function handlePlayAgain() {
+function gameMonitor(key) {
+    async function sync() {
+        // Check if the game room still exists
+        const gameRoomStatus = await checkGame(key);
+
+        if (gameRoomStatus === "false") {
+            clearTimeout(gameState.boardSyncInterval);
+            gameState.boardSyncInterval = null;
+
+            console.log("Opponent exited.");
+            showOpponentLeftModal();
+            return;
+        }
+
+        // Sync the board
+        const data = await getBoard(key);
+
+        if (data === "[GAME NOT YET STARTED]") {
+            gameState.boardSyncInterval = setTimeout(sync, 1000);
+            return;
+        }
+
+        console.log("Board received:", data);
+        console.log("Current turn:", getCurrentTurn(data));
+        console.log("My tile:", gameState.playerTile);
+
+        displayBoard(data);
+
+        // Check for winner
+        const winner = checkWinner(data);
+
+        console.log("winner:", winner);
+        console.log("gameOver:", gameState.gameOver);
+
+        if (winner !== null && !gameState.gameOver) {
+            gameState.gameOver = true;
+            gameState.finishedBoard = data;
+            clearTimeout(gameState.boardSyncInterval);
+            gameState.boardSyncInterval = null;
+
+            showGameMessage(`${winner} wins!`);
+            console.log(`${winner} won!`);
+
+            showGameOverModal(`${winner} wins!`,handlePlayAgain);
+
+            return;
+        }
+
+        // Check for draw
+        if (checkDraw(data) && !gameState.gameOver) {
+            gameState.gameOver = true;
+            gameState.finishedBoard = data;
+
+            clearTimeout(gameState.boardSyncInterval);
+            gameState.boardSyncInterval = null;
+
+            console.log("Game ended in a draw.");
+
+            showGameOverModal("It's a draw!",handlePlayAgain);
+
+            return;
+        }
+
+        // Schedule the NEXT sync only after this one is finished
+        gameState.boardSyncInterval = setTimeout(sync, 1000);
+    }
+
+    // Start the first sync
+    sync();
+}
+
+export async function handlePlayAgain() {
     // Prevent double click / duplicate rematch requests
-    if (rematchInProgress) {
+    if (gameState.rematchInProgress) {
         return;
     }
 
-    rematchInProgress = true;
+    gameState.rematchInProgress = true;
 
     try {
-        const response = await createOrJoinGame(gameKey);
+        const response = await createOrJoinGame(gameState.gameKey);
 
         console.log("Play Again response:", response);
 
@@ -41,15 +118,15 @@ async function handlePlayAgain() {
       
         //CASE 1:
         if (response === "[GAME ALREADY STARTED]") {
-            const currentBoard = await getBoard(gameKey);
+            const currentBoard = await getBoard(gameState.gameKey);
 
-            if (currentBoard === finishedBoard) { // Same old finished game
-                await resetGame(gameKey);
+            if (currentBoard === gameState.finishedBoard) { // Same old finished game
+                await resetGame(gameState.gameKey);
 
-                playerTile = await createOrJoinGame(gameKey);
-                gameOver = false;
+                gameState.playerTile = await createOrJoinGame(gameState.gameKey);
+                gameState.gameOver = false;
                 showWaitingForOpponentModal();
-                waitForGameToStart(gameKey);
+                waitForGameToStart(gameState.gameKey);
                 return;
             }
 
@@ -62,8 +139,8 @@ async function handlePlayAgain() {
         // CASE 2: the game was reset already by the other player
         if (response === "O") { 
             console.log("Joined rematch as Player O.");
-            playerTile = "O";
-            gameOver = false;
+            gameState.playerTile = "O";
+            gameState.gameOver = false;
             game();
             return;
         }
@@ -75,11 +152,11 @@ async function handlePlayAgain() {
 
             console.log("Created new room as Player X.");
 
-            playerTile = "X";
-            gameOver = false;
-            finishedBoard = null;
+            gameState.playerTile = "X";
+            gameState.gameOver = false;
+            gameState.finishedBoard = null;
             showOpponentLeftRematchModal();
-            waitForGameToStart(gameKey);
+            waitForGameToStart(gameState.gameKey);
 
             return;
         }
@@ -91,23 +168,20 @@ async function handlePlayAgain() {
         console.error("Play Again failed:", error);
 
     } finally {
-        rematchInProgress = false;
+        gameState.rematchInProgress = false;
     }
 }
 
-function waitForGameToStart(key) {
-
+export function waitForGameToStart(key) {
     async function check() {
         const status = await checkGame(key);
 
         if (status === "true") {
-            waitingInterval = null;
+            gameState.waitingInterval = null;
             game();
             return;
         }
-
-        waitingInterval = setTimeout(check, 1000);
+        gameState.waitingInterval = setTimeout(check, 1000);
     }
-
     check();
 }

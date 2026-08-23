@@ -1,4 +1,4 @@
-class Modal {
+export class Modal {
     constructor(title, message) {
         this.titleText = title;
         this.messageText = message;
