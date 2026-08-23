@@ -1,9 +1,20 @@
-class GamePage {
-    constructor() {
+import { Button } from "../components/button.js";
+import { gameState } from "../state/gameState.js";
+import { resetGame } from "../services/gameService.js";
+import { createBoard } from "../game/board.js";
+
+
+export class GamePage {
+
+    constructor(onExit) {
+        this.onExit = onExit;
+
         this.initializeElements();
         this.setAttributes();
         this.appendElements();
+        this.addEventListeners();
     }
+
 
     initializeElements() {
         this.container = document.createElement("main");
@@ -21,19 +32,23 @@ class GamePage {
         );
     }
 
+
     setAttributes() {
         this.container.id = "gamePage";
 
         this.greeting.textContent = "Hello, Explorer!";
 
         this.playerMessage.id = "playerMessage";
-        this.playerMessage.textContent = `You are playing as ${playerTile}`;
-        this.turnMessage.id = "gameMessage";
+        this.playerMessage.textContent =
+            `You are playing as ${gameState.playerTile}`;
 
         this.gameKeyText.id = "gameKeyDisplay";
-        this.gameKeyText.textContent = `Game Code: ${gameKey}`;
+        this.gameKeyText.textContent =
+            `Game Code: ${gameState.gameKey}`;
 
+        this.turnMessage.id = "gameMessage";
     }
+
 
     appendElements() {
         this.container.append(
@@ -45,6 +60,27 @@ class GamePage {
             this.exitButton.getElement()
         );
     }
+
+
+    addEventListeners() {
+        this.exitButton.onClick(async () => {
+
+            await resetGame(gameState.gameKey);
+
+            clearTimeout(gameState.boardSyncInterval);
+            gameState.boardSyncInterval = null;
+
+            gameState.gameKey = null;
+            gameState.playerTile = null;
+            gameState.gameOver = false;
+            gameState.finishedBoard = null;
+
+            if (this.onExit) {
+                this.onExit();
+            }
+        });
+    }
+
 
     render(target) {
         const parent = document.getElementById(target);

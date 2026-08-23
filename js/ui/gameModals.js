@@ -2,11 +2,13 @@ import { Button } from "../components/button.js";
 import { Modal } from "../components/Modal.js";
 import { gameState } from "../state/gameState.js";
 import { getBoard, resetGame } from "../services/gameService.js";
-import { showMainPage } from "../navigation.js";
 
 
-export function showGameOverModal(message, onPlayAgain) {
-    const modal = new Modal("Game Over", message);
+export function showGameOverModal(message, onPlayAgain, onExit) {
+    const modal = new Modal(
+        "Game Over",
+        message
+    );
 
     const playAgainButton = new Button(
         "play-again",
@@ -21,16 +23,18 @@ export function showGameOverModal(message, onPlayAgain) {
     modal.addButton(playAgainButton);
     modal.addButton(exitButton);
 
+
     playAgainButton.onClick(async () => {
         modal.close();
+
         await onPlayAgain();
     });
+
 
     exitButton.onClick(async () => {
         const currentBoard = await getBoard(gameState.gameKey);
 
         if (currentBoard === gameState.finishedBoard) {
-            // Finished match is still on the server
             await resetGame(gameState.gameKey);
         }
 
@@ -39,14 +43,15 @@ export function showGameOverModal(message, onPlayAgain) {
         gameState.gameOver = false;
         gameState.finishedBoard = null;
 
-        showMainPage();
+        onExit();
     });
+
 
     modal.render("gamePage");
 }
 
 
-export function showOpponentLeftModal() {
+export function showOpponentLeftModal(onExit) {
     const modal = new Modal(
         "Opponent Left",
         "Your opponent left the game."
@@ -59,19 +64,21 @@ export function showOpponentLeftModal() {
 
     modal.addButton(exitButton);
 
+
     exitButton.onClick(() => {
         gameState.gameKey = null;
         gameState.playerTile = null;
         gameState.gameOver = false;
 
-        showMainPage();
+        onExit();
     });
+
 
     modal.render("gamePage");
 }
 
 
-export function showOpponentLeftRematchModal() {
+export function showOpponentLeftRematchModal(onExit) {
     const modal = new Modal(
         "Opponent Left",
         "Your opponent left. Waiting for a new player..."
@@ -84,19 +91,30 @@ export function showOpponentLeftRematchModal() {
 
     modal.addButton(exitButton);
 
-    exitButton.onClick(() => {
+
+    exitButton.onClick(async () => {
+        // Stop waiting for another player
+        clearTimeout(gameState.waitingInterval);
+        gameState.waitingInterval = null;
+
+        // Player no longer wants to continue,
+        // so destroy the newly-created room
+        await resetGame(gameState.gameKey);
+
         gameState.gameKey = null;
         gameState.playerTile = null;
         gameState.gameOver = false;
+        gameState.finishedBoard = null;
 
-        showMainPage();
+        onExit();
     });
+
 
     modal.render("gamePage");
 }
 
 
-export function showWaitingForOpponentModal() {
+export function showWaitingForOpponentModal(onExit) {
     const modal = new Modal(
         "Waiting for Opponent",
         "Waiting for another player to join..."
@@ -109,6 +127,7 @@ export function showWaitingForOpponentModal() {
 
     modal.addButton(exitButton);
 
+
     exitButton.onClick(async () => {
         clearTimeout(gameState.waitingInterval);
         gameState.waitingInterval = null;
@@ -119,8 +138,9 @@ export function showWaitingForOpponentModal() {
         gameState.playerTile = null;
         gameState.gameOver = false;
 
-        showMainPage();
+        onExit();
     });
+
 
     modal.render("gamePage");
 
@@ -128,7 +148,7 @@ export function showWaitingForOpponentModal() {
 }
 
 
-export function showGameAlreadyStartedModal() {
+export function showGameAlreadyStartedModal(onExit) {
     const modal = new Modal(
         "Oops... Too Late!",
         "Another explorer has already entered the chamber and begun the challenge."
@@ -141,13 +161,15 @@ export function showGameAlreadyStartedModal() {
 
     modal.addButton(exitButton);
 
+
     exitButton.onClick(() => {
         gameState.gameKey = null;
         gameState.playerTile = null;
         gameState.gameOver = false;
 
-        showMainPage();
+        onExit();
     });
+
 
     modal.render("gamePage");
 }

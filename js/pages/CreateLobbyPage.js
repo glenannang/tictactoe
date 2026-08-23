@@ -106,7 +106,7 @@ export class CreateLobbyPage {
 
                 this.showWaitingState();
 
-                waitForGameToStart(gameState.gameKey);
+                waitForGameToStart(gameState.gameKey,this.onCancel);
             }
         });
 

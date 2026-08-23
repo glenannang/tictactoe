@@ -130,7 +130,7 @@ export class JoinLobbyPage {
                     "Joined game successfully. Waiting for the game to start..."
                 );
 
-                waitForGameToStart(gameState.gameKey);
+                waitForGameToStart(gameState.gameKey, this.onCancel);
             }
         });
 

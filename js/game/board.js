@@ -1,8 +1,12 @@
-let gameOver = false;
-let boardSyncInterval;
-let finishedBoard = null;
-function createBoard() {
+import { gameState } from "../state/gameState.js";
+import { getBoard, move } from "../services/gameService.js";
+import { checkWinner, getCurrentTurn } from "./gameRules.js";
+import { showGameMessage } from "../utils/gameUtils.js";
+
+
+export function createBoard() {
     const board = document.createElement("div");
+
     board.id = "board";
     board.className = "board";
 
@@ -21,7 +25,8 @@ function createBoard() {
     return board;
 }
 
-function addBoardEventListeners() {
+
+export function addBoardEventListeners() {
     const cells = document.querySelectorAll(".cell");
 
     cells.forEach(function (cell) {
@@ -30,93 +35,118 @@ function addBoardEventListeners() {
 
             // Block clicks if game is over
             // or another move is still being processed
-            if (gameOver || moveInProgress) {
+            if (
+                gameState.gameOver ||
+                gameState.moveInProgress
+            ) {
                 return;
             }
 
-            moveInProgress = true;
+            gameState.moveInProgress = true;
 
             try {
-                let boardData = await getBoard(gameKey);
+                let boardData =
+                    await getBoard(gameState.gameKey);
+
 
                 // Check if game already has a winner
-                const existingWinner = checkWinner(boardData);
+                const existingWinner =
+                    checkWinner(boardData);
 
                 if (existingWinner !== null) {
-                    gameOver = true;
+                    gameState.gameOver = true;
                     return;
                 }
 
-                // Check if it is this player's turn
-                const currentTurn = getCurrentTurn(boardData);
 
-                if (playerTile !== currentTurn) {
+                // Check if it is this player's turn
+                const currentTurn =
+                    getCurrentTurn(boardData);
+
+                if (
+                    gameState.playerTile !==
+                    currentTurn
+                ) {
                     console.log("Not your turn");
                     return;
                 }
+
 
                 // Get clicked cell coordinates
                 const x = cell.dataset.x;
                 const y = cell.dataset.y;
 
-                // Check if the cell is already occupied
+
+                // Check if cell is already occupied
                 const board = boardData.split(":");
-                const index = Number(y) * 3 + Number(x);
+
+                const index =
+                    Number(y) * 3 + Number(x);
 
                 if (board[index] !== "") {
-                    console.log("Cell is already occupied");
+                    console.log(
+                        "Cell is already occupied"
+                    );
+
                     return;
                 }
 
-                // Show the move immediately
-                // so the UI doesn't feel slow
-                //cell.textContent = playerTile;
 
                 // Send move to server
-                await move(gameKey, playerTile, y, x);
+                await move(
+                    gameState.gameKey,
+                    gameState.playerTile,
+                    y,
+                    x
+                );
 
-                // Get the actual board from the server
-                boardData = await getBoard(gameKey);
 
-                // Make sure UI matches the server
+                // Get actual board from server
+                boardData =
+                    await getBoard(gameState.gameKey);
+
+
+                // Make UI match server
                 displayBoard(boardData);
 
             } finally {
-                // Unlock after request finishes,
-                // even if something goes wrong
-                moveInProgress = false;
+
+                gameState.moveInProgress = false;
             }
         });
     });
 }
 
-function displayBoard(data) {
+
+export function displayBoard(data) {
     const board = data.split(":");
-    const cells = document.querySelectorAll(".cell");
+    const cells =
+        document.querySelectorAll(".cell");
 
     cells.forEach(function (cell, index) {
         cell.textContent = board[index];
     });
 
-    const currentTurn = getCurrentTurn(data);
 
-    if (currentTurn === playerTile) {
+    const currentTurn =
+        getCurrentTurn(data);
+
+    if (
+        currentTurn ===
+        gameState.playerTile
+    ) {
         showGameMessage("Your Turn");
     } else {
         showGameMessage("Opponent's Turn");
     }
 }
 
-function clearBoard() {
-    const cells = document.querySelectorAll(".cell");
+
+export function clearBoard() {
+    const cells =
+        document.querySelectorAll(".cell");
 
     cells.forEach(function (cell) {
         cell.textContent = "";
     });
-
 }
-
-
-
-
-

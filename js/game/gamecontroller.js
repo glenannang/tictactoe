@@ -1,37 +1,53 @@
-
 import { gameState } from "../state/gameState.js";
-import { checkGame, getBoard, createOrJoinGame, resetGame} from "../services/gameService.js";
-import { checkWinner, checkDraw,getCurrentTurn} from "./gameRules.js";
-import { addBoardEventListeners, displayBoard} from "./board.js";
+
+import {
+    checkGame,
+    getBoard,
+    createOrJoinGame,
+    resetGame
+} from "../services/gameService.js";
+
+import {
+    checkWinner,
+    checkDraw,
+    getCurrentTurn
+} from "./gameRules.js";
+
+import {
+    addBoardEventListeners,
+    displayBoard
+} from "./board.js";
+
 import { showGameMessage } from "../utils/gameUtils.js";
 import { GamePage } from "../pages/GamePage.js";
 
-function game() {
-    const gamePage = new GamePage();
+import {
+    showGameOverModal,
+    showOpponentLeftModal,
+    showOpponentLeftRematchModal,
+    showWaitingForOpponentModal,
+    showGameAlreadyStartedModal
+} from "../ui/gameModals.js";
 
-    //exit button in gamepage
-    gamePage.exitButton.onClick(async function () {
-        await resetGame(gameState.gameKey);
 
-        clearTimeout(gameState.boardSyncInterval);
-        gameState.boardSyncInterval = null;
-
-        gameState.gameKey = null;
-        gameState.playerTile = null;
-        gameState.gameOver = false;
-
-        mainPage.render("app");
-    });
+function game(onExit) {
+    const gamePage = new GamePage(onExit);
 
     gamePage.render("app");
 
     addBoardEventListeners();
-    gameMonitor(gameState.gameKey);
 
+    gameMonitor(
+        gameState.gameKey,
+        onExit
+    );
 }
 
-function gameMonitor(key) {
+
+function gameMonitor(key, onExit) {
+
     async function sync() {
+
         // Check if the game room still exists
         const gameRoomStatus = await checkGame(key);
 
@@ -40,148 +56,276 @@ function gameMonitor(key) {
             gameState.boardSyncInterval = null;
 
             console.log("Opponent exited.");
-            showOpponentLeftModal();
+
+            showOpponentLeftModal(onExit);
+
             return;
         }
+
 
         // Sync the board
         const data = await getBoard(key);
 
         if (data === "[GAME NOT YET STARTED]") {
-            gameState.boardSyncInterval = setTimeout(sync, 1000);
+            gameState.boardSyncInterval =
+                setTimeout(sync, 1000);
+
             return;
         }
 
+
         console.log("Board received:", data);
-        console.log("Current turn:", getCurrentTurn(data));
-        console.log("My tile:", gameState.playerTile);
+        console.log(
+            "Current turn:",
+            getCurrentTurn(data)
+        );
+        console.log(
+            "My tile:",
+            gameState.playerTile
+        );
 
         displayBoard(data);
+
 
         // Check for winner
         const winner = checkWinner(data);
 
         console.log("winner:", winner);
-        console.log("gameOver:", gameState.gameOver);
+        console.log(
+            "gameOver:",
+            gameState.gameOver
+        );
 
-        if (winner !== null && !gameState.gameOver) {
+
+        if (
+            winner !== null &&
+            !gameState.gameOver
+        ) {
             gameState.gameOver = true;
             gameState.finishedBoard = data;
-            clearTimeout(gameState.boardSyncInterval);
+
+            clearTimeout(
+                gameState.boardSyncInterval
+            );
+
             gameState.boardSyncInterval = null;
 
-            showGameMessage(`${winner} wins!`);
+            showGameMessage(
+                `${winner} wins!`
+            );
+
             console.log(`${winner} won!`);
 
-            showGameOverModal(`${winner} wins!`,handlePlayAgain);
+            showGameOverModal(
+                `${winner} wins!`,
+                () => handlePlayAgain(onExit),
+                onExit
+            );
 
             return;
         }
 
+
         // Check for draw
-        if (checkDraw(data) && !gameState.gameOver) {
+        if (
+            checkDraw(data) &&
+            !gameState.gameOver
+        ) {
             gameState.gameOver = true;
             gameState.finishedBoard = data;
 
-            clearTimeout(gameState.boardSyncInterval);
+            clearTimeout(
+                gameState.boardSyncInterval
+            );
+
             gameState.boardSyncInterval = null;
 
-            console.log("Game ended in a draw.");
+            console.log(
+                "Game ended in a draw."
+            );
 
-            showGameOverModal("It's a draw!",handlePlayAgain);
+            showGameOverModal(
+                "It's a draw!",
+                () => handlePlayAgain(onExit),
+                onExit
+            );
 
             return;
         }
 
-        // Schedule the NEXT sync only after this one is finished
-        gameState.boardSyncInterval = setTimeout(sync, 1000);
+
+        // Schedule the next sync only
+        // after this one is finished
+        gameState.boardSyncInterval =
+            setTimeout(sync, 1000);
     }
 
-    // Start the first sync
+
+    // Start first sync
     sync();
 }
 
-export async function handlePlayAgain() {
-    // Prevent double click / duplicate rematch requests
+
+export async function handlePlayAgain(onExit) {
+
+    // Prevent duplicate rematch requests
     if (gameState.rematchInProgress) {
         return;
     }
 
     gameState.rematchInProgress = true;
 
+
     try {
-        const response = await createOrJoinGame(gameState.gameKey);
+        const response =
+            await createOrJoinGame(
+                gameState.gameKey
+            );
 
-        console.log("Play Again response:", response);
+        console.log(
+            "Play Again response:",
+            response
+        );
 
 
-      
-        //CASE 1:
-        if (response === "[GAME ALREADY STARTED]") {
-            const currentBoard = await getBoard(gameState.gameKey);
+        // CASE 1:
+        // The old finished game still exists
+        if (
+            response ===
+            "[GAME ALREADY STARTED]"
+        ) {
+            const currentBoard =
+                await getBoard(
+                    gameState.gameKey
+                );
 
-            if (currentBoard === gameState.finishedBoard) { // Same old finished game
-                await resetGame(gameState.gameKey);
 
-                gameState.playerTile = await createOrJoinGame(gameState.gameKey);
+            // Same old finished game
+            if (
+                currentBoard ===
+                gameState.finishedBoard
+            ) {
+                await resetGame(
+                    gameState.gameKey
+                );
+
+                gameState.playerTile =
+                    await createOrJoinGame(
+                        gameState.gameKey
+                    );
+
                 gameState.gameOver = false;
-                showWaitingForOpponentModal();
-                waitForGameToStart(gameState.gameKey);
+
+                showWaitingForOpponentModal(
+                    onExit
+                );
+
+                waitForGameToStart(
+                    gameState.gameKey,
+                    onExit
+                );
+
                 return;
             }
 
-            // Board changed 
-            showGameAlreadyStartedModal();
+
+            // Board changed
+            showGameAlreadyStartedModal(
+                onExit
+            );
+
             return;
         }
 
 
-        // CASE 2: the game was reset already by the other player
-        if (response === "O") { 
-            console.log("Joined rematch as Player O.");
+        // CASE 2:
+        // Other player already reset the game
+        if (response === "O") {
+
+            console.log(
+                "Joined rematch as Player O."
+            );
+
             gameState.playerTile = "O";
             gameState.gameOver = false;
-            game();
+
+            game(onExit);
+
             return;
         }
 
 
-        // CASE 3: No existing game was found.
-        //  The other player either pressed exit on the game over modal or the waiting for another player modal
+        // CASE 3:
+        // No existing game was found.
+        // Create a new room and wait.
         if (response === "X") {
 
-            console.log("Created new room as Player X.");
+            console.log(
+                "Created new room as Player X."
+            );
 
             gameState.playerTile = "X";
             gameState.gameOver = false;
             gameState.finishedBoard = null;
-            showOpponentLeftRematchModal();
-            waitForGameToStart(gameState.gameKey);
+
+            showOpponentLeftRematchModal(
+                onExit
+            );
+
+            waitForGameToStart(
+                gameState.gameKey,
+                onExit
+            );
 
             return;
         }
 
 
-        console.log("Unexpected Play Again response:", response);
+        console.log(
+            "Unexpected Play Again response:",
+            response
+        );
+
 
     } catch (error) {
-        console.error("Play Again failed:", error);
+
+        console.error(
+            "Play Again failed:",
+            error
+        );
 
     } finally {
+
         gameState.rematchInProgress = false;
     }
 }
 
-export function waitForGameToStart(key) {
+
+export function waitForGameToStart(
+    key,
+    onExit
+) {
+
     async function check() {
-        const status = await checkGame(key);
+
+        const status =
+            await checkGame(key);
+
 
         if (status === "true") {
+
             gameState.waitingInterval = null;
-            game();
+
+            game(onExit);
+
             return;
         }
-        gameState.waitingInterval = setTimeout(check, 1000);
+
+
+        gameState.waitingInterval =
+            setTimeout(check, 1000);
     }
+
+
     check();
 }
