@@ -75,7 +75,11 @@ export class MainPage {
 
     addEventListeners() {
         this.createButton.onClick(() => {
-            const createLobbyPage = new CreateLobbyPage();
+            const createLobbyPage = new CreateLobbyPage(() => {
+                const mainPage = new MainPage();
+                mainPage.render("app");
+            });
+
             createLobbyPage.render("app");
         });
 
