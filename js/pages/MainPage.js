@@ -84,14 +84,23 @@ export class MainPage {
         });
 
         this.joinButton.onClick(() => {
-            const joinLobbyPage = new JoinLobbyPage();
+            const joinLobbyPage = new JoinLobbyPage(() => {
+                const mainPage = new MainPage();
+                mainPage.render("app");
+            });
+
             joinLobbyPage.render("app");
         });
 
         this.howToPlayButton.onClick(() => {
-            const howToPlayPage = new HowToPlayPage();
+            const howToPlayPage = new HowToPlayPage(() => {
+                const mainPage = new MainPage();
+                mainPage.render("app");
+            });
+
             howToPlayPage.render("app");
         });
+
     }
 
     render(target) {

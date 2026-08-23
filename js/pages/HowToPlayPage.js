@@ -1,9 +1,12 @@
 export class HowToPlayPage {
 
-    constructor() {
+    constructor(onBack) {
+        this.onBack = onBack;
+
         this.initializeElements();
         this.setAttributes();
         this.appendElements();
+        this.addEventListeners();
     }
 
     // Step 1: Create and initialize variables
@@ -68,7 +71,6 @@ export class HowToPlayPage {
 
     // Step 3: Append elements
     appendElements() {
-        // Put all text inside the content container
         this.content.append(
             this.title,
             this.description,
@@ -79,14 +81,21 @@ export class HowToPlayPage {
             this.rule5
         );
 
-        // Put the content inside the scroll
         this.scroll.append(this.content);
 
-        // Put the scroll and back button inside the page
         this.container.append(
             this.scroll,
             this.backButton
         );
+    }
+
+    // Step 4: Add event listeners
+    addEventListeners() {
+        this.backButton.addEventListener("click", () => {
+            if (this.onBack) {
+                this.onBack();
+            }
+        });
     }
 
     // Render page
@@ -98,4 +107,3 @@ export class HowToPlayPage {
         }
     }
 }
-
