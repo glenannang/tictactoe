@@ -91,9 +91,7 @@ function addBoardEventListeners() {
 }
 
 function syncBoard(key) {
-
     async function sync() {
-
         // Check if the game room still exists
         const gameRoomStatus = await checkGame(key);
 

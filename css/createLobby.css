@@ -19,7 +19,7 @@
 
     background:
         #3a2114
-        url("assets/images/lobby.png")
+        url("../assets/images/lobby.png")
         center / cover no-repeat;
 
     color: #f2d18a;

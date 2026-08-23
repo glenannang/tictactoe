@@ -1,4 +1,4 @@
-function getCurrentTurn(boardData) { // returns an X or O
+export function getCurrentTurn(boardData) { // returns an X or O
     const board = boardData.split(":");
 
     let xCount = 0;
@@ -21,9 +21,7 @@ function getCurrentTurn(boardData) { // returns an X or O
     return "O";
 }
 
-function checkWinner(data){ // returns X or O
-
-    
+export function checkWinner(data){ // returns X or O
     const winningCombinations = [
     [0, 1, 2],
     [3, 4, 5],
@@ -58,10 +56,9 @@ function checkWinner(data){ // returns X or O
         }
     }
     return null;
-
 }
 
-function checkDraw(data) {
+export function checkDraw(data) {
     console.log("checkDraw received:", data);
     const parts = data.split(":");
 
@@ -86,7 +83,7 @@ function checkDraw(data) {
         }
     }
 
-    // Board is full + no winner
+    // Board is full and no winner
     console.log("A draw has occurred.");
     return true;
 }
