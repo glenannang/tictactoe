@@ -58,7 +58,7 @@ function gameMonitor(key, onExit) {
             gameState.finishedBoard = data;
             clearTimeout(gameState.boardSyncInterval);
             gameState.boardSyncInterval = null;
-            setTimeout(() => {showGameOverModal( `${winner} wins!`, () => handlePlayAgain(onExit), onExit);}, 300);
+            setTimeout(() => {showGameOverModal( `Explorer ${winner} wins!`, () => handlePlayAgain(onExit), onExit);}, 300);
             return;
         }
 
