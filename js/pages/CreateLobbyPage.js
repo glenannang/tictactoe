@@ -127,7 +127,7 @@ export class CreateLobbyPage {
                 return;
             }
 
-            // A game has already been created.
+            // A game has already been created
             if (this.gameCreated) {
                 await resetGame(gameState.gameKey);
 
@@ -139,7 +139,7 @@ export class CreateLobbyPage {
             }
 
             
-            // If no room has been created yet,
+            // If no room has been created yet
             if (this.onCancel) {
                 this.onCancel();
             }

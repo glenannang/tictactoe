@@ -6,7 +6,7 @@ import { GamePage } from "../pages/GamePage.js";
 import {showGameOverModal,showOpponentLeftModal,showOpponentLeftRematchModal,showWaitingForOpponentModal,showGameAlreadyStartedModal} from "../ui/gameModals.js";
 
 
-export function waitForGameToStart(key,onExit) {
+export function waitForGameToStart(key,onExit) { //wait until the server says the game has both players and is ready to start
     async function check() {
         const status = await checkGame(key);
         if (status === "true") {

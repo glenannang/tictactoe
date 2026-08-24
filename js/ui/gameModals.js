@@ -6,7 +6,7 @@ import { getBoard, resetGame } from "../services/gameService.js";
 
 export function showGameOverModal(message, onPlayAgain, onExit) {
     const modal = new Modal(
-        "Game Over",
+        "Trial Complete",
         message
     );
 
@@ -53,8 +53,8 @@ export function showGameOverModal(message, onPlayAgain, onExit) {
 
 export function showOpponentLeftModal(onExit) {
     const modal = new Modal(
-        "Opponent Left",
-        "Your opponent left the game."
+        "Your Opponent Has Departed",
+        "Your challenger has left the chamber."
     );
 
     const exitButton = new Button(
@@ -80,7 +80,7 @@ export function showOpponentLeftModal(onExit) {
 
 export function showOpponentLeftRematchModal(onExit) {
     const modal = new Modal(
-        "Opponent Left",
+        "Challenger Departed",
         "Your opponent left. Waiting for a new player..."
     );
 
@@ -115,7 +115,7 @@ export function showOpponentLeftRematchModal(onExit) {
 
 export function showWaitingForOpponentModal(onExit) {
     const modal = new Modal(
-        "Waiting for Opponent",
+        "Awaiting a Challenger",
         "Waiting for another player to join..."
     );
 
