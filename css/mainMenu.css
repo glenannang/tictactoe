@@ -1,6 +1,4 @@
-/* ========================================
-   PAGE / APP BASE
-======================================== */
+/* PAGE / APP BASE */
 
 html,
 body {
@@ -25,9 +23,7 @@ body {
 }
 
 
-/* ========================================
-   MAIN MENU PAGE
-======================================== */
+/* MAIN MENU PAGE */
 
 #mainPage {
     position: relative;
@@ -62,9 +58,7 @@ body {
 }
 
 
-/* ========================================
-   VIDEO BACKGROUND
-======================================== */
+/*VIDEO BACKGROUND */
 
 #mainPage .main-background-video {
     position: absolute;
@@ -82,9 +76,7 @@ body {
 }
 
 
-/* ========================================
-   BACKGROUND OVERLAY
-======================================== */
+/* BACKGROUND OVERLAY*/
 
 #mainPage::after {
     position: absolute;
@@ -98,9 +90,7 @@ body {
 }
 
 
-/* ========================================
-   TITLE IMAGE
-======================================== */
+/* TITLE IMAGE */
 
 #mainPage .main-title-image {
     display: block;
@@ -117,9 +107,7 @@ body {
 }
 
 
-/* ========================================
-   MENU ACTIONS
-======================================== */
+/* MENU ACTIONS*/
 
 #mainPage .main-menu-actions {
     display: flex;
@@ -133,9 +121,7 @@ body {
 }
 
 
-/* ========================================
-   BUTTON BASE
-======================================== */
+/* BUTTON BASE */
 
 #mainPage .game-button {
     width: 100%;
@@ -174,9 +160,7 @@ body {
 }
 
 
-/* ========================================
-   CREATE GAME BUTTON
-======================================== */
+/* CREATE GAME BUTTON */
 
 #mainPage .create-button {
     background:
@@ -184,9 +168,7 @@ body {
 }
 
 
-/* ========================================
-   JOIN GAME BUTTON
-======================================== */
+/* JOIN GAME BUTTON */
 
 #mainPage .join-button {
     background:
@@ -194,9 +176,7 @@ body {
 }
 
 
-/* ========================================
-   HOW TO PLAY BUTTON
-======================================== */
+/* HOW TO PLAY BUTTON*/
 
 #mainPage .how-to-play-button {
     background:
@@ -206,9 +186,7 @@ body {
 }
 
 
-/* ========================================
-   BUTTON INTERACTIONS
-======================================== */
+/*BUTTON INTERACTIONS*/
 
 #mainPage .game-button:hover {
     filter: brightness(1.1);
@@ -239,9 +217,7 @@ body {
 }
 
 
-/* ========================================
-   TABLET
-======================================== */
+/* TABLET */
 
 @media (min-width: 481px) and (max-width: 768px) {
 
@@ -263,9 +239,7 @@ body {
     }
 
 
-    /* ====================================
-       TITLE
-    ==================================== */
+    /* TITLE */
 
     #mainPage .main-title-image {
         display: block;
@@ -285,9 +259,7 @@ body {
     }
 
 
-    /* ====================================
-       MENU
-    ==================================== */
+    /* MENU */
 
     #mainPage .main-menu-actions {
         display: flex;
@@ -303,9 +275,7 @@ body {
     }
 
 
-    /* ====================================
-       BUTTONS
-    ==================================== */
+    /*BUTTONS */
 
     #mainPage .game-button {
         width: 100%;
@@ -318,9 +288,7 @@ body {
     }
 }
 
-/* ========================================
-   MOBILE
-======================================== */
+/* MOBILE */
 
 @media (max-width: 480px) {
 
@@ -367,9 +335,7 @@ body {
     }
 
 
-    /* ====================================
-       MENU
-    ==================================== */
+    /* MENU */
 
     #mainPage .main-menu-actions {
         display: flex;
@@ -385,9 +351,7 @@ body {
     }
 
 
-    /* ====================================
-       BUTTONS
-    ==================================== */
+    /* BUTTONS*/
 
     #mainPage .game-button {
         width: 100%;
@@ -401,9 +365,7 @@ body {
 }
 
 
-/* ========================================
-   VERY SMALL MOBILE
-======================================== */
+/* VERY SMALL MOBILE */
 
 @media (max-width: 360px) {
 
