@@ -59,11 +59,10 @@ export function checkWinner(data){ // returns X or O
 }
 
 export function checkDraw(data) {
-    console.log("checkDraw received:", data);
     const parts = data.split(":");
 
     
-    if (parts.length < 9) { //since data can return [Game not yet started] instead of baord data
+    if (parts.length < 9) { //Since data can return [Game not yet started] instead of baord data
         return false;
     }
 
@@ -71,19 +70,16 @@ export function checkDraw(data) {
 
     // If someone won, it's not a draw
     if (checkWinner(data) !== null) {
-        console.log("Not draw: someone won");
         return false;
     }
 
     // If there's still an empty cell, game isn't finished
     for (const cell of board) {
         if (cell === "") {
-            console.log("There is still an empty cell:");
             return false;
         }
     }
 
-    // Board is full and no winner
     console.log("A draw has occurred.");
     return true;
 }

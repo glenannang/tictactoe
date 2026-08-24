@@ -41,7 +41,7 @@ export class MainPage {
         this.container.id = "mainPage";
 
         this.backgroundVideo.src =
-            "assets/Videos/Main Menu Background.mp4";
+            "assets/Videos/main-menu-background.mp4";
 
         this.backgroundVideo.className =
             "main-background-video";
@@ -51,7 +51,7 @@ export class MainPage {
         this.backgroundVideo.loop = true;
         this.backgroundVideo.playsInline = true;
 
-        this.title.src = "assets/images/Title.png";
+        this.title.src = "assets/images/title.png";
         this.title.className = "main-title-image";
         this.title.alt = "Tic Tac Toe: The Ancient Trial";
 
