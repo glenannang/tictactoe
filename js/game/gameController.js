@@ -4,7 +4,7 @@ import {checkWinner,checkDraw,getCurrentTurn} from "./gameRules.js";
 import { updateGameDisplay } from "../utils/gameUtils.js";
 import { GamePage } from "../pages/GamePage.js";
 import {showGameOverModal,showOpponentLeftModal,showOpponentLeftRematchModal,showWaitingForOpponentModal,showGameAlreadyStartedModal} from "../ui/gameModals.js";
-
+import {createGameRecord,getRoomRecord} from "../services/recordService.js";
 
 export function waitForGameToStart(key,onExit) { //wait until the server says the game has both players and is ready to start
     async function check() {
@@ -19,10 +19,52 @@ export function waitForGameToStart(key,onExit) { //wait until the server says th
     check();
 }
 
-function game(onExit) {
-    const gamePage = new GamePage(onExit, handleCellClick);
-    gamePage.render("app");
-    gameMonitor( gameState.gameKey, onExit );
+async function initializeGameRecord() {
+    const previousGameId = gameState.currentGameId;
+
+    if (gameState.playerTile === "X") {
+        const response = await createGameRecord(gameState.gameKey);
+
+        gameState.currentGameId = response.gameId;
+        console.log("Created game record:", response.gameId);
+        return;
+    }
+
+    // Player O waits for player X to create the record.
+    for (let attempt = 0; attempt < 20; attempt++) {
+        const room = await getRoomRecord(gameState.gameKey);
+        const gameIds = room.gameIds || [];
+        const latestGameId = gameIds[gameIds.length - 1];
+
+        if (latestGameId && latestGameId !== previousGameId) {
+            gameState.currentGameId = latestGameId;
+            console.log("Retrieved game record:", latestGameId);
+            return;
+        }
+
+        await new Promise(resolve => setTimeout(resolve, 500));
+    }
+
+    throw new Error("Game record was not created.");
+}
+
+
+
+async function game(onExit) {
+    try {
+        await initializeGameRecord();
+
+        const gamePage = new GamePage(onExit, handleCellClick);
+
+        gamePage.render("app");
+        gameMonitor(gameState.gameKey, onExit);
+
+    } catch (error) {
+        console.error(
+            "Failed to initialize game record:",
+            error
+        );
+    }
 }
 
 function gameMonitor(key, onExit) {
