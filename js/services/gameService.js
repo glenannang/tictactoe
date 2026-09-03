@@ -29,9 +29,11 @@ export function move(key, tile, y, x) {
         .then(response => response.text())
         .then(data => {
             console.log("Move response:", data);
+            return data;
         })
         .catch(error => {
             console.error("Move error:", error);
+            throw error;
         });
 }
 
