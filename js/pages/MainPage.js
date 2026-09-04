@@ -35,6 +35,12 @@ export class MainPage {
             "How to Play",
             "game-button how-to-play-button"
         );
+
+        this.historyButton = new Button(
+            "history",
+            "History",
+            "game-button history-button"
+        );
     }
 
     setAttributes() {
@@ -62,7 +68,8 @@ export class MainPage {
         this.menuActions.append(
             this.createButton.getElement(),
             this.joinButton.getElement(),
-            this.howToPlayButton.getElement()
+            this.howToPlayButton.getElement(),
+            this.historyButton.getElement()
         );
 
         this.container.append(
@@ -102,6 +109,10 @@ export class MainPage {
             });
 
             howToPlayPage.render("app");
+        });
+
+        this.historyButton.onClick(() => {
+            console.log("History clicked");
         });
 
     }

@@ -186,6 +186,16 @@ body {
 }
 
 
+/* HISTORY BUTTON */
+
+#mainPage .history-button {
+    background:
+        linear-gradient(#f6dfad, #d7b678);
+
+    color: #3a2114;
+}
+
+
 /*BUTTON INTERACTIONS*/
 
 #mainPage .game-button:hover {
@@ -269,7 +279,7 @@ body {
 
         gap: 14px;
 
-        margin-top: 50px;
+        margin-top: 35px;
 
         flex-shrink: 0;
     }
@@ -345,7 +355,7 @@ body {
 
         gap: 12px;
 
-        margin-top: 50px;
+        margin-top: 35px;
 
         flex-shrink: 0;
     }
