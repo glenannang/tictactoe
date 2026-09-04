@@ -2,6 +2,7 @@ import { Button } from "../components/Button.js";
 import { CreateLobbyPage } from "./CreateLobbyPage.js";
 import { JoinLobbyPage } from "./JoinLobbyPage.js";
 import { HowToPlayPage } from "./HowToPlayPage.js";
+import { HistoryPage } from "./HistoryPage.js";
 
 
 export class MainPage {
@@ -112,7 +113,12 @@ export class MainPage {
         });
 
         this.historyButton.onClick(() => {
-            console.log("History clicked");
+            const historyPage = new HistoryPage(() => {
+                const mainPage = new MainPage();
+                mainPage.render("app");
+            });
+
+            historyPage.render("app");
         });
 
     }
