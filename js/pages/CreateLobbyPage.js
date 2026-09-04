@@ -3,6 +3,7 @@ import { gameState } from "../state/gameState.js";
 import { createOrJoinGame, resetGame } from "../services/gameService.js";
 import { generateGameKey } from "../utils/gameUtils.js";
 import { waitForGameToStart } from "../game/gameController.js";
+import { createRoomRecord } from "../services/recordService.js";
 
 
 export class CreateLobbyPage {
@@ -108,11 +109,16 @@ export class CreateLobbyPage {
 
                     this.gameCreated = true;
 
-                    this.showWaitingState();
+                    const result = await createRoomRecord(this.gameKey);
+                    console.log(result.msg);
 
+                    this.showWaitingState();
                     waitForGameToStart(gameState.gameKey,this.onCancel);
                 }
 
+            } catch (error) {
+                console.error("Failed to initialize room:", error);
+                // INSERT ERROR HANDLING UI HERE
             } finally {
                 this.createInProgress = false;
             }
@@ -174,7 +180,6 @@ export class CreateLobbyPage {
             this.cancelButton.getElement()
         );
     }
-
 
     render(target) {
         const parent = document.getElementById(target);
