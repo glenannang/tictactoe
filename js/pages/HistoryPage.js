@@ -1,4 +1,5 @@
 import { Button } from "../components/Button.js";
+import { PlayerHistoryPage } from "./PlayerHistoryPage.js";
 
 
 export class HistoryPage {
@@ -80,7 +81,12 @@ export class HistoryPage {
 
     addEventListeners() {
         this.playerHistoryButton.onClick(() => {
-            console.log("Player History selected");
+            const playerHistoryPage = new PlayerHistoryPage(() => {
+                const historyPage = new HistoryPage(this.onBack);
+                historyPage.render("app");
+            });
+
+            playerHistoryPage.render("app");
         });
 
         this.roomHistoryButton.onClick(() => {
