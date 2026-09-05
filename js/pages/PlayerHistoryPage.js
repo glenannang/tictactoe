@@ -1,7 +1,8 @@
 import { Button } from "../components/Button.js";
 import { GameDetailsPage } from "./GameDetailsPage.js";
 import { playerId } from "../state/playerState.js";
-import { getPlayerGames } from "../services/recordService.js";
+import { getPlayerGames,getGameDetails } from "../services/recordService.js";
+
 
 export class PlayerHistoryPage {
 
@@ -126,38 +127,26 @@ export class PlayerHistoryPage {
             `View details for game ${game.id}`
         );
         viewDetailsButton.getElement().dataset.gameId = game.id;
-        viewDetailsButton.onClick(() => {
-            const sampleMoves = [
-                {
-                    playerid: "player001",
-                    symbol: "X",
-                    location: 0,
-                    datesave: "2026-09-05T10:01:03"
-                },
-                {
-                    playerid: "player002",
-                    symbol: "O",
-                    location: 4,
-                    datesave: "2026-09-05T10:01:08"
-                },
-                {
-                    playerid: "player001",
-                    symbol: "X",
-                    location: 1,
-                    datesave: "2026-09-05T10:01:14"
-                }
-            ];
 
-            const gameDetailsPage = new GameDetailsPage(
-                game.id,
-                sampleMoves,
-                () => {
-                    const playerHistoryPage = new PlayerHistoryPage(this.onBack);
-                    playerHistoryPage.render("app");
-                }
-            );
+        viewDetailsButton.onClick(async () => {
+            try {
+                const data = await getGameDetails(game.id);
+                
+                const gameDetailsPage = new GameDetailsPage(
+                    game.id,
+                    data.list,
+                    () => {
+                        const playerHistoryPage = new PlayerHistoryPage(this.onBack);
+                        playerHistoryPage.render("app");
+                    }
+                );
 
-            gameDetailsPage.render("app");
+                gameDetailsPage.render("app");
+
+            } catch (error) {
+                // show UI message 
+                console.error("Failed to retrieve game details:", error);
+            }
         });
 
         const replayButton = new Button(
