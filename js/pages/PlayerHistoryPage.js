@@ -1,6 +1,6 @@
 import { Button } from "../components/Button.js";
 import { playerId } from "../state/playerState.js";
-
+import { getPlayerGames } from "../services/recordService.js";
 
 export class PlayerHistoryPage {
 
@@ -111,6 +111,24 @@ export class PlayerHistoryPage {
         });
 
         const actionsCell = document.createElement("td");
+        actionsCell.style.display = "flex";
+        actionsCell.style.gap = "8px";
+        actionsCell.style.alignItems = "center";
+
+        const viewDetailsButton = new Button(
+            `view-details-${game.id}`,
+            "View Details",
+            "game-button replay-button"
+        );
+        viewDetailsButton.getElement().setAttribute(
+            "aria-label",
+            `View details for game ${game.id}`
+        );
+        viewDetailsButton.getElement().dataset.gameId = game.id;
+        viewDetailsButton.onClick(() => {
+            console.log("View game details:", game.id);
+        });
+
         const replayButton = new Button(
             `replay-${game.id}`,
             "Replay",
@@ -121,10 +139,53 @@ export class PlayerHistoryPage {
             `Replay game ${game.id}`
         );
         replayButton.getElement().dataset.gameId = game.id;
-        actionsCell.append(replayButton.getElement());
+        replayButton.onClick(() => {
+            console.log("Replay game:", game.id);
+        });
+
+        actionsCell.append(
+            viewDetailsButton.getElement(),
+            replayButton.getElement()
+        );
         row.append(actionsCell);
 
         return row;
+    }
+
+    async loadPlayerGames() {
+        try {
+            const data = await getPlayerGames(playerId);
+
+            this.tableBody.replaceChildren();
+
+            if (!data.list || data.list.length === 0) {
+                this.tableBody.append(this.emptyState);
+                return;
+            }
+
+            data.list.forEach(game => {
+                const row = this.createGameRow({
+                    id: game.id,
+                    tile: "-"
+                });
+
+                this.tableBody.append(row);
+            });
+
+        } catch (error) {
+            this.tableBody.replaceChildren();
+
+            if (error.message === "Record not found") {
+                this.emptyStateCell.textContent = "No games played yet.";
+            } else { 
+                console.error("Failed to load player games:", error);
+
+                this.emptyStateCell.textContent = "Failed to load recorded games.";
+            }
+
+            this.tableBody.append(this.emptyState);
+            
+        }
     }
 
     render(target) {
@@ -132,6 +193,7 @@ export class PlayerHistoryPage {
 
         if (parent) {
             parent.replaceChildren(this.container);
+            this.loadPlayerGames();
         }
     }
 }

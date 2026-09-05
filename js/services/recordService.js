@@ -70,3 +70,19 @@ export async function saveMoveRecord(moveRecord) {
     return data;
 }
 
+
+//PLAYER RECORDS 
+
+export async function getPlayerGames(playerId) {
+    const response = await fetch(`${RECORD_BASE_URL}/game/player/${encodeURIComponent(playerId)}/games`,
+        { headers: { Accept: "application/json"}}
+    );
+
+    const data = await response.json();
+
+    if (!response.ok) {
+        throw new Error(data.msg || "Failed to retrieve player games.");
+    }
+
+    return data;
+}
