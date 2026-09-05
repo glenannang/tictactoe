@@ -1,6 +1,6 @@
 const RECORD_BASE_URL ="http://localhost:8080/tic-tac-toe-webservices/rest";
 
-
+//ROOM RECORDS
 export async function createRoomRecord(roomCode) {
     const response = await fetch(`${RECORD_BASE_URL}/room`, {
         method: "POST",
@@ -47,6 +47,24 @@ export async function getRoomRecord(roomCode) {
 
     if (!response.ok) {
         throw new Error(data.msg || "Failed to retrieve room.");
+    }
+
+    return data;
+}
+
+
+// MOVE RECORD
+export async function saveMoveRecord(moveRecord) {
+    const response = await fetch(`${RECORD_BASE_URL}/game/save`, {
+        method: "POST",
+        headers: { "Content-Type": "application/json", Accept: "application/json"},
+        body: JSON.stringify(moveRecord)
+    });
+
+    const data = await response.json();
+
+    if (!response.ok) {
+        throw new Error(data.msg || "Failed to save move record.");
     }
 
     return data;

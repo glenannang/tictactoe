@@ -4,7 +4,8 @@ import {checkWinner,checkDraw,getCurrentTurn} from "./gameRules.js";
 import { updateGameDisplay } from "../utils/gameUtils.js";
 import { GamePage } from "../pages/GamePage.js";
 import {showGameOverModal,showOpponentLeftModal,showOpponentLeftRematchModal,showWaitingForOpponentModal,showGameAlreadyStartedModal} from "../ui/gameModals.js";
-import {createGameRecord,getRoomRecord} from "../services/recordService.js";
+import {createGameRecord,getRoomRecord,saveMoveRecord} from "../services/recordService.js";
+import { playerId } from "../state/playerState.js";
 
 export function waitForGameToStart(key,onExit) { //wait until the server says the game has both players and is ready to start
     async function check() {
@@ -19,6 +20,7 @@ export function waitForGameToStart(key,onExit) { //wait until the server says th
     check();
 }
 
+//initialize game record for the current game session
 async function initializeGameRecord() {
     const previousGameId = gameState.currentGameId;
 
@@ -222,6 +224,14 @@ async function handleCellClick(cell) {
 
         // Send move to server
         await move(gameState.gameKey,gameState.playerTile,y,x);
+
+        //Record the successful move
+        await saveMoveRecord({
+            gameid: gameState.currentGameId,
+            playerid: playerId,
+            symbol: gameState.playerTile,
+            location: index
+        });
 
         // Get latest board after the move
         boardData = await getBoard(gameState.gameKey);
