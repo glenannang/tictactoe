@@ -1,9 +1,9 @@
 import { Button } from "../components/Button.js";
+import { PlayerIdDisplay } from "../components/PlayerIdDisplay.js";
 import { CreateLobbyPage } from "./CreateLobbyPage.js";
 import { JoinLobbyPage } from "./JoinLobbyPage.js";
 import { HowToPlayPage } from "./HowToPlayPage.js";
 import { HistoryPage } from "./HistoryPage.js";
-
 
 export class MainPage {
     constructor() {
@@ -17,6 +17,7 @@ export class MainPage {
         this.container = document.createElement("main");
         this.backgroundVideo = document.createElement("video");
         this.title = document.createElement("img");
+        this.playerIdDisplay = new PlayerIdDisplay();
         this.menuActions = document.createElement("div");
 
         this.createButton = new Button(
@@ -50,8 +51,7 @@ export class MainPage {
         this.backgroundVideo.src =
             "assets/Videos/main-menu-background.mp4";
 
-        this.backgroundVideo.className =
-            "main-background-video";
+        this.backgroundVideo.className ="main-background-video";
 
         this.backgroundVideo.autoplay = true;
         this.backgroundVideo.muted = true;
@@ -76,6 +76,7 @@ export class MainPage {
         this.container.append(
             this.backgroundVideo,
             this.title,
+            this.playerIdDisplay.getElement(),
             this.menuActions
         );
     }

@@ -15,7 +15,7 @@
     min-height: 100dvh;
 
     margin: 0;
-    padding: 24px 20px;
+    padding: 100px 20px 24px;
 
     overflow: auto;
 
@@ -71,10 +71,29 @@
 
 /* GAME CODE */
 
+#playerIdDisplay {
+    position: absolute;
+    top: 18px;
+    left: 36px;
+
+    margin: 0;
+
+    color: rgba(255, 230, 170, 0.96);
+
+    font-size: clamp(0.72rem, 1vw, 0.82rem);
+    font-weight: 700;
+
+    line-height: 1.35;
+    letter-spacing: 0.03em;
+    text-align: left;
+    text-shadow: 0 2px 0 rgba(36, 20, 13, 0.8);
+    overflow-wrap: anywhere;
+}
+
 #gameKeyDisplay {
     position: absolute;
 
-    top: 32px;
+    top: 54px;
     left: 36px;
 
     margin: 0;

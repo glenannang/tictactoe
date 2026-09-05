@@ -1,5 +1,5 @@
 import { Button } from "../components/Button.js";
-import { gameState } from "../state/gameState.js";
+import { playerId } from "../state/playerState.js";
 
 
 export class PlayerHistoryPage {
@@ -57,7 +57,7 @@ export class PlayerHistoryPage {
         this.avatar.src = "assets/images/avatar-placeholder.svg";
         this.avatar.alt = "Placeholder player avatar";
         this.playerIdLabel.textContent = "Player ID: ";
-        this.playerId.textContent = gameState.playerId;
+        this.playerId.textContent = playerId;
         this.description.textContent = "Review the recorded games associated with this player.";
         this.historyTitle.textContent = "Games Played";
         this.tableCaption.textContent = "Recorded games for the current player";

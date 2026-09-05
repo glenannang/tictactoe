@@ -1,4 +1,5 @@
 import { Button } from "../components/Button.js";
+import { PlayerIdDisplay } from "../components/PlayerIdDisplay.js";
 import { gameState } from "../state/gameState.js";
 import { createOrJoinGame, resetGame } from "../services/gameService.js";
 import { generateGameKey } from "../utils/gameUtils.js";
@@ -22,6 +23,7 @@ export class CreateLobbyPage {
         this.container = document.createElement("main");
         this.content = document.createElement("div");
         this.title = document.createElement("h1");
+        this.playerIdDisplay = new PlayerIdDisplay();
 
         this.gameKey = generateGameKey();
 
@@ -75,7 +77,7 @@ export class CreateLobbyPage {
             this.cancelButton.getElement()
         );
 
-        this.container.append(this.content);
+        this.container.append(this.playerIdDisplay.getElement(), this.content);
     }
 
 

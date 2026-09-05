@@ -218,6 +218,35 @@ body {
     outline-offset: 4px;
 }
 
+.player-id-display {
+    position: absolute;
+    top: 18px;
+    left: 20px;
+    z-index: 2;
+
+    margin: 0;
+    max-width: calc(100% - 40px);
+
+    color: rgba(255, 230, 170, 0.95);
+    font-family: Georgia, "Times New Roman", serif;
+    font-size: clamp(0.7rem, 1vw, 0.82rem);
+    font-weight: 700;
+    line-height: 1.35;
+    letter-spacing: 0.03em;
+    text-align: left;
+    text-shadow: 0 2px 0 rgba(36, 20, 13, 0.8);
+    overflow-wrap: anywhere;
+}
+
+@media (max-width: 640px) {
+    .player-id-display {
+        top: 12px;
+        left: 14px;
+        max-width: calc(100% - 28px);
+        font-size: 0.68rem;
+    }
+}
+
 #mainPage .game-button:disabled {
     cursor: not-allowed;
 

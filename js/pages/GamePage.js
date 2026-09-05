@@ -1,4 +1,5 @@
 import { Button } from "../components/Button.js";
+import { PlayerIdDisplay } from "../components/PlayerIdDisplay.js";
 import { gameState } from "../state/gameState.js";
 import { resetGame } from "../services/gameService.js";
 
@@ -20,6 +21,7 @@ export class GamePage {
 
         this.greeting = document.createElement("h1");
         this.playerMessage = document.createElement("p");
+        this.playerIdDisplay = new PlayerIdDisplay();
         this.gameKeyText = document.createElement("p");
         this.turnMessage = document.createElement("p");
 
@@ -62,6 +64,7 @@ export class GamePage {
         this.playerMessage.textContent =
             `You are playing as ${gameState.playerTile}`;
 
+        this.playerIdDisplay.getElement().id = "playerIdDisplay";
         this.gameKeyText.id = "gameKeyDisplay";
         this.gameKeyText.textContent =
             `Game Code: ${gameState.gameKey}`;
@@ -74,6 +77,7 @@ export class GamePage {
         this.container.append(
             this.greeting,
             this.playerMessage,
+            this.playerIdDisplay.getElement(),
             this.gameKeyText,
             this.board,
             this.turnMessage,

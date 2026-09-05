@@ -1,4 +1,5 @@
 import { Button } from "../components/Button.js";
+import { PlayerIdDisplay } from "../components/PlayerIdDisplay.js";
 import { gameState } from "../state/gameState.js";
 import {
     createOrJoinGame,
@@ -23,6 +24,7 @@ export class JoinLobbyPage {
         this.container = document.createElement("main");
         this.content = document.createElement("div");
         this.title = document.createElement("h1");
+        this.playerIdDisplay = new PlayerIdDisplay();
 
         this.gameKeyLabel = document.createElement("p");
         this.gameKeyInput = document.createElement("input");
@@ -68,7 +70,7 @@ export class JoinLobbyPage {
             this.message
         );
 
-        this.container.append(this.content);
+        this.container.append(this.playerIdDisplay.getElement(), this.content);
     }
 
 
