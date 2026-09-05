@@ -70,6 +70,21 @@ export async function saveMoveRecord(moveRecord) {
     return data;
 }
 
+export async function getGameDetails(gameId) {
+    const response = await fetch(
+        `${RECORD_BASE_URL}/game/${encodeURIComponent(gameId)}`,
+        {headers: {Accept: "application/json"}}
+    );
+
+    const data = await response.json();
+
+    if (!response.ok) {
+        throw new Error(data.msg || "Failed to retrieve game details.");
+    }
+
+    return data;
+}
+
 
 //PLAYER RECORDS 
 
