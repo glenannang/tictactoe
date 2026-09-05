@@ -160,42 +160,26 @@ export class PlayerHistoryPage {
             `Replay game ${game.id}`
         );
         replayButton.getElement().dataset.gameId = game.id;
-        replayButton.onClick(() => {
-            const sampleMoves = [
-                {
-                    gameid: game.id,
-                    playerid: playerId,
-                    symbol: "X",
-                    location: "0",
-                    datesave: "2026-09-05 16:47:28"
-                },
-                {
-                    gameid: game.id,
-                    playerid: "sample-opponent",
-                    symbol: "O",
-                    location: "4",
-                    datesave: "2026-09-05 16:47:30"
-                },
-                {
-                    gameid: game.id,
-                    playerid: playerId,
-                    symbol: "X",
-                    location: "1",
-                    datesave: "2026-09-05 16:47:32"
-                }
-            ];
+        
+        replayButton.onClick(async () => {
+                try {
+                    const data = await getGameDetails(game.id);
 
-            const replayPage = new ReplayPage(
-                game.id,
-                sampleMoves,
-                playerId,
-                () => {
-                    const playerHistoryPage = new PlayerHistoryPage(this.onBack);
-                    playerHistoryPage.render("app");
-                }
-            );
+                    const replayPage = new ReplayPage(
+                        game.id,
+                        data.list,
+                        playerId,
+                        () => {
+                            const playerHistoryPage = new PlayerHistoryPage(this.onBack);
+                            playerHistoryPage.render("app");
+                        }
+                    );
 
-            replayPage.render("app");
+                    replayPage.render("app");
+
+                } catch (error) {
+                    console.error("Failed to retrieve game replay:", error);
+                }
         });
 
         actionsCell.append(

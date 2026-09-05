@@ -172,3 +172,23 @@ export function showGameAlreadyStartedModal(onExit) {
 
     modal.render("gamePage");
 }
+
+export function showReplayCompleteModal(result) {
+    const modal = new Modal(
+        "Replay Complete",
+        result
+    );
+
+    const closeButton = new Button(
+        "replay-result-close",
+        "Close"
+    );
+
+    modal.addButton(closeButton);
+
+    closeButton.onClick(() => {
+        modal.close();
+    });
+
+    modal.render("replayPage");
+}

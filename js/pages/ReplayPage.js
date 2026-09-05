@@ -1,4 +1,6 @@
 import { Button } from "../components/Button.js";
+import { checkWinner, checkDraw } from "../game/gameRules.js";
+import { showReplayCompleteModal } from "../ui/gameModals.js";
 
 export class ReplayPage {
 
@@ -9,6 +11,7 @@ export class ReplayPage {
         this.onBack = onBack;
         this.replayTimeout = null;
         this.currentMoveIndex = 0;
+        this.boardData = Array(9).fill("");
 
         this.initializeElements();
         this.setAttributes();
@@ -107,6 +110,8 @@ export class ReplayPage {
     }
 
     clearBoard() {
+        this.boardData = Array(9).fill("");
+
         this.board.querySelectorAll(".replay-cell").forEach(cell => {
             cell.textContent = "";
         });
@@ -126,6 +131,7 @@ export class ReplayPage {
 
         if (cell) {
             cell.textContent = move.symbol || "";
+            this.boardData[location] = move.symbol || "";
         }
 
         this.currentMoveIndex = moveIndex + 1;
@@ -134,6 +140,7 @@ export class ReplayPage {
 
     scheduleNextMove() {
         if (this.currentMoveIndex >= this.moves.length) {
+            this.showReplayResult();
             return;
         }
 
@@ -163,6 +170,26 @@ export class ReplayPage {
 
     restartReplay() {
         this.startReplay();
+    }
+
+    showReplayResult() {
+        const boardString = this.boardData.join(":");
+        const winner = checkWinner(boardString);
+        const playerSymbol = this.getPlayerSymbol();
+
+        let result;
+
+        if (winner === playerSymbol) {
+            result = "YOU WIN!";
+        } else if (winner !== null) {
+            result = "YOU LOSE!";
+        } else if (checkDraw(this.boardData)) {
+            result = "IT'S A DRAW!";
+        } else {
+            return;
+        }
+
+        showReplayCompleteModal(result);
     }
 
     render(target) {
