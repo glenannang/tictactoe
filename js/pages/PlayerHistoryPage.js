@@ -1,4 +1,5 @@
 import { Button } from "../components/Button.js";
+import { GameDetailsPage } from "./GameDetailsPage.js";
 import { playerId } from "../state/playerState.js";
 import { getPlayerGames } from "../services/recordService.js";
 
@@ -126,7 +127,37 @@ export class PlayerHistoryPage {
         );
         viewDetailsButton.getElement().dataset.gameId = game.id;
         viewDetailsButton.onClick(() => {
-            console.log("View game details:", game.id);
+            const sampleMoves = [
+                {
+                    playerid: "player001",
+                    symbol: "X",
+                    location: 0,
+                    datesave: "2026-09-05T10:01:03"
+                },
+                {
+                    playerid: "player002",
+                    symbol: "O",
+                    location: 4,
+                    datesave: "2026-09-05T10:01:08"
+                },
+                {
+                    playerid: "player001",
+                    symbol: "X",
+                    location: 1,
+                    datesave: "2026-09-05T10:01:14"
+                }
+            ];
+
+            const gameDetailsPage = new GameDetailsPage(
+                game.id,
+                sampleMoves,
+                () => {
+                    const playerHistoryPage = new PlayerHistoryPage(this.onBack);
+                    playerHistoryPage.render("app");
+                }
+            );
+
+            gameDetailsPage.render("app");
         });
 
         const replayButton = new Button(
