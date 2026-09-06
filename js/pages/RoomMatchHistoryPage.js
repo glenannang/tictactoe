@@ -2,6 +2,7 @@ import { Button } from "../components/Button.js";
 import { playerId } from "../state/playerState.js";
 import { getPlayerRooms } from "../services/recordService.js";
 import { RoomGamesPage } from "./RoomGamesPage.js";
+import { ReplayPage } from "./ReplayPage.js";
 
 export class RoomMatchHistoryPage {
     constructor(onBack) {
@@ -142,7 +143,23 @@ export class RoomMatchHistoryPage {
             `Replay match history for room ${room.roomCode}`
         );
         replayHistoryButton.onClick(() => {
-            console.log(`Replay room match history for ${room.roomCode}`);
+            const replayPage = new ReplayPage(
+                room.gameIds && room.gameIds[0],
+                [],
+                playerId,
+                () => {
+                    const roomGamesPage = new RoomGamesPage(room, this.onBack);
+                    roomGamesPage.render("app");
+                },
+                {
+                    mode: "match-history",
+                    roomCode: room.roomCode,
+                    roomGameIds: room.gameIds || [],
+                    currentRoomGameIndex: 0
+                }
+            );
+
+            replayPage.render("app");
         });
 
         actionsCell.append(

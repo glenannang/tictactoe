@@ -173,22 +173,45 @@ export function showGameAlreadyStartedModal(onExit) {
     modal.render("gamePage");
 }
 
-export function showReplayCompleteModal(result) {
+export function showReplayCompleteModal(result, options = {}) {
+    const {
+        autoClose = false,
+        duration = 2000,
+        onClose = null,
+        hideCloseButton = false
+    } = options;
+
     const modal = new Modal(
         "Replay Complete",
         result
     );
 
-    const closeButton = new Button(
-        "replay-result-close",
-        "Close"
-    );
+    if (!autoClose && !hideCloseButton) {
+        const closeButton = new Button(
+            "replay-result-close",
+            "Close"
+        );
 
-    modal.addButton(closeButton);
+        modal.addButton(closeButton);
 
-    closeButton.onClick(() => {
-        modal.close();
-    });
+        closeButton.onClick(() => {
+            modal.close();
+
+            if (onClose) {
+                onClose();
+            }
+        });
+    }
 
     modal.render("replayPage");
+
+    if (autoClose) {
+        setTimeout(() => {
+            modal.close();
+
+            if (onClose) {
+                onClose();
+            }
+        }, duration);
+    }
 }
