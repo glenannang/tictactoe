@@ -1,10 +1,8 @@
 import { Button } from "../components/Button.js";
-import { playerId } from "../state/playerState.js";
-import { getPlayerRooms } from "../services/recordService.js";
-import { RoomGamesPage } from "./RoomGamesPage.js";
 
-export class RoomMatchHistoryPage {
-    constructor(onBack) {
+export class RoomGamesPage {
+    constructor(room, onBack) {
+        this.room = room || { roomCode: "", gameIds: [] };
         this.onBack = onBack;
 
         this.initializeElements();
@@ -17,10 +15,10 @@ export class RoomMatchHistoryPage {
         this.container = document.createElement("main");
         this.content = document.createElement("div");
         this.title = document.createElement("h1");
-        this.playerInfo = document.createElement("section");
+        this.roomInfo = document.createElement("section");
         this.avatar = document.createElement("img");
-        this.playerIdLabel = document.createElement("span");
-        this.playerId = document.createElement("strong");
+        this.roomCodeLabel = document.createElement("span");
+        this.roomCode = document.createElement("strong");
         this.historySection = document.createElement("section");
         this.historyTitle = document.createElement("h2");
         this.results = document.createElement("div");
@@ -32,7 +30,7 @@ export class RoomMatchHistoryPage {
         this.emptyStateCell = document.createElement("td");
 
         this.backButton = new Button(
-            "room-match-history-back",
+            "room-games-back",
             "Back",
             "game-button player-history-back-button"
         );
@@ -42,27 +40,27 @@ export class RoomMatchHistoryPage {
         this.container.id = "playerHistoryPage";
         this.content.className = "player-history-content";
         this.title.className = "player-history-title";
-        this.playerInfo.className = "player-info";
+        this.roomInfo.className = "player-info";
         this.avatar.className = "player-avatar";
-        this.playerIdLabel.className = "player-id-label";
+        this.roomCodeLabel.className = "player-id-label";
         this.historySection.className = "player-game-history";
         this.historyTitle.className = "player-game-history-title";
         this.results.className = "player-history-results";
         this.table.className = "player-history-table";
         this.emptyState.className = "player-history-empty-state";
 
-        this.title.textContent = "ROOM MATCH HISTORY";
+        this.title.textContent = "ROOM GAMES";
         this.avatar.src = "assets/images/avatar-placeholder.svg";
         this.avatar.alt = "Placeholder player avatar";
-        this.playerIdLabel.textContent = "Your Player ID: ";
-        this.playerId.textContent = playerId;
-        this.historyTitle.textContent = "Rooms Joined";
-        this.tableCaption.textContent = "Recorded rooms for the current player";
-        this.emptyStateCell.colSpan = 4;
+        this.roomCodeLabel.textContent = "Room Code: ";
+        this.roomCode.textContent = this.room.roomCode || "-";
+        this.historyTitle.textContent = "Games Played";
+        this.tableCaption.textContent = "Games in the selected room";
+        this.emptyStateCell.colSpan = 3;
         this.emptyStateCell.textContent = "";
 
         const headerRow = document.createElement("tr");
-        ["No.", "Room Code", "Games", "Actions"].forEach(headerText => {
+        ["No.", "Game ID", "Actions"].forEach(headerText => {
             const headerCell = document.createElement("th");
             headerCell.scope = "col";
             headerCell.textContent = headerText;
@@ -72,14 +70,14 @@ export class RoomMatchHistoryPage {
     }
 
     appendElements() {
-        this.playerIdLabel.append(this.playerId);
-        this.playerInfo.append(this.avatar, this.playerIdLabel);
+        this.roomCodeLabel.append(this.roomCode);
+        this.roomInfo.append(this.avatar, this.roomCodeLabel);
         this.emptyState.append(this.emptyStateCell);
         this.tableBody.append(this.emptyState);
         this.table.append(this.tableCaption, this.tableHead, this.tableBody);
         this.results.append(this.table);
         this.historySection.append(this.historyTitle, this.results);
-        this.content.append(this.title, this.playerInfo, this.historySection);
+        this.content.append(this.title, this.roomInfo, this.historySection);
         this.container.append(this.content, this.backButton.getElement());
     }
 
@@ -98,15 +96,16 @@ export class RoomMatchHistoryPage {
         this.tableBody.append(this.emptyState);
     }
 
-    createRoomRow(room, index) {
+    createGameRow(gameId, index) {
         const row = document.createElement("tr");
-        const values = [index + 1, room.roomCode, (room.gameIds || []).length];
 
-        values.forEach(value => {
-            const cell = document.createElement("td");
-            cell.textContent = value;
-            row.append(cell);
-        });
+        const noCell = document.createElement("td");
+        noCell.textContent = index + 1;
+        row.append(noCell);
+
+        const gameIdCell = document.createElement("td");
+        gameIdCell.textContent = gameId;
+        row.append(gameIdCell);
 
         const actionsCell = document.createElement("td");
         actionsCell.className = "player-history-actions-cell";
@@ -114,67 +113,35 @@ export class RoomMatchHistoryPage {
         actionsCell.style.gap = "8px";
         actionsCell.style.alignItems = "center";
 
-        const viewGamesButton = new Button(
-            `view-games-${room.roomCode}`,
-            "View Games",
+        const viewDetailsButton = new Button(
+            `room-game-view-details-${gameId}`,
+            "View Details",
             "game-button replay-button"
         );
-        viewGamesButton.getElement().setAttribute(
+        viewDetailsButton.getElement().setAttribute(
             "aria-label",
-            `View games for room ${room.roomCode}`
+            `View details for game ${gameId}`
         );
-        viewGamesButton.onClick(() => {
-            const roomGamesPage = new RoomGamesPage(room, () => {
-                const roomMatchHistoryPage = new RoomMatchHistoryPage(this.onBack);
-                roomMatchHistoryPage.render("app");
-            });
+        viewDetailsButton.onClick(() => {});
 
-            roomGamesPage.render("app");
-        });
-
-        const replayHistoryButton = new Button(
-            `replay-room-history-${room.roomCode}`,
-            "Replay Match History",
+        const replayButton = new Button(
+            `room-game-replay-${gameId}`,
+            "Replay",
             "game-button replay-button"
         );
-        replayHistoryButton.getElement().setAttribute(
+        replayButton.getElement().setAttribute(
             "aria-label",
-            `Replay match history for room ${room.roomCode}`
+            `Replay game ${gameId}`
         );
-        replayHistoryButton.onClick(() => {
-            console.log(`Replay room match history for ${room.roomCode}`);
-        });
+        replayButton.onClick(() => {});
 
         actionsCell.append(
-            viewGamesButton.getElement(),
-            replayHistoryButton.getElement()
+            viewDetailsButton.getElement(),
+            replayButton.getElement()
         );
         row.append(actionsCell);
 
         return row;
-    }
-
-    async loadRooms() {
-        this.showTableMessage("Loading rooms...");
-
-        try {
-            const data = await getPlayerRooms(playerId);
-
-            this.tableBody.replaceChildren();
-
-            if (!data.list || data.list.length === 0) {
-                this.showTableMessage("No rooms joined yet.");
-                return;
-            }
-
-            data.list.forEach((room, index) => {
-                this.tableBody.append(this.createRoomRow(room, index));
-            });
-
-        } catch (error) {
-            console.error("Failed to load player rooms:", error);
-            this.showTableMessage("Failed to load rooms.");
-        }
     }
 
     render(target) {
@@ -182,7 +149,18 @@ export class RoomMatchHistoryPage {
 
         if (parent) {
             parent.replaceChildren(this.container);
-            this.loadRooms();
+
+            const gameIds = Array.isArray(this.room.gameIds) ? this.room.gameIds : [];
+            this.tableBody.replaceChildren();
+
+            if (gameIds.length === 0) {
+                this.showTableMessage("No games played in this room yet.");
+                return;
+            }
+
+            gameIds.forEach((gameId, index) => {
+                this.tableBody.append(this.createGameRow(gameId, index));
+            });
         }
     }
 }
