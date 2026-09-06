@@ -1,4 +1,6 @@
 import { Button } from "../components/Button.js";
+import { checkWinner, checkDraw } from "../game/gameRules.js";
+import { playerId } from "../state/playerState.js";
 
 export class GameDetailsPage {
     constructor(gameId, moves, onBack) {
@@ -19,6 +21,8 @@ export class GameDetailsPage {
         this.gameInfo = document.createElement("div");
         this.gameIdLabel = document.createElement("p");
         this.gameDateLabel = document.createElement("p");
+        this.gameResultLabel = document.createElement("p");
+        this.totalMovesLabel = document.createElement("p");
         this.tableWrap = document.createElement("div");
         this.table = document.createElement("table");
         this.tableHead = document.createElement("thead");
@@ -48,6 +52,12 @@ export class GameDetailsPage {
 
         this.gameDateLabel.className = "game-details-date";
         this.gameDateLabel.textContent = `Date: ${gameDate}`;
+
+        this.gameResultLabel.className = "game-details-result";
+        this.gameResultLabel.textContent = `Result: ${this.getResult()}`;
+
+        this.totalMovesLabel.className = "game-details-total-moves";
+        this.totalMovesLabel.textContent = `Total Moves: ${this.moves.length}`;
 
         this.tableWrap.className = "game-details-table-wrap";
         this.table.className = "game-details-table";
@@ -82,11 +92,43 @@ export class GameDetailsPage {
     }
 
     appendElements() {
-        this.gameInfo.append(this.gameIdLabel, this.gameDateLabel);
+        this.gameInfo.append(
+            this.gameIdLabel,
+            this.gameDateLabel,
+            this.gameResultLabel,
+            this.totalMovesLabel
+        );
         this.table.append(this.tableHead, this.tableBody);
         this.tableWrap.append(this.table);
         this.content.append(this.title, this.gameInfo, this.tableWrap);
         this.container.append(this.content, this.backButton.getElement());
+    }
+
+    getResult() {
+        const board = Array(9).fill("");
+
+        this.moves.forEach(move => {
+            const location = Number(move.location);
+
+            if (Number.isInteger(location) && location >= 0 && location < 9) {
+                board[location] = move.symbol || "";
+            }
+        });
+
+        const boardData = board.join(":");
+        const winner = checkWinner(boardData);
+        const currentPlayerMove = this.moves.find(move => move.playerid === playerId);
+        const currentPlayerSymbol = currentPlayerMove?.symbol;
+
+        if (winner && currentPlayerSymbol) {
+            return winner === currentPlayerSymbol ? "Win" : "Lose";
+        }
+
+        if (!winner && checkDraw(boardData)) {
+            return "Draw";
+        }
+
+        return "Incomplete";
     }
 
     addEventListeners() {

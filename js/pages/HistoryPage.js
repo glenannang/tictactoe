@@ -59,9 +59,9 @@ export class HistoryPage {
         this.description.textContent =
             "Choose the ancient record you wish to consult.";
         this.playerDescription.textContent =
-            "View recorded games associated with a player.";
+            "View your played games";
         this.roomDescription.textContent =
-            "View recorded matches played within a room.";
+            "View rooms you joined";
     }
 
     appendElements() {
