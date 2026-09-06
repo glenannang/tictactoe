@@ -10,8 +10,9 @@
     justify-content: center;
     gap: 20px;
     margin: 0;
-    padding: 30px;
-    overflow: auto;
+    padding: 30px 30px 48px;
+    overflow-y: auto;
+    overflow-x: hidden;
     background: #3a2114 url("../assets/images/howtoplaybackground.png") center / cover no-repeat;
     color: #3f2414;
     font-family: Georgia, "Times New Roman", serif;
@@ -28,6 +29,7 @@
     border-radius: 14px;
     background: rgba(242, 213, 160, 0.95);
     box-shadow: 0 8px 0 #24130b, 0 14px 24px rgba(0, 0, 0, 0.45), inset 0 2px 0 rgba(255, 244, 194, 0.65);
+    margin-bottom: 8px;
 }
 
 #playerHistoryPage .player-history-title {
@@ -68,12 +70,14 @@
 #playerHistoryPage .player-game-history-title {
     margin: 0 0 12px;
     color: #5a2f16;
-    font-size: clamp(1.35rem, 3vw, 1.8rem);
+    font-size: clamp(1.2rem, 2.5vw, 1.55rem);
     text-align: left;
 }
 
 #playerHistoryPage .player-history-results {
     max-width: 100%;
+    max-height: min(420px, 48vh);
+    overflow-y: auto;
     overflow-x: auto;
     border: 2px solid #8d5a2b;
     background: rgba(255, 239, 194, 0.55);
@@ -85,6 +89,12 @@
     border-collapse: collapse;
     color: #3f2414;
     text-align: left;
+}
+
+#playerHistoryPage .player-history-table thead th {
+    position: sticky;
+    top: 0;
+    z-index: 1;
 }
 
 #playerHistoryPage .player-history-table caption {
@@ -107,15 +117,20 @@
     font-size: 0.95rem;
 }
 
+#playerHistoryPage .player-history-empty-state {
+    height: 140px;
+}
+
 #playerHistoryPage .player-history-empty-state td {
     padding: 34px 18px;
     color: #5a2f16;
     font-size: 1rem;
     font-style: italic;
     text-align: center;
+    vertical-align: middle;
 }
 
-#playerHistoryPage td:last-child {
+#playerHistoryPage .player-history-actions-cell {
     display: flex;
     align-items: center;
     gap: 8px;

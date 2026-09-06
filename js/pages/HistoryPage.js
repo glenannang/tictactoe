@@ -1,5 +1,6 @@
 import { Button } from "../components/Button.js";
 import { PlayerHistoryPage } from "./PlayerHistoryPage.js";
+import { RoomMatchHistoryPage } from "./RoomMatchHistoryPage.js";
 
 
 export class HistoryPage {
@@ -90,7 +91,12 @@ export class HistoryPage {
         });
 
         this.roomHistoryButton.onClick(() => {
-            console.log("Room Match History selected");
+            const roomMatchHistoryPage = new RoomMatchHistoryPage(() => {
+                const historyPage = new HistoryPage(this.onBack);
+                historyPage.render("app");
+            });
+
+            roomMatchHistoryPage.render("app");
         });
 
         this.backButton.onClick(() => {

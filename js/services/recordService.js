@@ -101,3 +101,17 @@ export async function getPlayerGames(playerId) {
 
     return data;
 }
+
+export async function getPlayerRooms(playerId) {
+    const response = await fetch(`${RECORD_BASE_URL}/player/${encodeURIComponent(playerId)}/rooms`,
+        { headers: { Accept: "application/json"}}
+    );
+
+    const data = await response.json();
+
+    if (!response.ok) {
+        throw new Error(data.msg || "Failed to retrieve player rooms.");
+    }
+
+    return data;
+}
