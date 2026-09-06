@@ -34,7 +34,7 @@ export class ReplayPage {
         );
         this.backButton = new Button(
             "back-to-player-history",
-            "Back to Player History",
+            "Exit Replay",
             "replay-back-button"
         );
     }

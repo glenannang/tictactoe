@@ -2,6 +2,7 @@ import { Button } from "../components/Button.js";
 import { GameDetailsPage } from "./GameDetailsPage.js";
 import { ReplayPage } from "./ReplayPage.js";
 import { getGameDetails } from "../services/recordService.js";
+import { playerId } from "../state/playerState.js";
 
 export class RoomGamesPage {
     constructor(room, onBack) {
@@ -160,7 +161,7 @@ export class RoomGamesPage {
                 const replayPage = new ReplayPage(
                     gameId,
                     data.list,
-                    this.room.playerId || "",
+                    playerId,
                     () => {
                         const roomGamesPage = new RoomGamesPage(this.room, this.onBack);
                         roomGamesPage.render("app");
