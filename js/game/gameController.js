@@ -7,12 +7,20 @@ import {showGameOverModal,showOpponentLeftModal,showOpponentLeftRematchModal,sho
 import {createGameRecord,getRoomRecord,saveMoveRecord} from "../services/recordService.js";
 import { playerId } from "../state/playerState.js";
 
-export function waitForGameToStart(key,onExit) { //wait until the server says the game has both players and is ready to start
+export async function waitForGameToStart(key,onExit) { //wait until the server says the game has both players and is ready to start
+    const room = await getRoomRecord(key);
+    const gameIds = room.gameIds || [];
+
+    const previousGameId =
+    gameIds.length > 0
+        ? gameIds[gameIds.length - 1]
+        : null;
+    
     async function check() {
         const status = await checkGame(key);
         if (status === "true") {
             gameState.waitingInterval = null;
-            game(onExit);
+            game(onExit, previousGameId);
             return;
         }
         gameState.waitingInterval = setTimeout(check, 1000);
@@ -21,9 +29,8 @@ export function waitForGameToStart(key,onExit) { //wait until the server says th
 }
 
 //initialize game record for the current game session
-async function initializeGameRecord() {
-    const previousGameId = gameState.currentGameId;
-
+async function initializeGameRecord(previousGameId) {
+    
     if (gameState.playerTile === "X") {
         const response = await createGameRecord(gameState.gameKey);
 
@@ -52,9 +59,9 @@ async function initializeGameRecord() {
 
 
 
-async function game(onExit) {
+async function game(onExit,previousGameId = gameState.currentGameId) {
     try {
-        await initializeGameRecord();
+        await initializeGameRecord(previousGameId);
 
         const gamePage = new GamePage(onExit, handleCellClick);
 
@@ -241,6 +248,12 @@ async function handleCellClick(cell) {
             symbol: gameState.playerTile,
             location: index
         });
+        console.log("MOVE DEBUG", {
+    room: gameState.gameKey,
+    gameId: gameState.currentGameId,
+    playerId,
+    tile: gameState.playerTile
+});
 
         // Get latest board after the move
         boardData = await getBoard(gameState.gameKey);
