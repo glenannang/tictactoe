@@ -1,4 +1,7 @@
 import { Button } from "../components/Button.js";
+import { GameDetailsPage } from "./GameDetailsPage.js";
+import { ReplayPage } from "./ReplayPage.js";
+import { getGameDetails } from "../services/recordService.js";
 
 export class RoomGamesPage {
     constructor(room, onBack) {
@@ -122,7 +125,24 @@ export class RoomGamesPage {
             "aria-label",
             `View details for game ${gameId}`
         );
-        viewDetailsButton.onClick(() => {});
+        viewDetailsButton.onClick(async () => {
+            try {
+                const data = await getGameDetails(gameId);
+
+                const gameDetailsPage = new GameDetailsPage(
+                    gameId,
+                    data.list,
+                    () => {
+                        const roomGamesPage = new RoomGamesPage(this.room, this.onBack);
+                        roomGamesPage.render("app");
+                    }
+                );
+
+                gameDetailsPage.render("app");
+            } catch (error) {
+                console.error("Failed to retrieve game details:", error);
+            }
+        });
 
         const replayButton = new Button(
             `room-game-replay-${gameId}`,
@@ -133,7 +153,25 @@ export class RoomGamesPage {
             "aria-label",
             `Replay game ${gameId}`
         );
-        replayButton.onClick(() => {});
+        replayButton.onClick(async () => {
+            try {
+                const data = await getGameDetails(gameId);
+
+                const replayPage = new ReplayPage(
+                    gameId,
+                    data.list,
+                    this.room.playerId || "",
+                    () => {
+                        const roomGamesPage = new RoomGamesPage(this.room, this.onBack);
+                        roomGamesPage.render("app");
+                    }
+                );
+
+                replayPage.render("app");
+            } catch (error) {
+                console.error("Failed to retrieve game replay:", error);
+            }
+        });
 
         actionsCell.append(
             viewDetailsButton.getElement(),
