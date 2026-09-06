@@ -1,4 +1,4 @@
-const RECORD_BASE_URL ="http://localhost:8080/tic-tac-toe-webservices/rest";
+const RECORD_BASE_URL ="http://localhost:8080/tic-tac-toe-webservices/api";
 
 //ROOM RECORDS
 export async function createRoomRecord(roomCode) {
