@@ -89,7 +89,7 @@ export async function getGameDetails(gameId) {
 //PLAYER RECORDS 
 
 export async function getPlayerGames(playerId) {
-    const response = await fetch(`${RECORD_BASE_URL}/game/player/${encodeURIComponent(playerId)}/games`,
+    const response = await fetch(`${RECORD_BASE_URL}/player/${encodeURIComponent(playerId)}/games`,
         { headers: { Accept: "application/json"}}
     );
 
