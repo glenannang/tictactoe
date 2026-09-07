@@ -52,7 +52,7 @@ export class JoinLobbyPage {
 
         this.title.textContent = "Join Game";
 
-        this.gameKeyLabel.textContent = "Enter Game Code";
+        this.gameKeyLabel.textContent = "Enter Room Code";
 
         this.gameKeyInput.type = "text";
         this.gameKeyInput.id = "gameKeyInput";
