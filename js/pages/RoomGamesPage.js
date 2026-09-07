@@ -20,7 +20,7 @@ export class RoomGamesPage {
         this.content = document.createElement("div");
         this.title = document.createElement("h1");
         this.roomInfo = document.createElement("section");
-        this.avatar = document.createElement("img");
+        this.roomIcon = document.createElement("span");
         this.roomCodeLabel = document.createElement("span");
         this.roomCode = document.createElement("strong");
         this.historySection = document.createElement("section");
@@ -45,7 +45,9 @@ export class RoomGamesPage {
         this.content.className = "player-history-content";
         this.title.className = "player-history-title";
         this.roomInfo.className = "player-info";
-        this.avatar.className = "player-avatar";
+        this.roomIcon.className = "room-icon";
+        this.roomIcon.setAttribute("role", "img");
+        this.roomIcon.setAttribute("aria-label", "Room");
         this.roomCodeLabel.className = "player-id-label";
         this.historySection.className = "player-game-history";
         this.historyTitle.className = "player-game-history-title";
@@ -54,8 +56,6 @@ export class RoomGamesPage {
         this.emptyState.className = "player-history-empty-state";
 
         this.title.textContent = "ROOM GAMES";
-        this.avatar.src = "assets/images/avatar-placeholder.svg";
-        this.avatar.alt = "Placeholder player avatar";
         this.roomCodeLabel.textContent = "Room Code: ";
         this.roomCode.textContent = this.room.roomCode || "-";
         this.historyTitle.textContent = "Games Played";
@@ -75,7 +75,7 @@ export class RoomGamesPage {
 
     appendElements() {
         this.roomCodeLabel.append(this.roomCode);
-        this.roomInfo.append(this.avatar, this.roomCodeLabel);
+        this.roomInfo.append(this.roomIcon, this.roomCodeLabel);
         this.emptyState.append(this.emptyStateCell);
         this.tableBody.append(this.emptyState);
         this.table.append(this.tableCaption, this.tableHead, this.tableBody);
