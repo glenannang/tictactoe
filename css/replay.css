@@ -168,6 +168,11 @@
     transform: translateY(-2px);
 }
 
+#replayBoard > .replay-cell:hover {
+    filter: none;
+    transform: none;
+}
+
 #replayPage button:active {
     box-shadow: 0 2px 0 #24130b, 0 5px 9px rgba(0, 0, 0, 0.4);
     transform: translateY(3px);
