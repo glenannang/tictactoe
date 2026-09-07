@@ -22,6 +22,7 @@ export class GamePage {
         this.greeting = document.createElement("h1");
         this.playerMessage = document.createElement("p");
         this.playerIdDisplay = new PlayerIdDisplay();
+        this.gameIdText = document.createElement("p");
         this.gameKeyText = document.createElement("p");
         this.turnMessage = document.createElement("p");
 
@@ -65,9 +66,13 @@ export class GamePage {
             `You are playing as ${gameState.playerTile}`;
 
         this.playerIdDisplay.getElement().id = "playerIdDisplay";
+        this.gameIdText.id = "gameIdDisplay";
+        this.gameIdText.textContent =
+            `Game ID: ${gameState.currentGameId}`;
+
         this.gameKeyText.id = "gameKeyDisplay";
         this.gameKeyText.textContent =
-            `Game Code: ${gameState.gameKey}`;
+            `Room Code: ${gameState.gameKey}`;
 
         this.turnMessage.id = "gameMessage";
     }
@@ -78,6 +83,7 @@ export class GamePage {
             this.greeting,
             this.playerMessage,
             this.playerIdDisplay.getElement(),
+            this.gameIdText,
             this.gameKeyText,
             this.board,
             this.turnMessage,

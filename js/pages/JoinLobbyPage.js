@@ -23,6 +23,7 @@ export class JoinLobbyPage {
     initializeElements() {
         this.container = document.createElement("main");
         this.content = document.createElement("div");
+        this.actionButtons = document.createElement("div");
         this.title = document.createElement("h1");
         this.playerIdDisplay = new PlayerIdDisplay();
 
@@ -47,6 +48,7 @@ export class JoinLobbyPage {
         this.container.id = "joinLobbyPage";
 
         this.content.className = "join-lobby-content";
+        this.actionButtons.className = "join-lobby-actions";
 
         this.title.textContent = "Join Game";
 
@@ -63,11 +65,15 @@ export class JoinLobbyPage {
     appendElements() {
         this.content.append(
             this.title,
-            this.gameKeyInput,
             this.gameKeyLabel,
-            this.joinButton.getElement(),
-            this.cancelButton.getElement(),
+            this.gameKeyInput,
+            this.actionButtons,
             this.message
+        );
+
+        this.actionButtons.append(
+            this.joinButton.getElement(),
+            this.cancelButton.getElement()
         );
 
         this.container.append(this.playerIdDisplay.getElement(), this.content);

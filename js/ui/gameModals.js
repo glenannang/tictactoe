@@ -119,6 +119,11 @@ export function showWaitingForOpponentModal(onExit) {
         "Waiting for another player to join..."
     );
 
+    const roomCode = document.createElement("p");
+    roomCode.className = "modal-room-code";
+    roomCode.textContent = `Room Code: ${gameState.gameKey}`;
+    modal.container.insertBefore(roomCode, modal.message);
+
     const exitButton = new Button(
         "waiting-exit",
         "Exit"

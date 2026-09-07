@@ -87,7 +87,22 @@
 #gameKeyDisplay {
     position: absolute;
 
-    top: 54px;
+    top: 50px;
+    left: 36px;
+
+    margin: 0;
+
+    text-align: left;
+
+    text-shadow:
+        0 2px 0 #4b250f,
+        0 3px 8px rgba(0, 0, 0, 0.45);
+}
+
+#gameIdDisplay {
+    position: absolute;
+
+    top: 34px;
     left: 36px;
 
     margin: 0;
@@ -100,17 +115,13 @@
 }
 
 #playerIdDisplay,
+#gameIdDisplay,
 #gameKeyDisplay {
     color: #ffe0a0;
-    font-size: clamp(0.98rem, 1.25vw, 1.22rem);
+    font-size: clamp(0.78rem, 1vw, 0.95rem);
     font-weight: 700;
     line-height: 1.2;
 }
-
-#gameKeyDisplay {
-    top: 42px;
-}
-
 
 /* TURN / GAME MESSAGE*/
 
@@ -322,14 +333,19 @@
     /* GAME CODE */
 
     #playerIdDisplay,
+    #gameIdDisplay,
     #gameKeyDisplay {
+        left: 25px;
         top: 18px;
-        font-size: 1.25rem;
+        font-size: 1rem;
+    }
+
+    #gameIdDisplay {
+        top: 34px;
     }
 
     #gameKeyDisplay {
-        top: 30px;
-        left: 25px;
+        top: 50px;
     }
 
 
@@ -395,12 +411,18 @@
 
     /* GAME CODE*/
     #playerIdDisplay,
+    #gameIdDisplay,
     #gameKeyDisplay {
-        font-size: 1.05rem;
+        font-size: 0.85rem;
+    }
+
+    #gameIdDisplay {
+        top: 32px;
+        left: 16px;
     }
 
     #gameKeyDisplay {
-        top: 20px;
+        top: 46px;
         left: 16px;
     }
 
@@ -476,12 +498,18 @@
     }
 
     #playerIdDisplay,
+    #gameIdDisplay,
     #gameKeyDisplay {
-        font-size: 0.92rem;
+        font-size: 0.76rem;
+    }
+
+    #gameIdDisplay {
+        top: 27px;
+        left: 12px;
     }
 
     #gameKeyDisplay {
-        top: 14px;
+        top: 40px;
         left: 12px;
     }
 

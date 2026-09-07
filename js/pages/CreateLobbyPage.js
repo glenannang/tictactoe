@@ -22,6 +22,7 @@ export class CreateLobbyPage {
     initializeElements() {
         this.container = document.createElement("main");
         this.content = document.createElement("div");
+        this.actionButtons = document.createElement("div");
         this.title = document.createElement("h1");
         this.playerIdDisplay = new PlayerIdDisplay();
 
@@ -54,12 +55,13 @@ export class CreateLobbyPage {
         this.container.id = "createLobbyPage";
 
         this.content.className = "create-lobby-content";
+        this.actionButtons.className = "create-lobby-actions";
 
         this.title.className = "create-lobby-title";
         this.title.textContent = "Create Your Game";
 
         this.codeLabel.className = "game-code-label";
-        this.codeLabel.textContent = "Game Code";
+        this.codeLabel.textContent = "Room Code";
 
         this.codeText.className = "game-code-display";
         this.codeText.textContent = this.gameKey;
@@ -70,9 +72,13 @@ export class CreateLobbyPage {
     appendElements() {
         this.content.append(
             this.title,
+            this.codeLabel,
             this.codeText,
             this.regenerateButton.getElement(),
-            this.codeLabel,
+            this.actionButtons
+        );
+
+        this.actionButtons.append(
             this.createButton.getElement(),
             this.cancelButton.getElement()
         );
@@ -175,9 +181,9 @@ export class CreateLobbyPage {
 
         this.content.replaceChildren(
             this.title,
+            this.codeLabel,
             this.codeText,
             copyButton.getElement(),
-            this.codeLabel,
             waitingMessage,
             this.cancelButton.getElement()
         );

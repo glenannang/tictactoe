@@ -118,6 +118,8 @@ body {
     gap: clamp(10px, 1.4vh, 14px);
 
     flex-shrink: 0;
+
+    transform: translateY(-18px);
 }
 
 
@@ -190,9 +192,7 @@ body {
 
 #mainPage .history-button {
     background:
-        linear-gradient(#f6dfad, #d7b678);
-
-    color: #3a2114;
+        linear-gradient(#f6cf72, #c8872e);
 }
 
 

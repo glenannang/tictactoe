@@ -34,8 +34,10 @@ async function initializeGameRecord(previousGameId) {
     if (gameState.playerTile === "X") {
         const response = await createGameRecord(gameState.gameKey);
 
-        gameState.currentGameId = response.gameId;
-        console.log("Created game record:", response.gameId);
+        gameState.currentGameId =
+            response.gameId ?? response.id ?? response.game?.id;
+
+        console.log("Created game record:", gameState.currentGameId);
         return;
     }
 

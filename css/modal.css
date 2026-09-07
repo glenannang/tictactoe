@@ -72,6 +72,18 @@
         0 5px 10px rgba(0, 0, 0, 0.55);
 }
 
+.modal > .modal-room-code {
+    margin: -6px 0 14px;
+
+    color: #f7d58d;
+
+    font-size: 0.9rem;
+    font-weight: 700;
+
+    letter-spacing: 0.06em;
+    line-height: 1.2;
+}
+
 
 /* ========================================
    MODAL MESSAGE
