@@ -279,7 +279,10 @@ export class ReplayPage {
 
     scheduleNextMove() {
         if (this.currentMoveIndex >= this.moves.length) {
-            this.showReplayResult();
+            this.replayTimeout = setTimeout(() => {
+                this.replayTimeout = null;
+                this.showReplayResult();
+            }, 1500);
             return;
         }
 

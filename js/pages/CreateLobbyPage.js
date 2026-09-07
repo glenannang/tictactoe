@@ -109,7 +109,7 @@ export class CreateLobbyPage {
 
             try {
                 
-                const tile = await createOrJoinGame(this.gameKey);
+                const tile = await createOrJoinGame(this.gameKey); //create a room record
 
                 if (tile === "X") {
                     gameState.gameKey = this.gameKey;
