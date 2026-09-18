@@ -2,7 +2,7 @@
 
 ## Overview
 
-This repository contains the existing vanilla JavaScript Tic-Tac-Toe frontend. This document proposes how the same application responsibilities could be organized in a future React project. It is an architecture and project-tree proposal only: the existing application has **not** been converted to React, and the proposed files and folders have not been created here.
+This repository contains the existing vanilla JavaScript Tic-Tac-Toe frontend. This document defines a React project structure based on the same application responsibilities. The activity covers architecture and project organization only: the application has **not** been converted to React, and the React files and folders have not been created here.
 
 ## Current Project Structure
 
@@ -89,7 +89,7 @@ The application already separates pure game rules and HTTP calls from some UI co
 
 ## Architectural Issues Identified
 
-These issues concern responsibility separation, not whether the current application works.
+These issues concern responsibility separation rather than application behavior.
 
 ### `gameController.js`
 
@@ -111,9 +111,9 @@ The create-lobby page builds its UI, generates room codes, copies codes, prevent
 
 `PlayerHistoryPage.js`, `RoomMatchHistoryPage.js`, and `RoomGamesPage.js` repeatedly construct similar tables, loading and empty states, action cells, and nested navigation. Their data sources and row actions differ, but a shared table component can remove the repeated presentation responsibility while each page retains its specific data-loading decisions.
 
-## Chosen Architecture: Hybrid Structure
+## Project Organization Approach
 
-The proposed React project uses a **hybrid structure**. Code that belongs to a specific domain is grouped under `features/`:
+The structure combines feature-based and shared/type-based organization. Code that belongs to a specific domain is grouped under `features/`:
 
 - `lobby/` for creating, joining, and waiting in rooms
 - `game/` for live play and its lifecycle
@@ -127,13 +127,13 @@ Concerns genuinely used across features remain in shared folders:
 - `styles/` for global and shared styles
 - `assets/` for images and video
 
-A purely type-based structure would place all pages and hooks together, hiding the relationship between a feature's UI and behavior. That resembles the current organization and would make the game decomposition less visible. A completely feature-based structure would force shared buttons, modals, identity logic, and APIs into one feature or duplicate them.
+A purely type-based structure would place all pages and hooks together, hiding the relationship between a feature's UI and behavior. That resembles the existing organization and would make the game decomposition less visible. A completely feature-based structure would force shared buttons, modals, identity logic, and APIs into one feature or duplicate them.
 
-React does not require a particular folder tree. This hybrid organization is an architectural choice based on the responsibilities that already exist in this application.
+Combining the two styles keeps feature responsibilities together while giving cross-feature code a clear shared location. This organization follows the responsibilities already present in the application.
 
 ## Proposed React Project Structure
 
-The following is the final approved, hypothetical tree. It is intended for a future, separate React project. These folders and files are not present in this repository.
+The following project tree shows the proposed React structure for the Tic-Tac-Toe application.
 
 ```text
 src/
@@ -206,7 +206,7 @@ src/
 
 ### Decomposing `gameController.js`
 
-The proposed structure distributes `gameController.js` by responsibility rather than moving all of it into one large hook.
+The structure distributes `gameController.js` by responsibility rather than moving all of it into one large hook.
 
 `useLobbySession.js` owns the pre-game lifecycle:
 
@@ -342,11 +342,11 @@ Contains `global.css` for application-wide base styles and `modal.css` for the g
 
 ### `assets/`
 
-Contains the existing images and menu video. The proposal uses consistent lowercase filenames to avoid case-sensitive path mismatches in the future project.
+Contains the existing images and menu video. Consistent lowercase filenames avoid case-sensitive path mismatches.
 
 ## Hooks and Lifecycle Responsibilities
 
-The four proposed hooks exist because each owns stateful behavior tied to a clear React lifecycle.
+The four hooks each own stateful behavior tied to a clear React lifecycle.
 
 ### `useLobbySession`
 
@@ -366,7 +366,7 @@ Manages the higher-level sequence of games in a room. It loads each game and del
 
 The hooks are colocated with their features because they are not generic React utilities: `useGameSession` only makes sense for this game's live-play protocol, and `useMatchReplay` only makes sense for this history feature.
 
-Smaller hooks such as `useMove`, `useTimer`, `useRematch`, and `useBoardPolling` are intentionally not proposed. Those behaviors are not independently reused in the current application. Extracting them would spread one cohesive lifecycle across callback-heavy hooks and make the design harder to follow. They can be reconsidered if their complexity or reuse grows in the future.
+Smaller hooks such as `useMove`, `useTimer`, `useRematch`, and `useBoardPolling` are intentionally omitted. Those behaviors are not independently reused in the application. Extracting them would spread one cohesive lifecycle across callback-heavy hooks and make the design harder to follow. They can be reconsidered if their complexity or reuse grows.
 
 ## Services and API Boundaries
 
@@ -404,7 +404,7 @@ React hooks manage React state, effects, timer cleanup, and screen-facing action
 
 ## Naming Conventions
 
-The proposal uses these consistent conventions:
+The structure uses these consistent conventions:
 
 - React components and pages use `PascalCase.jsx`, such as `GameBoard.jsx`.
 - Screen-level components use the `Page` suffix, such as `GamePage.jsx`.
@@ -418,7 +418,7 @@ These are project conventions, not requirements imposed by React. Their purpose 
 
 ## Design Decisions and Reasoning
 
-### Hybrid organization
+### Combined organization
 
 Lobby, game, and history each have enough related UI and behavior to justify feature folders. Buttons, modals, APIs, player identity, global styles, and assets cross feature boundaries, so they remain shared. This gives each responsibility a natural home without duplicating shared code.
 
@@ -432,27 +432,27 @@ A page represents a complete application destination and coordinates its feature
 
 ### Feature-colocated hooks
 
-The proposed hooks describe application-specific lobby, game, and replay behavior. Keeping each beside the pages and components that use it makes ownership visible. A global `hooks/` folder would group files by implementation technique instead of application responsibility.
+The hooks describe application-specific lobby, game, and replay behavior. Keeping each beside the pages and components that use it makes ownership visible. A global `hooks/` folder would group files by implementation technique instead of application responsibility.
 
 ### No Redux or other global store
 
-The current application has one active screen and one active game session. `App` can own navigation and selected identifiers, while feature hooks own their lifecycle state. A state-management library would add concepts without addressing a demonstrated need.
+The application has one active screen and one active game session. `App` can own navigation and selected identifiers, while feature hooks own their lifecycle state. A state-management library would add concepts without addressing a demonstrated need.
 
 ### No Context/provider architecture
 
-The current data flow can be handled with `App`, feature hooks, and props. Context may become reasonable if the future implementation develops deeply nested shared state, but that problem does not exist in the current codebase.
+The data flow can be handled with `App`, feature hooks, and props. Context may become reasonable if deeply nested shared state develops, but that problem does not exist in the codebase being modeled.
 
 ### No WebSocket folder
 
-The current application synchronizes using HTTP polling. A WebSocket layer would describe functionality that does not currently exist. The proposed structure preserves polling while placing its timer lifecycle in the relevant hooks.
+The application synchronizes using HTTP polling. A WebSocket layer would describe functionality that does not exist in the source implementation. The structure preserves polling while placing its timer lifecycle in the relevant hooks.
 
 ### No generic hooks folder
 
-All proposed hooks are feature-specific, and no genuinely reusable cross-feature hook was found. Colocation is clearer than a global folder containing unrelated lifecycle code.
+All four hooks are feature-specific, and there is no genuinely reusable cross-feature hook. Colocation is clearer than a global folder containing unrelated lifecycle code.
 
 ### No required React Router
 
-The existing application replaces `#app` and uses callbacks rather than URLs, deep links, or browser history. Simple screen state in `App` represents that behavior clearly. React Router would become justified if the future project requires shareable URLs or browser back/forward navigation.
+The existing application replaces `#app` and uses callbacks rather than URLs, deep links, or browser history. Simple screen state in `App` represents that behavior clearly. React Router would become justified if shareable URLs or browser back/forward navigation became requirements.
 
 ### Plain CSS retained
 
@@ -474,4 +474,4 @@ These are architectural conventions and tradeoffs, not correctness rules imposed
 
 ## Conclusion
 
-The proposed hybrid structure makes the application's existing lobby, live-game, history, and replay responsibilities easier to identify. It decomposes the current controller and replay god-file responsibilities across UI, lifecycle hooks, domain workflows, API boundaries, and pure rules without introducing a global store, router, WebSocket layer, or unnecessary small abstractions. It remains a proposal for a separate React project; the working vanilla JavaScript application in this repository has not been migrated.
+The combined structure makes the application's lobby, live-game, history, and replay responsibilities easier to identify. It decomposes the controller and replay god-file responsibilities across UI, lifecycle hooks, domain workflows, API boundaries, and pure rules without introducing a global store, router, WebSocket layer, or unnecessary small abstractions. This document defines the React project structure only; the working vanilla JavaScript application in this repository has not been migrated.
