@@ -2,7 +2,7 @@
 
 ## Overview
 
-This repository contains the existing vanilla JavaScript Tic-Tac-Toe frontend. This document defines a React project structure based on the same application responsibilities. The activity covers architecture and project organization only: the application has **not** been converted to React, and the React files and folders have not been created here.
+This repository contains the existing vanilla JavaScript Tic-Tac-Toe frontend. This document presents a proposed React project structure based on the application's existing features and responsibilities, with a focus on logical decomposition, clear responsibility boundaries, and consistent naming conventions.
 
 ## Current Project Structure
 
@@ -11,7 +11,6 @@ The relevant structure of the existing application is:
 ```text
 tictactoe/
 ├── index.html
-├── playerId.test.mjs
 ├── assets/
 │   ├── images/
 │   │   ├── avatar-placeholder.svg
@@ -20,7 +19,7 @@ tictactoe/
 │   │   ├── howtoplaybackground.png
 │   │   ├── lobby.png
 │   │   ├── smallscroll.png
-│   │   └── Title.png
+│   │   └── title.png
 │   └── videos/
 │       └── main-menu-background.mp4
 ├── css/
@@ -68,8 +67,6 @@ tictactoe/
         └── playerUtils.js
 ```
 
-Generated files, operating-system metadata, and Git internals are excluded because they do not affect the architecture.
-
 ## Current Architecture
 
 The current frontend is a single-page vanilla JavaScript application. `index.html` provides an `#app` element, and each page class constructs its screen with DOM APIs such as `document.createElement()`. Navigation happens by replacing the contents of `#app`; pages create other page classes and pass callbacks to return to earlier screens.
@@ -85,31 +82,29 @@ The current code is organized mainly by technical type:
 - `utils/` contains player-ID and room-code generation as well as direct game-display updates.
 - `css/` and `assets/` contain the visual styling and media used by the screens.
 
-The application already separates pure game rules and HTTP calls from some UI code. The main opportunity is to give the larger workflows clearer responsibility boundaries.
+The application already separates game rules, API calls, and some UI responsibilities. However, several larger files still handle multiple responsibilities, which makes the current structure harder to maintain.
 
 ## Architectural Issues Identified
 
-These issues concern responsibility separation rather than application behavior.
-
 ### `gameController.js`
 
-`gameController.js` is the clearest god-file candidate. It currently coordinates waiting-room polling, game-record creation, board synchronization, opponent detection, move validation, move submission, move recording, result detection, rematches, timers, shared state, modal selection, and `GamePage` rendering. These responsibilities change for different reasons: an endpoint change should not require changing UI orchestration, and a dialog change should not require changing the rematch protocol.
+`gameController.js` currently handles several responsibilities, including waiting-room polling, game-record creation, board synchronization, opponent detection, move handling, result detection, rematches, timers, shared state, modals, and `GamePage` rendering. Separating these responsibilities makes the game flow easier to organize and prevents unrelated logic, such as UI handling and server communication, from being managed in one file.
 
 ### `ReplayPage.js`
 
-`ReplayPage.js` constructs the complete replay interface while also running the playback timer, rebuilding the board, calculating results, fetching later games, and sequencing every game in a room. Its single-game playback behavior and room-wide match-history orchestration are related, but distinct.
+`ReplayPage.js` handles both the replay interface and replay logic, including the playback timer, board reconstruction, result calculation, game fetching, and sequencing multiple games in a room. These responsibilities can be separated into the replay UI, single-game playback, and room replay handling.
 
 ### `gameModals.js`
 
-The modal module presents dialogs, but several dialog functions also reset server state, cancel timers, mutate global game state, and navigate away. A React modal should present the current situation and invoke supplied actions; the game-session logic should decide what those actions do.
+`gameModals.js` handles the display of game dialogs, but some dialog functions also reset the game, clear timers, update game state, and handle navigation. These responsibilities can be separated so that the modal handles the UI while the game-session logic handles actions such as reset, rematch, and exit.
 
 ### `CreateLobbyPage.js`
 
-The create-lobby page builds its UI, generates room codes, copies codes, prevents duplicate requests, calls two services, starts waiting-room polling, cancels the room, clears timers, mutates shared state, and navigates. Form presentation and lobby-session behavior can be separated without splitting every event into its own file.
+`CreateLobbyPage.js` currently handles both the lobby UI and room-related logic, including room-code generation, waiting-room polling, cancellation, timer cleanup, shared state updates, and navigation. Separating the UI from the lobby-session logic gives these responsibilities clearer boundaries.
 
 ### History pages
 
-`PlayerHistoryPage.js`, `RoomMatchHistoryPage.js`, and `RoomGamesPage.js` repeatedly construct similar tables, loading and empty states, action cells, and nested navigation. Their data sources and row actions differ, but a shared table component can remove the repeated presentation responsibility while each page retains its specific data-loading decisions.
+`PlayerHistoryPage.js`, `RoomMatchHistoryPage.js`, and `RoomGamesPage.js` contain similar table structures, loading and empty states, and action elements. A shared table component can handle these repeated UI elements, while each page remains responsible for loading and displaying its own data.
 
 ## Project Organization Approach
 
@@ -127,9 +122,7 @@ Concerns genuinely used across features remain in shared folders:
 - `styles/` for global and shared styles
 - `assets/` for images and video
 
-A purely type-based structure would place all pages and hooks together, hiding the relationship between a feature's UI and behavior. That resembles the existing organization and would make the game decomposition less visible. A completely feature-based structure would force shared buttons, modals, identity logic, and APIs into one feature or duplicate them.
-
-Combining the two styles keeps feature responsibilities together while giving cross-feature code a clear shared location. This organization follows the responsibilities already present in the application.
+The structure keeps feature-specific UI and logic together while giving code used across multiple features a clear shared location.
 
 ## Proposed React Project Structure
 
@@ -226,7 +219,7 @@ The structure distributes `gameController.js` by responsibility rather than movi
 - Move-in-progress and rematch-in-progress guards
 - Move validation, submission, and successful move persistence
 - Starting a rematch and applying its semantic result
-- Exit, unmount, and active-game timer cleanup
+- Handling game exit and cleaning up active-game timers
 
 `gameSessionService.js` owns multi-request domain workflows:
 
@@ -236,7 +229,7 @@ The structure distributes `gameController.js` by responsibility rather than movi
 
 `gameApi.js` contains individual live-game HTTP operations such as create/join, status check, board retrieval, move, and reset. `recordApi.js` contains individual room, game, move-record, and history requests. Neither API module owns React state or UI behavior.
 
-`gameRules.js` remains a pure domain module for determining the current turn, winner, and draw. It can be used by both live play and recorded-game features without depending on React.
+`gameRules.js` contains the game rules for determining the current turn, winner, and draw. Since this logic does not depend on React, it can be reused for both live games and recorded games.
 
 The visual responsibilities are also separated:
 
@@ -344,40 +337,6 @@ Contains `global.css` for application-wide base styles and `modal.css` for the g
 
 Contains the existing images and menu video. Consistent lowercase filenames avoid case-sensitive path mismatches.
 
-## Hooks and Lifecycle Responsibilities
-
-The four hooks each own stateful behavior tied to a clear React lifecycle.
-
-### `useLobbySession`
-
-Manages the period from requesting room entry until the game is ready or the user cancels. Its waiting timer must start and stop with that lobby session, making a hook an appropriate owner.
-
-### `useGameSession`
-
-Manages one active game from initialization through a result, rematch, exit, or opponent departure. It keeps the board and session state synchronized with the server and cleans up active polling when the screen is left.
-
-### `useReplay`
-
-Manages timed playback for one recorded game. Its move index, board state, timer, restart behavior, and cleanup belong together.
-
-### `useMatchReplay`
-
-Manages the higher-level sequence of games in a room. It loads each game and delegates the move-by-move work to `useReplay`.
-
-The hooks are colocated with their features because they are not generic React utilities: `useGameSession` only makes sense for this game's live-play protocol, and `useMatchReplay` only makes sense for this history feature.
-
-Smaller hooks such as `useMove`, `useTimer`, `useRematch`, and `useBoardPolling` are intentionally omitted. Those behaviors are not independently reused in the application. Extracting them would spread one cohesive lifecycle across callback-heavy hooks and make the design harder to follow. They can be reconsidered if their complexity or reuse grows.
-
-## Services and API Boundaries
-
-The service boundaries have three levels:
-
-1. `gameApi.js` represents individual HTTP operations against the live-game backend: create or join, check status, retrieve a board, submit a move, and reset.
-2. `recordApi.js` represents individual HTTP operations against the persistence backend: create room/game records, save moves, and retrieve rooms, games, or details.
-3. `gameSessionService.js` combines several API operations into domain workflows, specifically game-record coordination and rematch negotiation.
-
-React hooks manage React state, effects, timer cleanup, and screen-facing actions. They call the service modules rather than embedding endpoint details. The API modules do not render UI, and `gameSessionService` does not import React or manipulate the DOM.
-
 ## Current-to-Proposed Mapping
 
 | Current responsibility/file | Proposed React location | Reason |
@@ -385,7 +344,7 @@ React hooks manage React state, effects, timer cleanup, and screen-facing action
 | `app.js` startup | `main.jsx` | Keeps application mounting minimal. |
 | Page construction and callback navigation | `App.jsx` and `app/navigation.js` | Gives screen selection one clear owner without requiring a router. |
 | `Button.js`, `Modal.js`, `PlayerIdDisplay.js` | `components/` | These are reusable across several features. |
-| `playerState.js` and `playerUtils.js` | `utils/playerId.js`, initialized by `App.jsx` | Player identity is session-level and framework-independent. |
+| `playerState.js` and `playerUtils.js` | `utils/playerId.js`, initialized by `App.jsx` | The player ID is shared across different parts of the application and does not depend on React. |
 | Initial room creation, join, and waiting logic | `features/lobby/useLobbySession.js` | Separates the pre-game lifecycle from active play. |
 | Lobby forms and waiting presentation | Lobby pages and `LobbyWaitingPanel.jsx` | Keeps rendering separate from server synchronization. |
 | Active-game state, polling, moves, and cleanup in `gameController.js` | `features/game/useGameSession.js` | These responsibilities belong to one active game lifecycle. |
@@ -414,64 +373,46 @@ The structure uses these consistent conventions:
 - Feature folder names are lowercase: `lobby/`, `game/`, and `history/`.
 - Asset names use consistent lowercase kebab-case where multiple words are needed.
 
-These are project conventions, not requirements imposed by React. Their purpose is to make the role of a file recognizable from its name.
+These conventions make each file's role easier to identify.
 
 ## Design Decisions and Reasoning
 
-### Combined organization
+### Pages and components
 
-Lobby, game, and history each have enough related UI and behavior to justify feature folders. Buttons, modals, APIs, player identity, global styles, and assets cross feature boundaries, so they remain shared. This gives each responsibility a natural home without duplicating shared code.
+Pages represent complete screens, while components handle smaller parts of a
+screen. For example, `GamePage` represents the live-game screen, while
+`GameBoard` displays the board and `GameStatus` displays game information.
 
-### Page versus component
+### Shared and feature-specific components
 
-A page represents a complete application destination and coordinates its feature behavior. A component represents a focused, reusable, or independently understandable part of that page. For example, `GamePage` is a destination, while `GameBoard` displays cells and `GameStatus` displays metadata. Individual labels and table cells do not need separate components.
+`Button`, `Modal`, and `PlayerIdDisplay` are shared because they can be used by
+different parts of the application. Components such as `GameBoard`,
+`LobbyWaitingPanel`, and `HistoryTable` remain inside their respective features
+because they are specific to those features.
 
-### Feature-specific versus shared components
+### Feature-specific hooks
 
-`Button`, `Modal`, and `PlayerIdDisplay` appear across unrelated screens and belong in `components/`. `GameBoard`, `LobbyWaitingPanel`, and `HistoryTable` express feature-specific concepts and stay with their features. This prevents the shared component folder from becoming a collection of unrelated application pieces.
+Hooks such as `useLobbySession`, `useGameSession`, and the replay hooks remain
+inside their feature folders because they manage behavior specific to those
+features.
 
-### Feature-colocated hooks
+### State management
 
-The hooks describe application-specific lobby, game, and replay behavior. Keeping each beside the pages and components that use it makes ownership visible. A global `hooks/` folder would group files by implementation technique instead of application responsibility.
+Application-level information such as navigation and selected game or room
+identifiers is handled by `App`, while feature-specific state is handled within
+the corresponding feature. A separate global state-management library is not
+needed for the current application.
 
-### No Redux or other global store
+### Existing communication and styling
 
-The application has one active screen and one active game session. `App` can own navigation and selected identifiers, while feature hooks own their lifecycle state. A state-management library would add concepts without addressing a demonstrated need.
-
-### No Context/provider architecture
-
-The data flow can be handled with `App`, feature hooks, and props. Context may become reasonable if deeply nested shared state develops, but that problem does not exist in the codebase being modeled.
-
-### No WebSocket folder
-
-The application synchronizes using HTTP polling. A WebSocket layer would describe functionality that does not exist in the source implementation. The structure preserves polling while placing its timer lifecycle in the relevant hooks.
-
-### No generic hooks folder
-
-All four hooks are feature-specific, and there is no genuinely reusable cross-feature hook. Colocation is clearer than a global folder containing unrelated lifecycle code.
-
-### No required React Router
-
-The existing application replaces `#app` and uses callbacks rather than URLs, deep links, or browser history. Simple screen state in `App` represents that behavior clearly. React Router would become justified if shareable URLs or browser back/forward navigation became requirements.
-
-### Plain CSS retained
-
-The existing application already has page-scoped plain CSS and responsive rules. Keeping plain CSS avoids adding an unrelated styling system. Styles are reorganized only enough to distinguish global, shared, page-specific, and feature-specific ownership.
-
-### Balanced decomposition
-
-The design separates code when responsibilities already differ in the existing implementation: lobby versus active game, HTTP requests versus multi-request protocols, single-game replay versus room replay, and UI versus lifecycle behavior. It intentionally avoids one hook per operation or one component per DOM element. This prevents the god-file problem without replacing it with dozens of tiny files and complicated coordination.
-
-## Alternatives Considered
-
-- **React Router versus App-level navigation:** A router would be reasonable for URL-based navigation, but simple `App` state better matches the current behavior.
-- **API module location:** APIs could be placed inside features, but shared `services/` is clearer because multiple features use each backend.
-- **`RoomHistoryPage` naming:** Keeping `RoomMatchHistoryPage` would also be valid. The shorter name reflects that the screen first lists rooms.
-- **One history table versus separate tables:** Separate player, room, and room-games tables could be used if their layouts diverge. The current repeated structure supports one configurable `HistoryTable`.
-- **CSS organization:** Each component could have its own stylesheet or CSS module. Feature-level plain CSS is simpler and remains close to the current styling approach.
-
-These are architectural conventions and tradeoffs, not correctness rules imposed by React.
+The proposed structure keeps the application's existing HTTP polling approach
+and plain CSS. Polling behavior is handled by the feature that uses it, while
+global and feature-specific styles are kept separate.
 
 ## Conclusion
 
-The combined structure makes the application's lobby, live-game, history, and replay responsibilities easier to identify. It decomposes the controller and replay god-file responsibilities across UI, lifecycle hooks, domain workflows, API boundaries, and pure rules without introducing a global store, router, WebSocket layer, or unnecessary small abstractions. This document defines the React project structure only; the working vanilla JavaScript application in this repository has not been migrated.
+The proposed structure gives the application's lobby, live-game, history, and
+replay responsibilities clear locations. It separates UI, lifecycle behavior,
+API communication, game rules, and shared utilities while addressing the larger
+responsibilities currently combined in files such as `gameController.js` and
+`ReplayPage.js`.
